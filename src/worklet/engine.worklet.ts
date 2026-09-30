@@ -7,6 +7,7 @@
  *   { type: 'param', node, param, value }
  *   { type: 'ticks', packets }          buffer di controllo per i ponti
  *   { type: 'reset' }                   svuota le code dei ponti
+ *   { type: 'sample', sample }          un campione audio (Sampler, Granulare…)
  */
 
 import { workletRegistry } from '../modules/audioCatalog';
@@ -15,6 +16,7 @@ import { Graph, GraphError } from '../core/graph';
 import type { Patch } from '../core/types';
 import { clearBridges, pushBridgePacket, type BridgePacket } from '../modules/_internal/bridge';
 import { mixToDevice } from '../modules/io/output';
+import { registerSample, type Sample } from '../core/samples';
 
 const FRAMES = 128;
 
@@ -22,7 +24,8 @@ type Message =
   | { type: 'patch'; patch: Patch }
   | { type: 'param'; node: string; param: string; value: number }
   | { type: 'ticks'; packets: (BridgePacket & { key: string })[] }
-  | { type: 'reset' };
+  | { type: 'reset' }
+  | { type: 'sample'; sample: Sample };
 
 class EngineProcessor extends AudioWorkletProcessor {
   private graph: Graph | null = null;
@@ -59,6 +62,9 @@ class EngineProcessor extends AudioWorkletProcessor {
         break;
       case 'reset':
         clearBridges();
+        break;
+      case 'sample':
+        registerSample(m.sample);
         break;
     }
   }

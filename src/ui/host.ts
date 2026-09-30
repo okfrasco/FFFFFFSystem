@@ -14,6 +14,7 @@ import type { Engine } from '../core/engine';
 import type { AnalysisPoint, ScopeFrame } from '../core/audioAnalysis';
 import { Scheduler, WorkerWaker, audioContextClock } from '../core/scheduler';
 import { Timeline } from '../core/timeline';
+import { onSample } from '../core/samples';
 import type { ControlEvent, Patch } from '../core/types';
 
 interface Packet {
@@ -120,6 +121,8 @@ export class Host {
         else if (e.data.type === 'scopes') for (const s of e.data.scopes ?? []) this.scopes.set(s.key, s);
       };
       this.node.connect(this.audio.destination);
+      // i campioni (anche quelli caricati dopo) vanno anche al motore audio
+      onSample((sample) => this.node?.port.postMessage({ type: 'sample', sample }));
       this.sendPatch(this.engine.patch);
       this.scheduler = new Scheduler(this.engine, audioContextClock(this.audio), new WorkerWaker());
       this.scheduler.onPump = () => {

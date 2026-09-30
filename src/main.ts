@@ -5,6 +5,7 @@ import type { Patch } from './core/types';
 import { catalog } from './ui/catalog';
 import { loadSavedPatch, mountEditor } from './ui/editor/editor';
 import { Host } from './ui/host';
+import { loadStoredSamples } from './ui/sampleStore';
 
 const app = document.querySelector<HTMLDivElement>('#app');
 if (app) {
@@ -23,6 +24,7 @@ if (app) {
   }
   engine ??= new Engine(autoLayout(patch, moduleRegistry), moduleRegistry);
   const host = new Host(engine);
+  void loadStoredSamples();
   // in sviluppo: accesso da console (e dai test nel browser)
   if (import.meta.env.DEV) Object.assign(window, { ffffff: { host, engine } });
   mountEditor(app, {

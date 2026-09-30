@@ -157,3 +157,30 @@ export function brightness(x: Float32Array, a = 0, b = x.length): number {
   }
   return Math.sqrt(d / Math.max(1e-12, s));
 }
+
+/** Ampiezza della componente a `f` Hz tra i campioni a e b (DFT su una frequenza). */
+export function toneAt(x: Float32Array, f: number, a: number, b: number): number {
+  let re = 0;
+  let im = 0;
+  for (let i = a; i < b; i++) {
+    re += x[i]! * Math.cos((2 * Math.PI * f * i) / SR);
+    im += x[i]! * Math.sin((2 * Math.PI * f * i) / SR);
+  }
+  return (2 * Math.hypot(re, im)) / (b - a);
+}
+
+/** Frequenza con più energia tra lo e hi (passo 1 Hz), tra `from` e `to` secondi. */
+export function peakFreq(x: Float32Array, from: number, to: number, lo: number, hi: number): number {
+  const a = Math.floor(from * SR);
+  const b = Math.floor(to * SR);
+  let best = lo;
+  let bestA = -1;
+  for (let f = lo; f <= hi; f++) {
+    const m = toneAt(x, f, a, b);
+    if (m > bestA) {
+      bestA = m;
+      best = f;
+    }
+  }
+  return best;
+}
