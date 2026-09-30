@@ -29,6 +29,7 @@ Ogni nodo rispetta un unico contratto, il grafo trasporta quattro tipi di segnal
 - **Config separata dai parametri**: ciò che non è un numero modulabile (regole dell'L-system, matrice di Markov, tabelle di Steps e Gates) sta nella `config` del nodo, salvata nella patch e nella scena, e si morpha come scelta discreta.
 - **Rate del modulo**: `control` (tick dello scheduler nel main thread), `audio` (blocchi di 128 campioni nell'AudioWorklet, con `sampleRate` e `frames` nel contesto) o `frame` (render dei visual, con il contesto WebGL).
 - **Visual**: i nodi a rate `frame` girano in un grafo a parte, a ogni frame, con il contesto WebGL2. Il controllo è calcolato in anticipo (lookahead), quindi ogni cavo da un nodo di controllo o di fase verso un nodo visual diventa una "sonda" che legge la Timeline all'istante che si sta sentendo (clock audio meno la latenza d'uscita): immagine e suono coincidono. Le velocità dei nodi visual sono al secondo, non per frame.
+- **Schermi**: ogni nodo Schermo ha la sua finestra (pannello nell'editor o finestra separata del browser, per un secondo monitor). Il renderer ha un solo contesto WebGL, quindi ogni visual si può mandare a qualunque schermo. Il rendering segue la finestra dell'editor: se l'editor viene nascosto o ridotto a icona il browser lo rallenta, e anche gli schermi separati rallentano.
 - **Analisi (audio → controllo)**: le uscite di controllo dei nodi audio (es. Envelope follower) modulano i nodi audio direttamente nel worklet, senza latenza; tornano al main ogni ~10 ms con il tempo reale di misura, per i nodi di controllo (che le leggono al tick successivo) e per i visual (che le leggono all'istante mostrato).
 - **Audio**: la patch si divide tra main e worklet. I cavi da un nodo di controllo a un nodo audio diventano "ponti": il main manda in anticipo (lookahead) i buffer di ogni tick e il worklet li consegna al blocco giusto, con ogni evento al suo campione. Più cavi audio sullo stesso ingresso si sommano. I segnali audio sono mono per voce; uno stereo è un segnale a 2 voci (sinistra, destra). I moduli audio allocano le loro memorie al primo process, perché nel main vengono istanziati solo per l'editor.
 - **Tabelle e fase**: Gates e Steps stendono l'intera tabella su un ciclo della fase che li legge (5 valori su una battuta = quintine); per cambiare la durata degli step si piega la fase, non la tabella.
@@ -67,6 +68,7 @@ Il tempo è una fase che scorre, come in Bitwig Grid: tutti i generatori la legg
 | Ø Wrap | Porta qualsiasi segnale nel range 0–1 |
 | Ø Counter | Trasforma trigger successivi in fase a scalini |
 | Ø Drift | Jitter lento e continuo, per un tempo che respira |
+| Clock | Fase → trigger e gate: divisioni per ciclo, swing, offset, durata del gate |
 
 ## Generatori di controllo
 

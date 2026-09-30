@@ -34,6 +34,7 @@ import { createNodeView, portColor, type NodeView } from './nodeView';
 import { EDITOR_CSS } from './style';
 import { VisualRenderer } from '../../visual/renderer';
 import { LiveMonitor } from '../live';
+import { mountScreens } from './screens';
 import { mountScenes } from './scenes';
 import { catalog, onCatalogChange } from '../catalog';
 import { onUiChange } from './moduleUi';
@@ -94,7 +95,6 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
         <div class="help">doppio clic / Tab: aggiungi · trascina uscita → ingresso o punto di un parametro<br>
         Alt+clic su un cavo: togli · Canc: elimina selezione · ⌘D: duplica · ⌘Z: annulla · Spazio: play</div>
         <div class="world"></div>
-        <div class="viewer"><div class="vbar"><span>visual</span><button data-v="full" title="Schermo intero">⤢</button><button data-v="close" title="Nascondi (V)">✕</button></div><canvas></canvas></div>
       </div>
       <div class="scenes"></div>
     </div>`;
@@ -108,45 +108,18 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
   const cables = new CableLayer(world);
   host.onError = (msg) => status(msg, true);
 
-  // ─── vista dei visual ─────────────────────────────────────────────────
-  const viewer = $<HTMLElement>('.viewer');
+  // ─── visual: il renderer e una finestra per ogni nodo Schermo ─────────
   const renderer = new VisualRenderer(
     engine,
     () => catalog().frame,
-    viewer.querySelector('canvas') as HTMLCanvasElement,
     () => host.displayTime(),
     (key) => host.analysisTimeline(key),
   );
   renderer.onError = (msg) => status(msg, true);
-  // il renderer resta acceso anche a pannello chiuso: le miniature dei nodi servono sempre
+  // il renderer resta acceso anche senza finestre: le miniature dei nodi servono sempre
   renderer.start();
-  const toggleViewer = (show = viewer.classList.contains('hidden')) => {
-    viewer.classList.toggle('hidden', !show);
-  };
-  viewer.addEventListener('pointerdown', (e) => e.stopPropagation());
-  viewer.addEventListener('wheel', (e) => e.stopPropagation());
-  viewer.addEventListener('dblclick', (e) => e.stopPropagation());
-  viewer.querySelector('[data-v=close]')!.addEventListener('click', () => toggleViewer(false));
-  viewer.querySelector('[data-v=full]')!.addEventListener('click', () => void viewer.requestFullscreen?.());
-  const vbar = viewer.querySelector('.vbar') as HTMLElement;
-  vbar.addEventListener('pointerdown', (e) => {
-    if ((e.target as HTMLElement).closest('button')) return;
-    vbar.setPointerCapture(e.pointerId);
-    const r = viewer.getBoundingClientRect();
-    const c = canvas.getBoundingClientRect();
-    const off = { x: e.clientX - r.left, y: e.clientY - r.top };
-    const move = (m: PointerEvent) => {
-      viewer.style.left = `${m.clientX - c.left - off.x}px`;
-      viewer.style.top = `${m.clientY - c.top - off.y}px`;
-      viewer.style.right = 'auto';
-    };
-    const up = () => {
-      vbar.removeEventListener('pointermove', move);
-      vbar.removeEventListener('pointerup', up);
-    };
-    vbar.addEventListener('pointermove', move);
-    vbar.addEventListener('pointerup', up);
-  });
+  const screens = mountScreens(canvas, engine, renderer);
+  const toggleViewer = () => screens.toggle();
 
   let committed: Patch = engine.patch;
   const history: Patch[] = [];
@@ -729,8 +702,6 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
   });
   onUiChange(() => render());
 
-  // la vista parte visibile se la patch ha uno Schermo
-  toggleViewer(engine.patch.nodes.some((n) => n.module === 'screen'));
   applyView();
   render();
   requestAnimationFrame(() => {

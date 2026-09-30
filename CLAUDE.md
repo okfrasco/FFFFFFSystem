@@ -104,6 +104,11 @@ Dopo il v0 (M9):
 - ogni nodo ha una grafica animata: view dedicate per 18 moduli, generica per gli altri;
 - oscilloscopi dal worklet e miniature dei visual.
 
+Dopo M9:
+- Clock (fase → trigger e gate);
+- blocco groove: Ø Bend, Ø Swing, Ø Drift;
+- più schermi: una finestra per ogni nodo Schermo, staccabile in una finestra del browser.
+
 L'utente vuole un sistema "il più visual possibile" e ora si concentra sul fare tanti moduli (synth, effetti, generatori, visual): ogni modulo nuovo va fatto con una view che mostri cosa fa.
 
 Prossimi passi possibili: nuovi moduli, altri nodi dal catalogo di SPEC.md, MIDI In/Out, il porting verso il plugin.

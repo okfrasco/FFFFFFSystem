@@ -97,7 +97,7 @@ svg.cables g.amount text { fill: #ddd; font: 10px ui-monospace, Menlo, monospace
 .addmenu .item.act { background: #2a2a33; color: #fff; }
 .help { position: absolute; right: 10px; bottom: 10px; color: #555; text-align: right; pointer-events: none; line-height: 1.6; }
 
-.viewer { position: absolute; right: 12px; top: 12px; width: 480px; height: 300px; z-index: 5; background: #000; border: 1px solid #333;
+.viewer { position: absolute; width: 480px; height: 300px; z-index: 5; background: #000; border: 1px solid #333;
   resize: both; overflow: hidden; min-width: 160px; min-height: 100px; box-shadow: 0 10px 30px #000a; display: flex; flex-direction: column; }
 .viewer.hidden { display: none; }
 .viewer .vbar { display: flex; gap: 6px; align-items: center; padding: 3px 6px; background: #141418; cursor: move; user-select: none; color: #888; }
@@ -105,6 +105,9 @@ svg.cables g.amount text { fill: #ddd; font: 10px ui-monospace, Menlo, monospace
 .viewer .vbar button { font: inherit; background: none; border: 0; color: #aaa; cursor: pointer; padding: 0 3px; }
 .viewer canvas { flex: 1; width: 100%; min-height: 0; display: block; background: #000; }
 .viewer:fullscreen .vbar { display: none; }
+.viewer .popped { display: none; flex: 1; align-items: center; justify-content: center; color: #666; }
+.viewer.is-popped canvas { display: none; }
+.viewer.is-popped .popped { display: flex; }
 .scenebar { display: flex; gap: 6px; align-items: center; padding: 6px 10px; border-top: 1px solid var(--line); background: #0f0f12; flex-wrap: wrap; }
 .scenebar .lab { color: #666; letter-spacing: .12em; font-size: 10px; }
 .scenebar .list { display: flex; gap: 4px; flex-wrap: wrap; }

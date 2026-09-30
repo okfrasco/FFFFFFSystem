@@ -444,6 +444,10 @@
         "release": 0.25,
         "gain": 0.6
       }
+    },
+    {
+      "id": "screen2",
+      "module": "screen"
     }
   ],
   "connections": [
@@ -751,6 +755,10 @@
       "from": "env.out",
       "to": "markov.param:mutation",
       "amount": 0.3
+    },
+    {
+      "from": "noise.out",
+      "to": "screen2.in"
     }
   ],
   "scenes": [
