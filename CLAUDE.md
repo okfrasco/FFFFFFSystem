@@ -116,7 +116,7 @@ Leggi prima questa sezione: sostituisce la memoria delle sessioni passate.
   - commit;
   - resoconto con una tabella dei nodi e una lista "Da provare", poi proponi la sezione dopo e aspetta il suo ok.
 - Vuole un sistema "il più visual possibile": ogni modulo nuovo ha una `view.ts` che mostra cosa fa, e un widget se c'è qualcosa da disegnare (curve, tabelle, matrici, campioni).
-- Il progetto sta in `~/Downloads/FFFFFFSystem` per sua scelta. Git è solo locale, senza remoto: niente push, GitHub non è stato approvato. Nessuna dipendenza nuova senza chiedere.
+- Il progetto sta in `~/Downloads/FFFFFFSystem` per sua scelta. Repo GitHub: https://github.com/okfrasco/FFFFFFSystem. Nessuna dipendenza nuova senza chiedere.
 - L'obiettivo finale è un VST: il core e i moduli restano portabili (niente DOM nei moduli, DSP nostro).
 
 ## Verifica
