@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "seed": 303,
+  "nodes": [
+    {
+      "id": "transport",
+      "module": "transport",
+      "params": { "bpm": 90 }
+    },
+    {
+      "id": "rd",
+      "module": "reactionDiffusion",
+      "params": {
+        "preset": 0,
+        "steps": 6,
+        "scale": 1.5,
+        "hue": 0.55
+      }
+    },
+    {
+      "id": "color1",
+      "module": "color",
+      "params": {
+        "hueShift": 0.1,
+        "saturation": 1.2,
+        "brightness": 1.1
+      }
+    },
+    {
+      "id": "screen1",
+      "module": "screen"
+    }
+  ],
+  "connections": [
+    { "from": "transport", "fromPort": "phase", "to": "rd", "toPort": "phase" },
+    { "from": "rd", "fromPort": "out", "to": "color1", "toPort": "in" },
+    { "from": "color1", "fromPort": "out", "to": "screen1", "toPort": "in" }
+  ],
+  "scenes": {
+    "S1": {
+      "params": {
+        "rd": { "preset": 0, "hue": 0.55 }
+      }
+    },
+    "S2": {
+      "params": {
+        "rd": { "preset": 2, "hue": 0.8 }
+      }
+    }
+  },
+  "currentScene": "S1"
+}

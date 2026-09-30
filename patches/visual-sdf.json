@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "seed": 42,
+  "nodes": [
+    {
+      "id": "transport",
+      "module": "transport",
+      "params": { "bpm": 120 }
+    },
+    {
+      "id": "sdf1",
+      "module": "sdf",
+      "params": {
+        "shape": 2,
+        "size": 0.6,
+        "rotSpeed": 0.5,
+        "twist": 1,
+        "hue": 0.6,
+        "specular": 1
+      }
+    },
+    {
+      "id": "feedback1",
+      "module": "feedback",
+      "params": {
+        "amount": 0.85,
+        "zoom": 0.05,
+        "rotate": 0.2
+      }
+    },
+    {
+      "id": "screen1",
+      "module": "screen"
+    }
+  ],
+  "connections": [
+    { "from": "transport", "fromPort": "phase", "to": "sdf1", "toPort": "phase" },
+    { "from": "sdf1", "fromPort": "out", "to": "feedback1", "toPort": "in" },
+    { "from": "feedback1", "fromPort": "out", "to": "screen1", "toPort": "in" }
+  ],
+  "scenes": {
+    "S1": {
+      "params": {
+        "sdf1": { "shape": 2, "twist": 1 },
+        "feedback1": { "amount": 0.85, "rotate": 0.2 }
+      }
+    },
+    "S2": {
+      "params": {
+        "sdf1": { "shape": 5, "twist": 2 },
+        "feedback1": { "amount": 0.9, "rotate": -0.3 }
+      }
+    }
+  },
+  "currentScene": "S1"
+}

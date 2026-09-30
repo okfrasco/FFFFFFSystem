@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "seed": 101,
+  "nodes": [
+    {
+      "id": "transport",
+      "module": "transport",
+      "params": { "bpm": 130 }
+    },
+    {
+      "id": "kick",
+      "module": "euclid",
+      "params": { "steps": 16, "pulses": 4 }
+    },
+    {
+      "id": "particles1",
+      "module": "particles",
+      "params": {
+        "count": 800,
+        "size": 4,
+        "speed": 1.5,
+        "gravity": 0,
+        "noise": 1,
+        "emitMode": 2,
+        "hue": 0.1,
+        "fade": 0.92
+      }
+    },
+    {
+      "id": "blur1",
+      "module": "blur",
+      "params": {
+        "mode": 1,
+        "amount": 15,
+        "threshold": 0.3,
+        "intensity": 1.5
+      }
+    },
+    {
+      "id": "screen1",
+      "module": "screen"
+    }
+  ],
+  "connections": [
+    { "from": "transport", "fromPort": "phase", "to": "kick", "toPort": "phase" },
+    { "from": "transport", "fromPort": "phase", "to": "particles1", "toPort": "phase" },
+    { "from": "particles1", "fromPort": "out", "to": "blur1", "toPort": "in" },
+    { "from": "blur1", "fromPort": "out", "to": "screen1", "toPort": "in" }
+  ],
+  "scenes": {
+    "S1": {
+      "params": {
+        "particles1": { "emitMode": 2, "noise": 1, "hue": 0.1 }
+      }
+    }
+  },
+  "currentScene": "S1"
+}

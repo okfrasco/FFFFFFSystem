@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "seed": 555,
+  "nodes": [
+    {
+      "id": "transport",
+      "module": "transport",
+      "params": { "bpm": 100 }
+    },
+    {
+      "id": "flow1",
+      "module": "flowField",
+      "params": {
+        "lines": 500,
+        "length": 50,
+        "thickness": 1.5,
+        "scale": 2,
+        "speed": 0.3,
+        "curl": 1.5,
+        "hue": 0.5,
+        "hueSpread": 0.2,
+        "fade": 0.96
+      }
+    },
+    {
+      "id": "transform1",
+      "module": "transform",
+      "params": {
+        "segments": 4,
+        "zoom": 1.2,
+        "spin": 0.1
+      }
+    },
+    {
+      "id": "screen1",
+      "module": "screen"
+    }
+  ],
+  "connections": [
+    { "from": "transport", "fromPort": "phase", "to": "flow1", "toPort": "phase" },
+    { "from": "transport", "fromPort": "phase", "to": "transform1", "toPort": "phase" },
+    { "from": "flow1", "fromPort": "out", "to": "transform1", "toPort": "in" },
+    { "from": "transform1", "fromPort": "out", "to": "screen1", "toPort": "in" }
+  ],
+  "scenes": {
+    "S1": {
+      "params": {
+        "flow1": { "curl": 1.5, "hue": 0.5 },
+        "transform1": { "segments": 4 }
+      }
+    },
+    "S2": {
+      "params": {
+        "flow1": { "curl": 0.5, "hue": 0.8 },
+        "transform1": { "segments": 8 }
+      }
+    }
+  },
+  "currentScene": "S1"
+}
