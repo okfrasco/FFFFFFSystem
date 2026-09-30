@@ -131,9 +131,4 @@ L'utente vuole un sistema "il più visual possibile" e ora si concentra sul fare
 
 Prossimi passi possibili: nuovi moduli, altri nodi dal catalogo di SPEC.md, MIDI In/Out, il porting verso il plugin.
 
-Idee in attesa (discusse, non ancora decise):
-- **FM/PM.**
-  - Oggi si fa con l'ingresso `pm` dell'Oscillatore, al campione.
-  - Il feedback tra oscillatori non passa dal grafo: un ciclo ha 128 campioni di ritardo.
-  - Opzione A: aggiungere all'Oscillatore Ratio, Feedback interno e un ingresso `fm` lineare.
-  - Opzione B (preferita): un modulo "FM" a 4–6 operatori con una matrice di modulazione modulabile e morphabile (diagonale = feedback), con la view che disegna l'algoritmo come grafo.
+Idee in attesa: nessuna. (L'FM a operatori con matrice, discussa prima, è fatto: audio/fm.)
