@@ -118,6 +118,7 @@ Secondo giro: si prosegue con il catalogo di SPEC.md, una sezione alla volta (pr
 - Fatto: "Trasformazioni di controllo" (Math, Scale/Offset, Lag, Sample & Hold, Mod Mixer, Blend, Fold/Wrap, Quantize a scalini, Echo, Densità, Humanize) e S&H Random.
 - Fatto: "Logica e trigger" (Porte logiche, Comparatore, Latch, N-Latch, Clock Divide/Multiply, Clock Quantize, Gate Length, Gate Repeat, Logic Delay, Counter, Shift Register, Condizione, Router).
 - Fatto: "Ritmici" (Euclideo multistrato, Cicli, Burst, Ratchet, Spark, Setaccio).
+- Fatto: "Algoritmici" (Automa 1D, Game of Life, Mappa logistica, Attrattore, Serie infinita, Sequenza numerica).
 - Manca: Curve disegnabile.
 
 L'utente vuole un sistema "il più visual possibile" e ora si concentra sul fare tanti moduli (synth, effetti, generatori, visual): ogni modulo nuovo va fatto con una view che mostri cosa fa.
