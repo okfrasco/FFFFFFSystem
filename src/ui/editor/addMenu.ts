@@ -12,6 +12,7 @@ const CATEGORY_LABEL: Record<ModuleCategory, string> = {
   audio: 'Audio',
   effects: 'Effetti',
   visual: 'Visual',
+  groove: 'Groove',
   io: 'I/O',
   ideas: 'Idee',
 };

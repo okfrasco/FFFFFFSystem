@@ -155,6 +155,7 @@ export type ModuleCategory =
   | 'effects'
   | 'visual'
   | 'io'
+  | 'groove'
   | 'ideas';
 
 /**

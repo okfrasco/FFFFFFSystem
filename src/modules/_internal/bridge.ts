@@ -4,6 +4,8 @@
  * manda i buffer di ogni tick in anticipo (lookahead) e il ponte li consegna
  * ai blocchi audio che li contengono, con gli eventi al loro istante.
  * Un evento arrivato in ritardo esce subito, all'inizio del blocco.
+ * Un evento può cadere prima dell'inizio del suo pacchetto (i nodi del groove
+ * anticipano i colpi fino a 60 ms): esce comunque al suo istante.
  */
 
 import type { ControlEvent, ModuleDefinition } from '../../core/types';
@@ -61,13 +63,14 @@ export const bridge: ModuleDefinition = {
           last = p.values;
         }
         for (const p of q) {
-          if (p.t0 >= ctx.t1) break;
           if (p.t0 <= ctx.t0) last = p.values;
+          // niente uscita anticipata al primo pacchetto futuro: può contenere eventi anticipati
           while (p.next < p.events.length && p.events[p.next]!.t < ctx.t1) {
             const e = p.events[p.next++]!;
             events.push(e.t < ctx.t0 ? { ...e, t: ctx.t0 } : e);
           }
         }
+        events.sort((a, b) => a.t - b.t);
         const out = outputs.control('out', Math.max(1, last.length));
         for (let v = 0; v < out.values.length; v++) out.values[v] = last[v] ?? 0;
         for (const e of events) out.events.push(e);

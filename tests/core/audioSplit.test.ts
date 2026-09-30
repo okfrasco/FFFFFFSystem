@@ -71,3 +71,18 @@ describe('render end-to-end', () => {
     expect(String.fromCharCode(...wav.slice(0, 4))).toBe('RIFF');
   });
 });
+
+describe('Ponte: eventi anticipati', () => {
+  it('un evento prima dell\'inizio del suo pacchetto esce al suo istante, non a quello del pacchetto', () => {
+    clearBridges();
+    const sim = audioSim([{ id: 'b', module: 'bridge', config: { key: 'y' } }], [], []);
+    const out = () => sim.graph.output('b', 'out') as { events: { t: number }[] };
+    const blockDur = 128 / SR;
+    // pacchetto del tick [10 ms, 15 ms) con un evento anticipato a 3 ms
+    pushBridgePacket('y', { t0: 0.01, t1: 0.015, values: [0], events: [{ kind: 'trig', t: 0.003, voice: 0, vel: 1 }] });
+    sim.run(blockDur); // [0, 2.67 ms)
+    expect(out().events).toEqual([]);
+    sim.run(blockDur); // [2.67, 5.33 ms): qui
+    expect(out().events.map((e) => e.t)).toEqual([0.003]);
+  });
+});
