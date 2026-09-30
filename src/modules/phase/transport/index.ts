@@ -34,6 +34,7 @@ export const transport: ModuleDefinition = {
     outputs: [
       { id: 'bar', type: 'phase' },
       { id: 'beat', type: 'phase' },
+      { id: 'tempo', type: 'control', signal: 'value' },
     ],
     params: [
       { id: 'bpm', label: 'BPM', min: 20, max: 300, default: 120, kind: 'continuous' },
@@ -76,6 +77,7 @@ export const transport: ModuleDefinition = {
         const beat = outputs.phase('beat');
         beat.start[0] = beatsStart;
         beat.end[0] = beatsEnd;
+        outputs.control('tempo').values[0] = ctx.param('bpm');
       },
       getState: () => ({ ...s }),
       setState(state: unknown): void {

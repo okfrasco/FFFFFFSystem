@@ -18,7 +18,9 @@ const view: ViewFactory = () => ({
     g.lineTo(w, h);
     g.fill();
     scope(g, v.scope('out'), 0, 4, w, h - 8, C.audio);
-    label(g, `T60 ${t60.toFixed(1)} s`, w - 2, 2, C.text, 'right');
+    const frozen = v.param('freeze') >= 0.5;
+    label(g, frozen ? 'freeze' : `T60 ${t60.toFixed(1)} s`, w - 2, 2, frozen ? C.white : C.text, 'right');
+    label(g, v.param('type') >= 0.5 ? 'plate' : 'sala', 3, 2);
   },
 });
 
