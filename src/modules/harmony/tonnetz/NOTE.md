@@ -8,5 +8,5 @@ Cammina tra triadi con P, L, R: ogni passo cambia una sola nota. A caso con i pe
 
 ## Da provare
 
-- Solo L e R: il ciclo esatonale; solo P e L: il ciclo di Weitzmann-like per terze maggiori.
+- Solo P e L (sequenza "PL"): il ciclo esatonale, 6 triadi; "PR": l'ottatonico, 8 triadi; "LR": tutte e 24.
 - Clock ÷1 → Tonnetz → Voice leading → Voci: armonia che deriva senza tonalità.
