@@ -6,6 +6,9 @@
  * voce era accesa il gate scende per un campione, così l'inviluppo riparte.
  * Un trigger senza durata dura `length`; il suo `value`, se c'è, è la nota.
  * Glide: portamento esponenziale verso la nota nuova (utile con 1 voce).
+ * Legato: una nota che ruba una voce ancora accesa non riapre il gate
+ * (niente retrigger dell'inviluppo): con 1 voce e un po' di glide è lo slide
+ * della 303.
  */
 
 import { framedEvents, onePole } from '../../../core/dsp';
@@ -40,6 +43,7 @@ export const voices: ModuleDefinition = {
       { id: 'glide', label: 'Glide', min: 0, max: 1, default: 0, kind: 'continuous', unit: 's' },
       { id: 'length', label: 'Durata trig', min: 0.01, max: 4, default: 0.2, kind: 'continuous', curve: 'exp', unit: 's' },
       { id: 'pitch', label: 'Nota trig', min: 0, max: 127, default: 60, kind: 'discrete' },
+      { id: 'legato', label: 'Legato', min: 0, max: 1, default: 0, kind: 'discrete', options: ['no', 'sì'] },
     ],
     seeded: false,
   },
@@ -82,7 +86,7 @@ export const voices: ModuleDefinition = {
             let v = -1;
             for (let k = 0; k < n; k++) if (!s.gate[k] && (v < 0 || s.age[k]! < s.age[v]!)) v = k;
             if (v < 0) for (let k = 0; k < n; k++) if (v < 0 || s.age[k]! < s.age[v]!) v = k;
-            retrig[v] = s.gate[v]!;
+            retrig[v] = s.gate[v]! && ctx.discrete('legato', s.counter) === 0;
             if (coef >= 1 || !s.gate[v] && n > 1) s.pitch[v] = note;
             s.target[v] = note;
             s.gate[v] = true;

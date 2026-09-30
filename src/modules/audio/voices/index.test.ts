@@ -53,3 +53,12 @@ describe('Voci', () => {
     expect(pitch[0]![f + Math.floor(0.25 * SR)]).toBeCloseTo(60, 1);
   });
 });
+
+describe('Voci in legato', () => {
+  it('con 1 voce una nota sovrapposta non riapre il gate (niente retrigger)', () => {
+    const { gate, pitch } = run([note(0.01, 60, 0.05), note(0.05, 67, 0.05)], { voices: 1, legato: 1 });
+    const f = Math.floor(0.05 * SR);
+    expect([gate[0]![f - 1], gate[0]![f], gate[0]![f + 1]]).toEqual([1, 1, 1]);
+    expect(pitch[0]![f + 1]).toBe(67);
+  });
+});
