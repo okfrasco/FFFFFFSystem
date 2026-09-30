@@ -22,7 +22,7 @@ npm run nuovo -- visual caleido           # visual con shader
 ```
 
 - **`<id>`**: il nome della cartella, uguale al `manifest.id`, in camelCase.
-- **`<categoria>`**: una tra phase, generators, logic, transform, harmony, groove, audio, effects, visual, io, ideas.
+- **`<categoria>`**: una tra phase, generators, logic, transform, harmony, groove, data, audio, effects, visual, io, ideas.
 - **Idee non ancora rifinite**: vanno in `ideas/`, se sono di controllo o visual.
 - **Moduli audio**: vanno sempre in `audio/`, `effects/` o `io/`, anche se sono ancora idee, perché sono le sole cartelle che l'AudioWorklet carica.
 

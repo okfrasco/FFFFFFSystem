@@ -4,7 +4,7 @@
 // Esempio: npm run nuovo -- ideas karplus audio
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 
-const CATEGORIES = ['phase', 'generators', 'logic', 'transform', 'harmony', 'groove', 'audio', 'effects', 'visual', 'io', 'ideas'];
+const CATEGORIES = ['phase', 'generators', 'logic', 'transform', 'harmony', 'groove', 'data', 'audio', 'effects', 'visual', 'io', 'ideas'];
 const [category, id, rateArg] = process.argv.slice(2);
 const fail = (msg) => {
   console.error(`\n  ${msg}\n\n  uso: npm run nuovo -- <categoria> <id> [control|audio|frame]\n  categorie: ${CATEGORIES.join(', ')}\n`);

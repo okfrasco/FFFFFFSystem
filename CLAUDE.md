@@ -23,7 +23,7 @@ src/
   modules/     un modulo = una cartella: <categoria>/<id>/ con index.ts (export default),
                e se servono widget.ts, view.ts, shader.frag, index.test.ts, NOTE.md.
                Le cartelle si registrano da sole (modules/index.ts). Categorie:
-               phase, generators, logic, transform, harmony, groove, audio, effects, visual, io, ideas.
+               phase, generators, logic, transform, harmony, groove, data, audio, effects, visual, io, ideas.
                _internal/ = ponti e sonde, non compaiono nel menu.
   worklet/     processor dell'AudioWorklet (fa girare la parte audio del grafo)
   visual/      renderer WebGL2 dei nodi visual e utilità GL
@@ -122,6 +122,7 @@ Secondo giro: si prosegue con il catalogo di SPEC.md, una sezione alla volta (pr
 - Fatto: "Stile e genere" (Rhythm, Style Blend, Pattern, Motif, Acid). La libreria dei generi è in generators/rhythm/genres.ts: 8 generi, 16 step di probabilità per strumento più le linee di basso e di lead. Voci ha anche il legato.
 - Fatto: "Continui" (Curve, Noise) e Curve map. L'editor di curve comune sta in ui/editor/curveWidget.ts.
 - Fatto: "Groove e microtempo" (categoria groove/): Swing continuo, Tupla, Griglia polimetrica, Grid Blend, Offset per voce, Groove template, Snare displacement, Drift correlato, Accento → ritardo, Flam/Ghost. Gli spostamenti di eventi passano da `emitShifted` (core/eventQueue.ts): ritardo libero, anticipo al massimo 60 ms (MAX_EARLY, dentro il lookahead).
+- Fatto: "Dati e lookup" (categoria data/): Accents, Pitches (piano roll), Probabilities (anche come filtro), Slopes (punti con curvatura), Array (registrabile, tabella nello stato), Tabella 2D, MIDI Clip (parser SMF in data/midiClip/smf.ts, note salvate nella patch). Steps e Gates restano in generators/. Aiuti per i widget a canvas in ui/editor/widgetKit.ts (canvasPanel, onDrag, inputPhase).
 
 L'utente vuole un sistema "il più visual possibile" e ora si concentra sul fare tanti moduli (synth, effetti, generatori, visual): ogni modulo nuovo va fatto con una view che mostri cosa fa.
 

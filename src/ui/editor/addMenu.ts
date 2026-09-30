@@ -6,6 +6,7 @@ import type { ModuleCategory } from '../../core/types';
 const CATEGORY_LABEL: Record<ModuleCategory, string> = {
   phase: 'Fase',
   generators: 'Generatori',
+  data: 'Dati',
   logic: 'Logica',
   transform: 'Trasformazioni',
   harmony: 'Armonia',

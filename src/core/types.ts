@@ -156,6 +156,7 @@ export type ModuleCategory =
   | 'visual'
   | 'io'
   | 'groove'
+  | 'data'
   | 'ideas';
 
 /**
