@@ -40,3 +40,15 @@ export function channel(block: { channels: Float32Array[] } | undefined, v: numb
   if (!block || block.channels.length === 0) return undefined;
   return block.channels[v % block.channels.length];
 }
+
+/** Tavola del seno (un ciclo, 4096 punti più uno per l'interpolazione). */
+export const SINE_SIZE = 4096;
+export const SINE = Float32Array.from({ length: SINE_SIZE + 1 }, (_, i) => Math.sin((2 * Math.PI * i) / SINE_SIZE));
+
+/** Seno di una fase in cicli (qualsiasi valore), dalla tavola con interpolazione lineare. */
+export function fastSin(phase: number): number {
+  const x = (phase - Math.floor(phase)) * SINE_SIZE;
+  const i = x | 0;
+  const a = SINE[i]!;
+  return a + (SINE[i + 1]! - a) * (x - i);
+}

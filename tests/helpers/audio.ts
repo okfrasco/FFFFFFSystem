@@ -119,3 +119,41 @@ export const onset = (x: Float32Array, thr = 1e-3, from = 0) => {
   for (let i = from; i < x.length; i++) if (Math.abs(x[i]!) > thr) return i;
   return -1;
 };
+
+/** Frequenza fondamentale per autocorrelazione (tra `from` e `to` secondi), con interpolazione del picco. */
+export function pitchOf(x: Float32Array, from: number, to: number, fmin = 50, fmax = 2000): number {
+  const a = Math.floor(from * SR);
+  const b = Math.floor(to * SR);
+  const ac = (lag: number) => {
+    let s = 0;
+    for (let i = a; i < b; i++) s += x[i]! * x[i + lag]!;
+    return s;
+  };
+  let best = 0;
+  let bestLag = 0;
+  for (let lag = Math.floor(SR / fmax); lag <= Math.ceil(SR / fmin); lag++) {
+    const c = ac(lag);
+    if (c > best) {
+      best = c;
+      bestLag = lag;
+    }
+  }
+  const y0 = ac(bestLag - 1);
+  const y1 = best;
+  const y2 = ac(bestLag + 1);
+  const shift = (y0 - y2) / (2 * (y0 - 2 * y1 + y2));
+  return SR / (bestLag + shift);
+}
+
+export const cents = (f: number, ref: number) => 1200 * Math.log2(f / ref);
+
+/** Rapporto tra l'RMS della differenza prima e l'RMS del segnale: sale con le alte frequenze. */
+export function brightness(x: Float32Array, a = 0, b = x.length): number {
+  let s = 0;
+  let d = 0;
+  for (let i = Math.max(1, a); i < b; i++) {
+    s += x[i]! * x[i]!;
+    d += (x[i]! - x[i - 1]!) ** 2;
+  }
+  return Math.sqrt(d / Math.max(1e-12, s));
+}

@@ -2,7 +2,9 @@
  * Oscillatore — sine, triangolo, dente di sega e quadra/impulso (con
  * polyBLEP contro l'aliasing). L'altezza viene dall'ingresso `pitch` (nota
  * MIDI per voce, es. da Voci) o dal parametro; `pm` è modulazione di fase
- * da un altro segnale audio (FM "alla DX").
+ * da un altro segnale audio (FM "alla DX"). `sync` riparte il ciclo a ogni
+ * passaggio per lo zero in salita di un altro segnale (hard sync). La
+ * larghezza della quadra (PWM) si modula con un cavo sul parametro.
  */
 
 import { channel, mtof, polyBlep } from '../../../core/dsp';
@@ -19,6 +21,7 @@ export const oscillator: ModuleDefinition = {
     inputs: [
       { id: 'pitch', type: 'audio', poly: true },
       { id: 'pm', type: 'audio', poly: true },
+      { id: 'sync', type: 'audio', poly: true },
     ],
     outputs: [{ id: 'out', type: 'audio', poly: true }],
     params: [
@@ -35,10 +38,12 @@ export const oscillator: ModuleDefinition = {
 
   create() {
     let phase: number[] = [];
+    const syncPrev: number[] = [];
     return {
       process(ctx, inputs, outputs) {
         const pitchIn = inputs.audio('pitch');
         const pmIn = inputs.audio('pm');
+        const syncIn = inputs.audio('sync');
         const n = pitchIn?.channels.length ?? 1;
         const out = outputs.audio('out', n).channels;
         while (phase.length < n) phase.push(0);
@@ -52,6 +57,8 @@ export const oscillator: ModuleDefinition = {
         for (let v = 0; v < n; v++) {
           const pin = channel(pitchIn, v);
           const pm = pmAmt > 0 ? channel(pmIn, v) : undefined;
+          const sync = channel(syncIn, v);
+          let sp = syncPrev[v] ?? 0;
           const o = out[v]!;
           let ph = phase[v]!;
           let dt = mtof(base + offset) / sr;
@@ -66,6 +73,11 @@ export const oscillator: ModuleDefinition = {
             }
             ph += dt;
             ph -= Math.floor(ph);
+            if (sync) {
+              const s = sync[i]!;
+              if (sp <= 0 && s > 0) ph = 0;
+              sp = s;
+            }
             let p = ph;
             if (pm) {
               p += pmAmt * pm[i]!;
@@ -92,6 +104,7 @@ export const oscillator: ModuleDefinition = {
             o[i] = y * level;
           }
           phase[v] = ph;
+          syncPrev[v] = sp;
         }
       },
       getState: () => ({ phase: [...phase] }),
