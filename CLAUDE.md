@@ -87,16 +87,17 @@ Se il contratto deve cambiare, proponi la modifica, aggiorna `SPEC.md` e tutti i
 
 Leggi prima questa sezione: sostituisce la memoria delle sessioni passate.
 
-**Dove siamo.** Il v0 (M1–M8) è completo. Si stanno facendo i nodi del catalogo di SPEC.md, una sezione alla volta, nell'ordine scelto dall'utente. Ultimo lavoro finito: la sezione "Audio" (commit "Audio: campioni, Granulare, Sampler/Slicer"). `npm test` dà 488 passati e 1 saltato (il render). Typecheck e build sono puliti.
+**Dove siamo.** Il v0 (M1–M8) è completo. Si stanno facendo i nodi del catalogo di SPEC.md, una sezione alla volta, nell'ordine scelto dall'utente. Ultimo lavoro finito: la sezione **"Visual"** (commit "Visual: generatori ed effetti completi"). `npm test` dà 488 passati e 1 saltato (il render). Typecheck e build sono puliti.
 
-**Prossimo passo proposto all'utente, senza risposta:** la sezione **"Visual"** di SPEC.md.
-- Generatori: SDF, Particelle, Flow field, Reaction-diffusion, Automa texture, L-system geometry, Pattern, Scope, Tipografia, Ingresso.
+**Visual completato:**
+- Generatori: SDF, Particelle, Flow field, Reaction-diffusion, Automa texture, L-system geometry, Griglia, Scope, Tipografia, Ingresso.
 - Effetti: Displace, Blur/Bloom, Edge, Glitch, Time echo, Composite, Mask.
-- Ci sono già: Noise field, Feedback, Colore, Transform, Schermo.
+- C'erano già: Noise field, Feedback, Colore, Transform, Schermo.
+- Patch di esempio in `patches/`: visual-sdf, visual-particles, visual-reaction, visual-glitch, visual-flow.
 
-Chiedi conferma prima di partire (vedi "Come lavorare con l'utente").
+**Prossimo passo proposto:** la sezione **"Fase e clock"** di SPEC.md.
 
-**Sezioni del catalogo ancora da fare**, dopo Visual:
+**Sezioni del catalogo ancora da fare:**
 - "Fase e clock", la parte mai fatta: Phasor, Step Access, Ø Ratio, Ø Pinch, Ø Reset, Ø Reverse/Mirror, Ø Shift, Ø Wrap, Ø Counter. Ci sono già Transport, Ø Scale, Ø Split, Ø Bend, Ø Swing, Ø Drift, Clock.
 - "Convertitori e analisi": Onset, Pitch tracker, Bande, Luminosità, Movimento, Colore, Pixel probe, Uniform, CV audio, Note out/in. C'è già Envelope follower.
 - "Voci e tabelle dati": Tabella immagine, Scroll, Texture → tabella, Spettro ↔ tabella, Spread, Voice Mix, Voice Router. C'è già Voci.
@@ -161,13 +162,13 @@ Chiedi conferma prima di partire (vedi "Come lavorare con l'utente").
   - widget comuni: `curveWidget`, `matrixWidget`, `sampleWidget`, `widgetKit` (canvasPanel, onDrag, inputPhase).
 - **Moduli** (`src/modules/<categoria>/<id>/`):
   - prima del catalogo: M1–M9 e il primo giro di moduli concordato;
-  - sezioni del catalogo fatte: "Trasformazioni di controllo", "Logica e trigger", "Ritmici", "Algoritmici", "Stile e genere", "Continui", "Groove e microtempo", "Dati e lookup", "Armonia e pitch", "Audio";
+  - sezioni del catalogo fatte: "Trasformazioni di controllo", "Logica e trigger", "Ritmici", "Algoritmici", "Stile e genere", "Continui", "Groove e microtempo", "Dati e lookup", "Armonia e pitch", "Audio", "Visual";
   - l'elenco completo dei nodi è nel menu dell'editor, o in `src/modules/*/*/`.
 - **Convenzioni nate strada facendo:**
   - Il campo armonico viaggia su tre porte: `chord`, `scale` a 12 voci, `change` (vedi SPEC.md).
   - Transport ha l'uscita `tempo` (BPM) per Delay e Buffer.
   - La libreria dei generi è in `generators/rhythm/genres.ts`.
-- **Patch di esempio:** `patches/demo.json`, con le scene S1 e S2.
+- **Patch di esempio:** `patches/demo.json` (audio), `patches/visual-*.json` (5 patch visual).
 
 Decisioni prese con l'utente:
 - Sistema autonomo, senza DAW; MIDI arriverà come nodi.
