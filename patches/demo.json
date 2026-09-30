@@ -1,0 +1,2090 @@
+{
+  "version": 1,
+  "seed": 2026,
+  "nodes": [
+    {
+      "id": "transport",
+      "module": "transport",
+      "params": {
+        "bpm": 112
+      }
+    },
+    {
+      "id": "kick",
+      "module": "euclid",
+      "params": {
+        "steps": 16,
+        "pulses": 5
+      }
+    },
+    {
+      "id": "snare",
+      "module": "gates",
+      "params": {
+        "mutation": 0.05
+      },
+      "config": {
+        "gates": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.4
+        ]
+      }
+    },
+    {
+      "id": "hat",
+      "module": "euclid",
+      "params": {
+        "steps": 16,
+        "pulses": 11,
+        "rotate": 2,
+        "swing": 0.25,
+        "mutation": 0.1
+      }
+    },
+    {
+      "id": "hatFlip",
+      "module": "coinFlip",
+      "params": {
+        "prob": 0.85
+      }
+    },
+    {
+      "id": "split",
+      "module": "phaseSplit",
+      "params": {
+        "count": 3,
+        "spread": 0.25
+      }
+    },
+    {
+      "id": "couple",
+      "module": "coupling",
+      "params": {
+        "coupling": 0,
+        "tether": 0.1
+      }
+    },
+    {
+      "id": "perc",
+      "module": "euclid",
+      "params": {
+        "steps": 8,
+        "pulses": 3
+      }
+    },
+    {
+      "id": "rhythm",
+      "module": "euclid",
+      "params": {
+        "steps": 16,
+        "pulses": 7,
+        "rotate": 1,
+        "swing": 0.25
+      }
+    },
+    {
+      "id": "phrase",
+      "module": "gates",
+      "config": {
+        "gates": [
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "id": "and",
+      "module": "and"
+    },
+    {
+      "id": "markov",
+      "module": "markov",
+      "params": {
+        "mutation": 0.15
+      }
+    },
+    {
+      "id": "memory",
+      "module": "memory",
+      "params": {
+        "length": 2,
+        "mutation": 0.25,
+        "anchor": 0.1
+      }
+    },
+    {
+      "id": "melody",
+      "module": "quantize",
+      "params": {
+        "root": 9,
+        "scale": 10,
+        "mode": 1,
+        "base": 57,
+        "length": 0.18
+      }
+    },
+    {
+      "id": "half",
+      "module": "phaseScale",
+      "params": {
+        "num": 1,
+        "den": 2
+      }
+    },
+    {
+      "id": "lsys",
+      "module": "lsystem",
+      "params": {
+        "iterations": 3,
+        "steps": 8
+      }
+    },
+    {
+      "id": "bass",
+      "module": "quantize",
+      "params": {
+        "root": 9,
+        "scale": 10,
+        "mode": 1,
+        "base": 33,
+        "length": 0.3
+      }
+    },
+    {
+      "id": "kickDrum",
+      "module": "drum",
+      "params": {
+        "type": 0,
+        "decay": 0.45,
+        "tone": 0.5,
+        "level": 0.95
+      }
+    },
+    {
+      "id": "snareDrum",
+      "module": "drum",
+      "params": {
+        "type": 1,
+        "decay": 0.18,
+        "tone": 0.55,
+        "level": 0.7
+      }
+    },
+    {
+      "id": "hatDrum",
+      "module": "drum",
+      "params": {
+        "type": 2,
+        "decay": 0.04,
+        "tone": 0.8,
+        "level": 0.45
+      }
+    },
+    {
+      "id": "openDrum",
+      "module": "drum",
+      "params": {
+        "type": 2,
+        "decay": 0.25,
+        "tone": 0.7,
+        "level": 0.35
+      }
+    },
+    {
+      "id": "percDrum",
+      "module": "drum",
+      "params": {
+        "type": 4,
+        "decay": 0.15,
+        "tune": 7,
+        "tone": 0.3,
+        "level": 0.3
+      }
+    },
+    {
+      "id": "leadVoices",
+      "module": "voices",
+      "params": {
+        "voices": 6
+      }
+    },
+    {
+      "id": "leadOsc",
+      "module": "oscillator",
+      "params": {
+        "wave": 2,
+        "level": 0.4
+      }
+    },
+    {
+      "id": "leadEnv",
+      "module": "envelope",
+      "params": {
+        "attack": 0.004,
+        "decay": 0.3,
+        "sustain": 0.3,
+        "release": 0.25
+      }
+    },
+    {
+      "id": "leadFilter",
+      "module": "filter",
+      "params": {
+        "cutoff": 900,
+        "resonance": 0.35,
+        "modDepth": 0.5
+      }
+    },
+    {
+      "id": "leadVca",
+      "module": "vca"
+    },
+    {
+      "id": "leadDelay",
+      "module": "delay",
+      "params": {
+        "time": 0.4018,
+        "feedback": 0.45,
+        "tone": 0.5,
+        "mix": 0.35
+      }
+    },
+    {
+      "id": "bassVoices",
+      "module": "voices",
+      "params": {
+        "voices": 1,
+        "glide": 0.04
+      }
+    },
+    {
+      "id": "bassOsc",
+      "module": "oscillator",
+      "params": {
+        "wave": 3,
+        "pw": 0.35,
+        "level": 0.5
+      }
+    },
+    {
+      "id": "bassEnv",
+      "module": "envelope",
+      "params": {
+        "attack": 0.002,
+        "decay": 0.25,
+        "sustain": 0.4,
+        "release": 0.12
+      }
+    },
+    {
+      "id": "bassFilter",
+      "module": "filter",
+      "params": {
+        "cutoff": 350,
+        "resonance": 0.55,
+        "modDepth": 0.6
+      }
+    },
+    {
+      "id": "bassVca",
+      "module": "vca"
+    },
+    {
+      "id": "mix",
+      "module": "mixer",
+      "params": {
+        "level1": 0.9,
+        "level2": 0.7,
+        "pan2": 0.2,
+        "level3": 0.9,
+        "level4": 0.8,
+        "pan4": -0.3
+      }
+    },
+    {
+      "id": "verb",
+      "module": "reverb",
+      "params": {
+        "mix": 0.18,
+        "decay": 2.2
+      }
+    },
+    {
+      "id": "out",
+      "module": "output",
+      "params": {
+        "volume": 0.7
+      }
+    },
+    {
+      "id": "cad",
+      "module": "cadence",
+      "params": {
+        "multiple": 3,
+        "barLength": 5,
+        "cadence": 4,
+        "pitch": 60,
+        "length": 1.5,
+        "velocity": 0.45
+      }
+    },
+    {
+      "id": "lfoPitch",
+      "module": "aliasLfo",
+      "params": {
+        "pattern": 37,
+        "length": 15
+      }
+    },
+    {
+      "id": "lfoVel",
+      "module": "aliasLfo",
+      "params": {
+        "pattern": 23
+      }
+    },
+    {
+      "id": "cadScale",
+      "module": "quantize",
+      "params": {
+        "root": 9,
+        "scale": 10
+      }
+    },
+    {
+      "id": "cadVoices",
+      "module": "voices",
+      "params": {
+        "voices": 4
+      }
+    },
+    {
+      "id": "cadOsc",
+      "module": "oscillator",
+      "params": {
+        "wave": 1,
+        "level": 0.5
+      }
+    },
+    {
+      "id": "cadEnv",
+      "module": "envelope",
+      "params": {
+        "attack": 0.002,
+        "decay": 0.18,
+        "sustain": 0.15,
+        "release": 0.2
+      }
+    },
+    {
+      "id": "cadVca",
+      "module": "vca",
+      "params": {}
+    },
+    {
+      "id": "noise",
+      "module": "noiseField",
+      "params": {
+        "scale": 0.9,
+        "speed": 0.2,
+        "octaves": 3,
+        "warp": 0.9,
+        "contrast": 1.8,
+        "color": 0.4
+      }
+    },
+    {
+      "id": "fb",
+      "module": "feedback",
+      "params": {
+        "amount": 0.7,
+        "zoom": 0.25,
+        "rotate": 0.12,
+        "mode": 1
+      }
+    },
+    {
+      "id": "col",
+      "module": "color",
+      "params": {
+        "palette": 1,
+        "paletteMix": 0.85,
+        "contrast": 1.3
+      }
+    },
+    {
+      "id": "screen",
+      "module": "screen"
+    },
+    {
+      "id": "env",
+      "module": "envFollower",
+      "params": {
+        "attack": 0.005,
+        "release": 0.25,
+        "gain": 0.6
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from": "transport.bar",
+      "to": "kick.phase"
+    },
+    {
+      "from": "transport.bar",
+      "to": "snare.phase"
+    },
+    {
+      "from": "transport.bar",
+      "to": "hat.phase"
+    },
+    {
+      "from": "hat.trig",
+      "to": "hatFlip.trig"
+    },
+    {
+      "from": "transport.bar",
+      "to": "split.in"
+    },
+    {
+      "from": "split.out",
+      "to": "couple.in"
+    },
+    {
+      "from": "couple.out",
+      "to": "perc.phase"
+    },
+    {
+      "from": "transport.bar",
+      "to": "rhythm.phase"
+    },
+    {
+      "from": "transport.bar",
+      "to": "phrase.phase"
+    },
+    {
+      "from": "rhythm.trig",
+      "to": "and.a"
+    },
+    {
+      "from": "phrase.gate",
+      "to": "and.b"
+    },
+    {
+      "from": "and.trig",
+      "to": "markov.trig"
+    },
+    {
+      "from": "transport.bar",
+      "to": "memory.phase"
+    },
+    {
+      "from": "markov.trig",
+      "to": "memory.in"
+    },
+    {
+      "from": "memory.out",
+      "to": "melody.trig"
+    },
+    {
+      "from": "transport.bar",
+      "to": "half.in"
+    },
+    {
+      "from": "half.out",
+      "to": "lsys.phase"
+    },
+    {
+      "from": "lsys.trig",
+      "to": "bass.trig"
+    },
+    {
+      "from": "couple.sync",
+      "to": "markov.param:a4",
+      "amount": 0.4
+    },
+    {
+      "from": "kick.trig",
+      "to": "kickDrum.trig"
+    },
+    {
+      "from": "snare.trig",
+      "to": "snareDrum.trig"
+    },
+    {
+      "from": "hatFlip.a",
+      "to": "hatDrum.trig"
+    },
+    {
+      "from": "hatFlip.b",
+      "to": "openDrum.trig"
+    },
+    {
+      "from": "perc.trig",
+      "to": "percDrum.trig"
+    },
+    {
+      "from": "melody.note",
+      "to": "leadVoices.note"
+    },
+    {
+      "from": "leadVoices.pitch",
+      "to": "leadOsc.pitch"
+    },
+    {
+      "from": "leadVoices.gate",
+      "to": "leadEnv.gate"
+    },
+    {
+      "from": "leadVoices.vel",
+      "to": "leadEnv.vel"
+    },
+    {
+      "from": "leadOsc.out",
+      "to": "leadFilter.in"
+    },
+    {
+      "from": "leadEnv.out",
+      "to": "leadFilter.mod"
+    },
+    {
+      "from": "leadFilter.out",
+      "to": "leadVca.in"
+    },
+    {
+      "from": "leadEnv.out",
+      "to": "leadVca.cv"
+    },
+    {
+      "from": "leadVca.out",
+      "to": "leadDelay.in"
+    },
+    {
+      "from": "bass.note",
+      "to": "bassVoices.note"
+    },
+    {
+      "from": "bassVoices.pitch",
+      "to": "bassOsc.pitch"
+    },
+    {
+      "from": "bassVoices.gate",
+      "to": "bassEnv.gate"
+    },
+    {
+      "from": "bassVoices.vel",
+      "to": "bassEnv.vel"
+    },
+    {
+      "from": "bassOsc.out",
+      "to": "bassFilter.in"
+    },
+    {
+      "from": "bassEnv.out",
+      "to": "bassFilter.mod"
+    },
+    {
+      "from": "bassFilter.out",
+      "to": "bassVca.in"
+    },
+    {
+      "from": "bassEnv.out",
+      "to": "bassVca.cv"
+    },
+    {
+      "from": "kickDrum.out",
+      "to": "mix.in1"
+    },
+    {
+      "from": "snareDrum.out",
+      "to": "mix.in1"
+    },
+    {
+      "from": "hatDrum.out",
+      "to": "mix.in1"
+    },
+    {
+      "from": "openDrum.out",
+      "to": "mix.in1"
+    },
+    {
+      "from": "percDrum.out",
+      "to": "mix.in1"
+    },
+    {
+      "from": "leadDelay.out",
+      "to": "mix.in2"
+    },
+    {
+      "from": "bassVca.out",
+      "to": "mix.in3"
+    },
+    {
+      "from": "mix.out",
+      "to": "verb.in"
+    },
+    {
+      "from": "verb.out",
+      "to": "out.in"
+    },
+    {
+      "from": "transport.bar",
+      "to": "cad.phase"
+    },
+    {
+      "from": "transport.bar",
+      "to": "lfoPitch.phase"
+    },
+    {
+      "from": "transport.bar",
+      "to": "lfoVel.phase"
+    },
+    {
+      "from": "lfoPitch.out",
+      "to": "cad.param:pitch",
+      "amount": 0.25
+    },
+    {
+      "from": "lfoVel.out",
+      "to": "cad.param:velocity",
+      "amount": 0.5
+    },
+    {
+      "from": "cad.note",
+      "to": "cadScale.trig"
+    },
+    {
+      "from": "cadScale.note",
+      "to": "cadVoices.note"
+    },
+    {
+      "from": "cadVoices.pitch",
+      "to": "cadOsc.pitch"
+    },
+    {
+      "from": "cadVoices.gate",
+      "to": "cadEnv.gate"
+    },
+    {
+      "from": "cadVoices.vel",
+      "to": "cadEnv.vel"
+    },
+    {
+      "from": "cadOsc.out",
+      "to": "cadVca.in"
+    },
+    {
+      "from": "cadEnv.out",
+      "to": "cadVca.cv"
+    },
+    {
+      "from": "cadVca.out",
+      "to": "mix.in4"
+    },
+    {
+      "from": "transport.bar",
+      "to": "noise.phase"
+    },
+    {
+      "from": "noise.out",
+      "to": "fb.in"
+    },
+    {
+      "from": "fb.out",
+      "to": "col.in"
+    },
+    {
+      "from": "col.out",
+      "to": "screen.in"
+    },
+    {
+      "from": "couple.sync",
+      "to": "noise.param:warp",
+      "amount": 0.3
+    },
+    {
+      "from": "lfoPitch.out",
+      "to": "col.param:hue",
+      "amount": 0.35
+    },
+    {
+      "from": "markov.state",
+      "to": "fb.param:rotate",
+      "amount": 0.15
+    },
+    {
+      "from": "mix.out",
+      "to": "env.in"
+    },
+    {
+      "from": "env.out",
+      "to": "col.param:brightness",
+      "amount": 0.3
+    },
+    {
+      "from": "env.out",
+      "to": "fb.param:zoom",
+      "amount": 0.4
+    },
+    {
+      "from": "env.out",
+      "to": "markov.param:mutation",
+      "amount": 0.3
+    }
+  ],
+  "scenes": [
+    {
+      "name": "S1",
+      "nodes": {
+        "transport": {
+          "params": {
+            "bpm": 112,
+            "meter": 4
+          },
+          "seed": 3283228358
+        },
+        "kick": {
+          "params": {
+            "steps": 16,
+            "pulses": 5,
+            "rotate": 0,
+            "mutation": 0,
+            "swing": 0
+          },
+          "seed": 991765648
+        },
+        "snare": {
+          "params": {
+            "rotate": 0,
+            "mutation": 0.05,
+            "swing": 0
+          },
+          "seed": 1806773778,
+          "config": {
+            "gates": [
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0.4
+            ]
+          }
+        },
+        "hat": {
+          "params": {
+            "steps": 16,
+            "pulses": 11,
+            "rotate": 2,
+            "mutation": 0.1,
+            "swing": 0.25
+          },
+          "seed": 85444638
+        },
+        "hatFlip": {
+          "params": {
+            "prob": 0.85
+          },
+          "seed": 1495883653
+        },
+        "split": {
+          "params": {
+            "count": 3,
+            "spread": 0.25
+          },
+          "seed": 4139376616
+        },
+        "couple": {
+          "params": {
+            "coupling": 0,
+            "tether": 0.1
+          },
+          "seed": 3827829997
+        },
+        "perc": {
+          "params": {
+            "steps": 8,
+            "pulses": 3,
+            "rotate": 0,
+            "mutation": 0,
+            "swing": 0
+          },
+          "seed": 1889851093
+        },
+        "rhythm": {
+          "params": {
+            "steps": 16,
+            "pulses": 7,
+            "rotate": 1,
+            "mutation": 0,
+            "swing": 0.25
+          },
+          "seed": 675894459
+        },
+        "phrase": {
+          "params": {
+            "rotate": 0,
+            "mutation": 0,
+            "swing": 0
+          },
+          "seed": 1810439945,
+          "config": {
+            "gates": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0
+            ]
+          }
+        },
+        "and": {
+          "params": {
+            "window": 0.0019999999999999996
+          },
+          "seed": 3077601141
+        },
+        "markov": {
+          "params": {
+            "size": 8,
+            "steps": 8,
+            "mutation": 0.15,
+            "swing": 0,
+            "v0": 0,
+            "v1": 1,
+            "v2": 2,
+            "v3": 3,
+            "v4": 4,
+            "v5": 5,
+            "v6": 6,
+            "v7": 7,
+            "v8": 8,
+            "v9": 9,
+            "v10": 10,
+            "v11": 11,
+            "a0": 0.5,
+            "a1": 0.5,
+            "a2": 0.5,
+            "a3": 0.5,
+            "a4": 0.5,
+            "a5": 0.5,
+            "a6": 0.5,
+            "a7": 0.5,
+            "a8": 0.5,
+            "a9": 0.5,
+            "a10": 0.5,
+            "a11": 0.5,
+            "m0_0": 0.3158,
+            "m0_1": 0.7895,
+            "m0_2": 0.5263,
+            "m0_3": 0.0658,
+            "m0_4": 0.4737,
+            "m0_5": 0.0658,
+            "m0_6": 0.0658,
+            "m0_7": 0.0658,
+            "m0_8": 0.0658,
+            "m0_9": 0.0658,
+            "m0_10": 0.0658,
+            "m0_11": 0.0658,
+            "m1_0": 1,
+            "m1_1": 0.1053,
+            "m1_2": 0.7895,
+            "m1_3": 0.5263,
+            "m1_4": 0.2763,
+            "m1_5": 0.2632,
+            "m1_6": 0.0658,
+            "m1_7": 0.0658,
+            "m1_8": 0.0658,
+            "m1_9": 0.0658,
+            "m1_10": 0.0658,
+            "m1_11": 0.0658,
+            "m2_0": 0.7368,
+            "m2_1": 0.7895,
+            "m2_2": 0.1053,
+            "m2_3": 0.7895,
+            "m2_4": 0.7368,
+            "m2_5": 0.0658,
+            "m2_6": 0.2632,
+            "m2_7": 0.0658,
+            "m2_8": 0.0658,
+            "m2_9": 0.0658,
+            "m2_10": 0.0658,
+            "m2_11": 0.0658,
+            "m3_0": 0.2763,
+            "m3_1": 0.5263,
+            "m3_2": 0.7895,
+            "m3_3": 0.1053,
+            "m3_4": 1,
+            "m3_5": 0.5263,
+            "m3_6": 0.0658,
+            "m3_7": 0.2632,
+            "m3_8": 0.0658,
+            "m3_9": 0.0658,
+            "m3_10": 0.0658,
+            "m3_11": 0.0658,
+            "m4_0": 0.4737,
+            "m4_1": 0.0658,
+            "m4_2": 0.5263,
+            "m4_3": 0.7895,
+            "m4_4": 0.3158,
+            "m4_5": 0.7895,
+            "m4_6": 0.5263,
+            "m4_7": 0.0658,
+            "m4_8": 0.2632,
+            "m4_9": 0.0658,
+            "m4_10": 0.0658,
+            "m4_11": 0.0658,
+            "m5_0": 0.2763,
+            "m5_1": 0.2632,
+            "m5_2": 0.0658,
+            "m5_3": 0.5263,
+            "m5_4": 1,
+            "m5_5": 0.1053,
+            "m5_6": 0.7895,
+            "m5_7": 0.5263,
+            "m5_8": 0.0658,
+            "m5_9": 0.2632,
+            "m5_10": 0.0658,
+            "m5_11": 0.0658,
+            "m6_0": 0.2763,
+            "m6_1": 0.0658,
+            "m6_2": 0.2632,
+            "m6_3": 0.0658,
+            "m6_4": 0.7368,
+            "m6_5": 0.7895,
+            "m6_6": 0.1053,
+            "m6_7": 0.7895,
+            "m6_8": 0.5263,
+            "m6_9": 0.0658,
+            "m6_10": 0.2632,
+            "m6_11": 0.0658,
+            "m7_0": 0.2763,
+            "m7_1": 0.0658,
+            "m7_2": 0.0658,
+            "m7_3": 0.2632,
+            "m7_4": 0.2763,
+            "m7_5": 0.5263,
+            "m7_6": 0.7895,
+            "m7_7": 0.1053,
+            "m7_8": 0.7895,
+            "m7_9": 0.5263,
+            "m7_10": 0.0658,
+            "m7_11": 0.2632,
+            "m8_0": 0.2763,
+            "m8_1": 0.0658,
+            "m8_2": 0.0658,
+            "m8_3": 0.0658,
+            "m8_4": 0.4737,
+            "m8_5": 0.0658,
+            "m8_6": 0.5263,
+            "m8_7": 0.7895,
+            "m8_8": 0.1053,
+            "m8_9": 0.7895,
+            "m8_10": 0.5263,
+            "m8_11": 0.0658,
+            "m9_0": 0.2763,
+            "m9_1": 0.0658,
+            "m9_2": 0.0658,
+            "m9_3": 0.0658,
+            "m9_4": 0.2763,
+            "m9_5": 0.2632,
+            "m9_6": 0.0658,
+            "m9_7": 0.5263,
+            "m9_8": 0.7895,
+            "m9_9": 0.1053,
+            "m9_10": 0.7895,
+            "m9_11": 0.5263,
+            "m10_0": 0.2763,
+            "m10_1": 0.0658,
+            "m10_2": 0.0658,
+            "m10_3": 0.0658,
+            "m10_4": 0.2763,
+            "m10_5": 0.0658,
+            "m10_6": 0.2632,
+            "m10_7": 0.0658,
+            "m10_8": 0.5263,
+            "m10_9": 0.7895,
+            "m10_10": 0.1053,
+            "m10_11": 0.7895,
+            "m11_0": 0.2763,
+            "m11_1": 0.0658,
+            "m11_2": 0.0658,
+            "m11_3": 0.0658,
+            "m11_4": 0.2763,
+            "m11_5": 0.0658,
+            "m11_6": 0.0658,
+            "m11_7": 0.2632,
+            "m11_8": 0.0658,
+            "m11_9": 0.5263,
+            "m11_10": 0.7895,
+            "m11_11": 0.1053
+          },
+          "seed": 311447271
+        },
+        "memory": {
+          "params": {
+            "hold": 0,
+            "length": 2,
+            "mutation": 0.25,
+            "anchor": 0.1,
+            "valueStep": 1,
+            "grid": 16
+          },
+          "seed": 441401616
+        },
+        "melody": {
+          "params": {
+            "root": 9,
+            "scale": 10,
+            "mode": 1,
+            "base": 57,
+            "range": 24,
+            "length": 0.18000000000000005
+          },
+          "seed": 2047084920
+        },
+        "half": {
+          "params": {
+            "num": 1,
+            "den": 2
+          },
+          "seed": 322974545
+        },
+        "lsys": {
+          "params": {
+            "iterations": 3,
+            "steps": 8,
+            "mutation": 0,
+            "swing": 0
+          },
+          "seed": 3136387631,
+          "config": {
+            "axiom": "F",
+            "rules": {
+              "F": "F+F-[-F.F]+F"
+            }
+          }
+        },
+        "bass": {
+          "params": {
+            "root": 9,
+            "scale": 10,
+            "mode": 1,
+            "base": 33,
+            "range": 24,
+            "length": 0.3
+          },
+          "seed": 3581629746
+        },
+        "kickDrum": {
+          "params": {
+            "type": 0,
+            "tune": 0,
+            "decay": 0.45,
+            "tone": 0.5,
+            "level": 0.95
+          },
+          "seed": 1336816648
+        },
+        "snareDrum": {
+          "params": {
+            "type": 1,
+            "tune": 0,
+            "decay": 0.18000000000000008,
+            "tone": 0.55,
+            "level": 0.7
+          },
+          "seed": 184399730
+        },
+        "hatDrum": {
+          "params": {
+            "type": 2,
+            "tune": 0,
+            "decay": 0.04,
+            "tone": 0.8,
+            "level": 0.45
+          },
+          "seed": 3362502306
+        },
+        "openDrum": {
+          "params": {
+            "type": 2,
+            "tune": 0,
+            "decay": 0.25000000000000006,
+            "tone": 0.7,
+            "level": 0.35
+          },
+          "seed": 3964036743
+        },
+        "percDrum": {
+          "params": {
+            "type": 4,
+            "tune": 7,
+            "decay": 0.15000000000000002,
+            "tone": 0.3,
+            "level": 0.3
+          },
+          "seed": 1788972344
+        },
+        "leadVoices": {
+          "params": {
+            "voices": 6,
+            "glide": 0,
+            "length": 0.2,
+            "pitch": 60
+          },
+          "seed": 3276284673
+        },
+        "leadOsc": {
+          "params": {
+            "wave": 2,
+            "pitch": 48,
+            "transpose": 0,
+            "fine": 0,
+            "pw": 0.5000000000000001,
+            "pm": 0,
+            "level": 0.4
+          },
+          "seed": 3055881356
+        },
+        "leadEnv": {
+          "params": {
+            "attack": 0.003999999999999999,
+            "decay": 0.2999999999999998,
+            "sustain": 0.3,
+            "release": 0.2499999999999997,
+            "velocity": 1
+          },
+          "seed": 3521168726
+        },
+        "leadFilter": {
+          "params": {
+            "mode": 0,
+            "cutoff": 900,
+            "resonance": 0.35,
+            "modDepth": 0.5
+          },
+          "seed": 1969587523
+        },
+        "leadVca": {
+          "params": {
+            "gain": 1
+          },
+          "seed": 2639607979
+        },
+        "leadDelay": {
+          "params": {
+            "time": 0.40180000000000016,
+            "feedback": 0.45,
+            "tone": 0.5,
+            "mix": 0.35
+          },
+          "seed": 595540598
+        },
+        "bassVoices": {
+          "params": {
+            "voices": 1,
+            "glide": 0.04,
+            "length": 0.2,
+            "pitch": 60
+          },
+          "seed": 1850824394
+        },
+        "bassOsc": {
+          "params": {
+            "wave": 3,
+            "pitch": 48,
+            "transpose": 0,
+            "fine": 0,
+            "pw": 0.35,
+            "pm": 0,
+            "level": 0.5
+          },
+          "seed": 2608170846
+        },
+        "bassEnv": {
+          "params": {
+            "attack": 0.0019999999999999996,
+            "decay": 0.2499999999999997,
+            "sustain": 0.4,
+            "release": 0.11999999999999995,
+            "velocity": 1
+          },
+          "seed": 1935723985
+        },
+        "bassFilter": {
+          "params": {
+            "mode": 0,
+            "cutoff": 350.0000000000001,
+            "resonance": 0.55,
+            "modDepth": 0.6000000000000001
+          },
+          "seed": 2633470431
+        },
+        "bassVca": {
+          "params": {
+            "gain": 1
+          },
+          "seed": 1198205817
+        },
+        "mix": {
+          "params": {
+            "level1": 0.8999999999999999,
+            "pan1": 0,
+            "level2": 0.7,
+            "pan2": 0.19999999999999996,
+            "level3": 0.8999999999999999,
+            "pan3": 0,
+            "level4": 0.8,
+            "pan4": -0.30000000000000004,
+            "master": 1
+          },
+          "seed": 3633478906
+        },
+        "verb": {
+          "params": {
+            "size": 0.6,
+            "decay": 2.1999999999999993,
+            "damping": 0.4,
+            "mix": 0.18
+          },
+          "seed": 1750451817
+        },
+        "out": {
+          "params": {
+            "volume": 0.7
+          },
+          "seed": 4085421498
+        },
+        "cad": {
+          "params": {
+            "multiple": 3,
+            "barLength": 5,
+            "cadence": 4,
+            "offset": 0,
+            "pitch": 60,
+            "length": 1.5,
+            "velocity": 0.45,
+            "division": 16,
+            "mutation": 0,
+            "swing": 0
+          },
+          "seed": 1326985201
+        },
+        "lfoPitch": {
+          "params": {
+            "pattern": 37,
+            "length": 15,
+            "division": 16,
+            "polarity": 0
+          },
+          "seed": 3564900198
+        },
+        "lfoVel": {
+          "params": {
+            "pattern": 23,
+            "length": 0,
+            "division": 16,
+            "polarity": 0
+          },
+          "seed": 3549577960
+        },
+        "cadScale": {
+          "params": {
+            "root": 9,
+            "scale": 10,
+            "mode": 1,
+            "base": 48,
+            "range": 24,
+            "length": 0.20000000000000007
+          },
+          "seed": 3773953456
+        },
+        "cadVoices": {
+          "params": {
+            "voices": 4,
+            "glide": 0,
+            "length": 0.2,
+            "pitch": 60
+          },
+          "seed": 3116169660
+        },
+        "cadOsc": {
+          "params": {
+            "wave": 1,
+            "pitch": 48,
+            "transpose": 0,
+            "fine": 0,
+            "pw": 0.5000000000000001,
+            "pm": 0,
+            "level": 0.5
+          },
+          "seed": 516446451
+        },
+        "cadEnv": {
+          "params": {
+            "attack": 0.0019999999999999996,
+            "decay": 0.17999999999999997,
+            "sustain": 0.15,
+            "release": 0.19999999999999984,
+            "velocity": 1
+          },
+          "seed": 3562612984
+        },
+        "cadVca": {
+          "params": {
+            "gain": 1
+          },
+          "seed": 120971622
+        },
+        "noise": {
+          "params": {
+            "scale": 0.8999999999999999,
+            "speed": 0.2,
+            "octaves": 3,
+            "warp": 0.8999999999999999,
+            "contrast": 1.8000000000000005,
+            "color": 0.4
+          },
+          "seed": 604177987
+        },
+        "fb": {
+          "params": {
+            "amount": 0.7,
+            "zoom": 0.25,
+            "rotate": 0.1200000000000001,
+            "shiftX": 0,
+            "shiftY": 0,
+            "mode": 1
+          },
+          "seed": 4216448516
+        },
+        "col": {
+          "params": {
+            "palette": 1,
+            "paletteMix": 0.85,
+            "hue": 0,
+            "saturation": 1,
+            "contrast": 1.3,
+            "brightness": 0,
+            "posterize": 0
+          },
+          "seed": 2625578891
+        },
+        "screen": {
+          "params": {},
+          "seed": 424556696
+        },
+        "env": {
+          "params": {
+            "attack": 0.005,
+            "release": 0.24999999999999997,
+            "gain": 0.6000000000000001,
+            "mode": 0
+          },
+          "seed": 514111397
+        }
+      }
+    },
+    {
+      "name": "S2",
+      "nodes": {
+        "transport": {
+          "params": {
+            "bpm": 118,
+            "meter": 4
+          },
+          "seed": 3283228358
+        },
+        "kick": {
+          "params": {
+            "steps": 16,
+            "pulses": 7,
+            "rotate": 0,
+            "mutation": 0,
+            "swing": 0
+          },
+          "seed": 991765648
+        },
+        "snare": {
+          "params": {
+            "rotate": 0,
+            "mutation": 0.05,
+            "swing": 0
+          },
+          "seed": 1806773778,
+          "config": {
+            "gates": [
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0.4
+            ]
+          }
+        },
+        "hat": {
+          "params": {
+            "steps": 16,
+            "pulses": 13,
+            "rotate": 2,
+            "mutation": 0.25,
+            "swing": 0.25
+          },
+          "seed": 31337
+        },
+        "hatFlip": {
+          "params": {
+            "prob": 0.85
+          },
+          "seed": 1495883653
+        },
+        "split": {
+          "params": {
+            "count": 3,
+            "spread": 0.25
+          },
+          "seed": 4139376616
+        },
+        "couple": {
+          "params": {
+            "coupling": 0.6,
+            "tether": 0.1
+          },
+          "seed": 3827829997
+        },
+        "perc": {
+          "params": {
+            "steps": 8,
+            "pulses": 5,
+            "rotate": 0,
+            "mutation": 0,
+            "swing": 0
+          },
+          "seed": 1889851093
+        },
+        "rhythm": {
+          "params": {
+            "steps": 16,
+            "pulses": 11,
+            "rotate": 1,
+            "mutation": 0,
+            "swing": 0.25
+          },
+          "seed": 675894459
+        },
+        "phrase": {
+          "params": {
+            "rotate": 0,
+            "mutation": 0,
+            "swing": 0
+          },
+          "seed": 1810439945,
+          "config": {
+            "gates": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0
+            ]
+          }
+        },
+        "and": {
+          "params": {
+            "window": 0.0019999999999999996
+          },
+          "seed": 3077601141
+        },
+        "markov": {
+          "params": {
+            "size": 8,
+            "steps": 8,
+            "mutation": 0.35,
+            "swing": 0,
+            "v0": 0,
+            "v1": 1,
+            "v2": 2,
+            "v3": 3,
+            "v4": 4,
+            "v5": 5,
+            "v6": 6,
+            "v7": 7,
+            "v8": 8,
+            "v9": 9,
+            "v10": 10,
+            "v11": 11,
+            "a0": 0.5,
+            "a1": 0.5,
+            "a2": 0.5,
+            "a3": 0.5,
+            "a4": 0.5,
+            "a5": 0.5,
+            "a6": 0.5,
+            "a7": 0.5,
+            "a8": 0.5,
+            "a9": 0.5,
+            "a10": 0.5,
+            "a11": 0.5,
+            "m0_0": 0.3158,
+            "m0_1": 0.7895,
+            "m0_2": 0.5263,
+            "m0_3": 0.0658,
+            "m0_4": 0.4737,
+            "m0_5": 0.0658,
+            "m0_6": 0.0658,
+            "m0_7": 0.0658,
+            "m0_8": 0.0658,
+            "m0_9": 0.0658,
+            "m0_10": 0.0658,
+            "m0_11": 0.0658,
+            "m1_0": 1,
+            "m1_1": 0.1053,
+            "m1_2": 0.7895,
+            "m1_3": 0.5263,
+            "m1_4": 0.2763,
+            "m1_5": 0.2632,
+            "m1_6": 0.0658,
+            "m1_7": 0.0658,
+            "m1_8": 0.0658,
+            "m1_9": 0.0658,
+            "m1_10": 0.0658,
+            "m1_11": 0.0658,
+            "m2_0": 0.7368,
+            "m2_1": 0.7895,
+            "m2_2": 0.1053,
+            "m2_3": 0.7895,
+            "m2_4": 0.7368,
+            "m2_5": 0.0658,
+            "m2_6": 0.2632,
+            "m2_7": 0.0658,
+            "m2_8": 0.0658,
+            "m2_9": 0.0658,
+            "m2_10": 0.0658,
+            "m2_11": 0.0658,
+            "m3_0": 0.2763,
+            "m3_1": 0.5263,
+            "m3_2": 0.7895,
+            "m3_3": 0.1053,
+            "m3_4": 1,
+            "m3_5": 0.5263,
+            "m3_6": 0.0658,
+            "m3_7": 0.2632,
+            "m3_8": 0.0658,
+            "m3_9": 0.0658,
+            "m3_10": 0.0658,
+            "m3_11": 0.0658,
+            "m4_0": 0.4737,
+            "m4_1": 0.0658,
+            "m4_2": 0.5263,
+            "m4_3": 0.7895,
+            "m4_4": 0.3158,
+            "m4_5": 0.7895,
+            "m4_6": 0.5263,
+            "m4_7": 0.0658,
+            "m4_8": 0.2632,
+            "m4_9": 0.0658,
+            "m4_10": 0.0658,
+            "m4_11": 0.0658,
+            "m5_0": 0.2763,
+            "m5_1": 0.2632,
+            "m5_2": 0.0658,
+            "m5_3": 0.5263,
+            "m5_4": 1,
+            "m5_5": 0.1053,
+            "m5_6": 0.7895,
+            "m5_7": 0.5263,
+            "m5_8": 0.0658,
+            "m5_9": 0.2632,
+            "m5_10": 0.0658,
+            "m5_11": 0.0658,
+            "m6_0": 0.2763,
+            "m6_1": 0.0658,
+            "m6_2": 0.2632,
+            "m6_3": 0.0658,
+            "m6_4": 0.7368,
+            "m6_5": 0.7895,
+            "m6_6": 0.1053,
+            "m6_7": 0.7895,
+            "m6_8": 0.5263,
+            "m6_9": 0.0658,
+            "m6_10": 0.2632,
+            "m6_11": 0.0658,
+            "m7_0": 0.2763,
+            "m7_1": 0.0658,
+            "m7_2": 0.0658,
+            "m7_3": 0.2632,
+            "m7_4": 0.2763,
+            "m7_5": 0.5263,
+            "m7_6": 0.7895,
+            "m7_7": 0.1053,
+            "m7_8": 0.7895,
+            "m7_9": 0.5263,
+            "m7_10": 0.0658,
+            "m7_11": 0.2632,
+            "m8_0": 0.2763,
+            "m8_1": 0.0658,
+            "m8_2": 0.0658,
+            "m8_3": 0.0658,
+            "m8_4": 0.4737,
+            "m8_5": 0.0658,
+            "m8_6": 0.5263,
+            "m8_7": 0.7895,
+            "m8_8": 0.1053,
+            "m8_9": 0.7895,
+            "m8_10": 0.5263,
+            "m8_11": 0.0658,
+            "m9_0": 0.2763,
+            "m9_1": 0.0658,
+            "m9_2": 0.0658,
+            "m9_3": 0.0658,
+            "m9_4": 0.2763,
+            "m9_5": 0.2632,
+            "m9_6": 0.0658,
+            "m9_7": 0.5263,
+            "m9_8": 0.7895,
+            "m9_9": 0.1053,
+            "m9_10": 0.7895,
+            "m9_11": 0.5263,
+            "m10_0": 0.2763,
+            "m10_1": 0.0658,
+            "m10_2": 0.0658,
+            "m10_3": 0.0658,
+            "m10_4": 0.2763,
+            "m10_5": 0.0658,
+            "m10_6": 0.2632,
+            "m10_7": 0.0658,
+            "m10_8": 0.5263,
+            "m10_9": 0.7895,
+            "m10_10": 0.1053,
+            "m10_11": 0.7895,
+            "m11_0": 0.2763,
+            "m11_1": 0.0658,
+            "m11_2": 0.0658,
+            "m11_3": 0.0658,
+            "m11_4": 0.2763,
+            "m11_5": 0.0658,
+            "m11_6": 0.0658,
+            "m11_7": 0.2632,
+            "m11_8": 0.0658,
+            "m11_9": 0.5263,
+            "m11_10": 0.7895,
+            "m11_11": 0.1053
+          },
+          "seed": 424242
+        },
+        "memory": {
+          "params": {
+            "hold": 0,
+            "length": 2,
+            "mutation": 0.45,
+            "anchor": 0.1,
+            "valueStep": 1,
+            "grid": 16
+          },
+          "seed": 777
+        },
+        "melody": {
+          "params": {
+            "root": 9,
+            "scale": 10,
+            "mode": 1,
+            "base": 57,
+            "range": 24,
+            "length": 0.18000000000000005
+          },
+          "seed": 2047084920
+        },
+        "half": {
+          "params": {
+            "num": 1,
+            "den": 2
+          },
+          "seed": 322974545
+        },
+        "lsys": {
+          "params": {
+            "iterations": 4,
+            "steps": 8,
+            "mutation": 0,
+            "swing": 0
+          },
+          "seed": 3136387631,
+          "config": {
+            "axiom": "F",
+            "rules": {
+              "F": "F+F-[-F.F]+F"
+            }
+          }
+        },
+        "bass": {
+          "params": {
+            "root": 9,
+            "scale": 10,
+            "mode": 1,
+            "base": 33,
+            "range": 24,
+            "length": 0.3
+          },
+          "seed": 3581629746
+        },
+        "kickDrum": {
+          "params": {
+            "type": 0,
+            "tune": 0,
+            "decay": 0.45,
+            "tone": 0.5,
+            "level": 0.95
+          },
+          "seed": 1336816648
+        },
+        "snareDrum": {
+          "params": {
+            "type": 1,
+            "tune": 0,
+            "decay": 0.18000000000000008,
+            "tone": 0.55,
+            "level": 0.7
+          },
+          "seed": 184399730
+        },
+        "hatDrum": {
+          "params": {
+            "type": 2,
+            "tune": 0,
+            "decay": 0.04,
+            "tone": 0.8,
+            "level": 0.45
+          },
+          "seed": 3362502306
+        },
+        "openDrum": {
+          "params": {
+            "type": 2,
+            "tune": 0,
+            "decay": 0.25000000000000006,
+            "tone": 0.7,
+            "level": 0.35
+          },
+          "seed": 3964036743
+        },
+        "percDrum": {
+          "params": {
+            "type": 4,
+            "tune": 7,
+            "decay": 0.15000000000000002,
+            "tone": 0.3,
+            "level": 0.3
+          },
+          "seed": 1788972344
+        },
+        "leadVoices": {
+          "params": {
+            "voices": 6,
+            "glide": 0,
+            "length": 0.2,
+            "pitch": 60
+          },
+          "seed": 3276284673
+        },
+        "leadOsc": {
+          "params": {
+            "wave": 2,
+            "pitch": 48,
+            "transpose": 0,
+            "fine": 0,
+            "pw": 0.5000000000000001,
+            "pm": 0,
+            "level": 0.4
+          },
+          "seed": 3055881356
+        },
+        "leadEnv": {
+          "params": {
+            "attack": 0.003999999999999999,
+            "decay": 0.2999999999999998,
+            "sustain": 0.3,
+            "release": 0.2499999999999997,
+            "velocity": 1
+          },
+          "seed": 3521168726
+        },
+        "leadFilter": {
+          "params": {
+            "mode": 0,
+            "cutoff": 2399.9999999999995,
+            "resonance": 0.35,
+            "modDepth": 0.5
+          },
+          "seed": 1969587523
+        },
+        "leadVca": {
+          "params": {
+            "gain": 1
+          },
+          "seed": 2639607979
+        },
+        "leadDelay": {
+          "params": {
+            "time": 0.40180000000000016,
+            "feedback": 0.6,
+            "tone": 0.5,
+            "mix": 0.35
+          },
+          "seed": 595540598
+        },
+        "bassVoices": {
+          "params": {
+            "voices": 1,
+            "glide": 0.04,
+            "length": 0.2,
+            "pitch": 60
+          },
+          "seed": 1850824394
+        },
+        "bassOsc": {
+          "params": {
+            "wave": 3,
+            "pitch": 48,
+            "transpose": 0,
+            "fine": 0,
+            "pw": 0.35,
+            "pm": 0,
+            "level": 0.5
+          },
+          "seed": 2608170846
+        },
+        "bassEnv": {
+          "params": {
+            "attack": 0.0019999999999999996,
+            "decay": 0.2499999999999997,
+            "sustain": 0.4,
+            "release": 0.11999999999999995,
+            "velocity": 1
+          },
+          "seed": 1935723985
+        },
+        "bassFilter": {
+          "params": {
+            "mode": 0,
+            "cutoff": 700.0000000000002,
+            "resonance": 0.55,
+            "modDepth": 0.6000000000000001
+          },
+          "seed": 2633470431
+        },
+        "bassVca": {
+          "params": {
+            "gain": 1
+          },
+          "seed": 1198205817
+        },
+        "mix": {
+          "params": {
+            "level1": 0.8999999999999999,
+            "pan1": 0,
+            "level2": 0.7,
+            "pan2": 0.19999999999999996,
+            "level3": 0.8999999999999999,
+            "pan3": 0,
+            "level4": 0.8,
+            "pan4": -0.30000000000000004,
+            "master": 1
+          },
+          "seed": 3633478906
+        },
+        "verb": {
+          "params": {
+            "size": 0.6,
+            "decay": 2.1999999999999993,
+            "damping": 0.4,
+            "mix": 0.3
+          },
+          "seed": 1750451817
+        },
+        "out": {
+          "params": {
+            "volume": 0.7
+          },
+          "seed": 4085421498
+        },
+        "cad": {
+          "params": {
+            "multiple": 3,
+            "barLength": 5,
+            "cadence": 3,
+            "offset": 0,
+            "pitch": 60,
+            "length": 1.5,
+            "velocity": 0.45,
+            "division": 16,
+            "mutation": 0,
+            "swing": 0
+          },
+          "seed": 1326985201
+        },
+        "lfoPitch": {
+          "params": {
+            "pattern": 61,
+            "length": 15,
+            "division": 16,
+            "polarity": 0
+          },
+          "seed": 3564900198
+        },
+        "lfoVel": {
+          "params": {
+            "pattern": 23,
+            "length": 0,
+            "division": 16,
+            "polarity": 0
+          },
+          "seed": 3549577960
+        },
+        "cadScale": {
+          "params": {
+            "root": 9,
+            "scale": 10,
+            "mode": 1,
+            "base": 48,
+            "range": 24,
+            "length": 0.20000000000000007
+          },
+          "seed": 3773953456
+        },
+        "cadVoices": {
+          "params": {
+            "voices": 4,
+            "glide": 0,
+            "length": 0.2,
+            "pitch": 60
+          },
+          "seed": 3116169660
+        },
+        "cadOsc": {
+          "params": {
+            "wave": 1,
+            "pitch": 48,
+            "transpose": 0,
+            "fine": 0,
+            "pw": 0.5000000000000001,
+            "pm": 0,
+            "level": 0.5
+          },
+          "seed": 516446451
+        },
+        "cadEnv": {
+          "params": {
+            "attack": 0.0019999999999999996,
+            "decay": 0.17999999999999997,
+            "sustain": 0.15,
+            "release": 0.19999999999999984,
+            "velocity": 1
+          },
+          "seed": 3562612984
+        },
+        "cadVca": {
+          "params": {
+            "gain": 1
+          },
+          "seed": 120971622
+        },
+        "noise": {
+          "params": {
+            "scale": 1.5999999999999996,
+            "speed": 0.5,
+            "octaves": 3,
+            "warp": 0.8999999999999999,
+            "contrast": 1.8000000000000005,
+            "color": 0.4
+          },
+          "seed": 604177987
+        },
+        "fb": {
+          "params": {
+            "amount": 0.7,
+            "zoom": 0.25,
+            "rotate": -0.30000000000000004,
+            "shiftX": 0,
+            "shiftY": 0,
+            "mode": 1
+          },
+          "seed": 4216448516
+        },
+        "col": {
+          "params": {
+            "palette": 3,
+            "paletteMix": 0.85,
+            "hue": 0,
+            "saturation": 1,
+            "contrast": 1.3,
+            "brightness": 0,
+            "posterize": 0
+          },
+          "seed": 2625578891
+        },
+        "screen": {
+          "params": {},
+          "seed": 424556696
+        },
+        "env": {
+          "params": {
+            "attack": 0.005,
+            "release": 0.24999999999999997,
+            "gain": 0.6000000000000001,
+            "mode": 0
+          },
+          "seed": 514111397
+        }
+      }
+    }
+  ]
+}
