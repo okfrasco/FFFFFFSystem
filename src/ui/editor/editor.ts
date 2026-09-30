@@ -33,6 +33,7 @@ import { CableLayer, connKey, type Point } from './cables';
 import { createNodeView, portColor, type NodeView } from './nodeView';
 import { EDITOR_CSS } from './style';
 import { VisualRenderer } from '../../visual/renderer';
+import { LiveMonitor } from '../live';
 import { mountScenes } from './scenes';
 import { catalog, onCatalogChange } from '../catalog';
 import { onUiChange } from './moduleUi';
@@ -117,10 +118,10 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
     (key) => host.analysisTimeline(key),
   );
   renderer.onError = (msg) => status(msg, true);
+  // il renderer resta acceso anche a pannello chiuso: le miniature dei nodi servono sempre
+  renderer.start();
   const toggleViewer = (show = viewer.classList.contains('hidden')) => {
     viewer.classList.toggle('hidden', !show);
-    if (show) renderer.start();
-    else renderer.stop();
   };
   viewer.addEventListener('pointerdown', (e) => e.stopPropagation());
   viewer.addEventListener('wheel', (e) => e.stopPropagation());
@@ -257,8 +258,10 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
     render();
   };
 
+  const live = new LiveMonitor(engine, host, () => renderer.thumbnails);
   const api: EditorApi = {
     engine,
+    live,
     now: () => host.now(),
     setParamNormalized(nodeId, paramId, n) {
       engine.graph.node(nodeId).params.setBaseNormalized(paramId, n);
@@ -641,9 +644,20 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
 
   // ─── ciclo di disegno ─────────────────────────────────────────────────
   let lastSize = '';
+  let viewFrame = 0;
   const frame = () => {
     const now = host.now();
     for (const v of views.values()) v.update(now);
+    // view animate: 30 al secondo, solo per i nodi visibili, all'istante che si sente
+    if (++viewFrame % 2 === 0) {
+      const shown = host.displayTime();
+      const area = canvas.getBoundingClientRect();
+      for (const v of views.values()) {
+        const r = v.el.getBoundingClientRect();
+        if (r.right < area.left || r.left > area.right || r.bottom < area.top || r.top > area.bottom) continue;
+        v.drawView(shown);
+      }
+    }
     // lampeggi programmati al loro tempo
     flashes.sort((a, b) => a.t - b.t);
     while (flashes.length && flashes[0]!.t <= now) {

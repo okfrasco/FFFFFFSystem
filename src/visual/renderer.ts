@@ -9,7 +9,7 @@ import type { Engine } from '../core/engine';
 import type { Registry } from '../core/registry';
 import type { Timeline } from '../core/timeline';
 import { FrameGraph } from './frameGraph';
-import { Pass } from './gl';
+import { Pass, createTarget, type Target } from './gl';
 
 export class VisualRenderer {
   readonly gl: WebGL2RenderingContext | null;
@@ -17,6 +17,12 @@ export class VisualRenderer {
   private blit: Pass | null = null;
   private last = -1;
   private raf = 0;
+  /** Miniature delle uscite texture ("nodo.porta"), per le view dei nodi. */
+  readonly thumbnails = new Map<string, ImageData>();
+  static readonly THUMB = { width: 160, height: 90 };
+  private thumbTarget: Target | null = null;
+  private thumbPixels = new Uint8Array(0);
+  private frameCount = 0;
   /** Scala del rendering rispetto ai pixel del canvas (meno = più veloce). */
   scale = 0.75;
   private errorHandler: (message: string) => void = () => {};
@@ -48,8 +54,9 @@ export class VisualRenderer {
     const graph = this.frames?.graph;
     if (!gl || !graph) return;
     const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const w = Math.max(1, Math.round(this.canvas.clientWidth * dpr * this.scale));
-    const h = Math.max(1, Math.round(this.canvas.clientHeight * dpr * this.scale));
+    // a pannello chiuso il canvas misura 0: si calcola comunque, per le miniature
+    const w = Math.max(1, Math.round((this.canvas.clientWidth || 480) * dpr * this.scale));
+    const h = Math.max(1, Math.round((this.canvas.clientHeight || 270) * dpr * this.scale));
     if (this.canvas.width !== w || this.canvas.height !== h) {
       this.canvas.width = w;
       this.canvas.height = h;
@@ -64,6 +71,7 @@ export class VisualRenderer {
       this.frames!.graph = null;
       return;
     }
+    if (++this.frameCount % 2 === 0) this.captureThumbnails(gl, graph);
     const screen = graph.order.find((n) => n.def.manifest.id === 'screen');
     const tex = screen?.inputs.texture('in')?.handle as WebGLTexture | null | undefined;
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -72,6 +80,29 @@ export class VisualRenderer {
       gl.viewport(0, 0, w, h);
       gl.clearColor(0, 0, 0, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
+    }
+  }
+
+  /** Riduce ogni uscita texture a una miniatura leggibile dalla CPU (a frame alterni). */
+  private captureThumbnails(gl: WebGL2RenderingContext, graph: NonNullable<FrameGraph['graph']>): void {
+    const { width, height } = VisualRenderer.THUMB;
+    this.thumbTarget ??= createTarget(gl, width, height, false);
+    if (this.thumbPixels.length !== width * height * 4) this.thumbPixels = new Uint8Array(width * height * 4);
+    for (const node of graph.order) {
+      for (const port of node.def.manifest.outputs) {
+        if (port.type !== 'texture') continue;
+        const buf = node.outputs.buffers.get(port.id);
+        const tex = buf?.type === 'texture' ? (buf.handle as WebGLTexture | null) : null;
+        if (!tex) continue;
+        this.blit!.draw(this.thumbTarget, {}, { uIn: tex });
+        gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, this.thumbPixels);
+        // le righe di WebGL partono dal basso: si capovolgono
+        const img = new ImageData(width, height);
+        for (let y = 0; y < height; y++) {
+          img.data.set(this.thumbPixels.subarray((height - 1 - y) * width * 4, (height - y) * width * 4), y * width * 4);
+        }
+        this.thumbnails.set(`${node.id}.${port.id}`, img);
+      }
     }
   }
 

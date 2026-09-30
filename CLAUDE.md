@@ -32,6 +32,8 @@ tests/         test del core, helper di simulazione, patch di esempio
 scripts/       nuovo.mjs: scheletro di un modulo
 ```
 
+Guida pratica per scrivere un modulo (cartella, rate, view, widget, test, modifica dal vivo): `src/modules/LEGGIMI.md`.
+
 ## Contratto del modulo
 
 Ogni nodo esporta un manifest e una factory. Forma di riferimento (quella completa e aggiornata è in `src/core/types.ts` e in SPEC.md):
@@ -96,4 +98,12 @@ Decisioni prese con l'utente:
 - editor a nodi senza librerie;
 - la matrice di Markov è fatta di parametri (modulabili e morphabili).
 
-Prossimi passi possibili: i moduli come file che si registrano da soli (una raccolta di idee di synth, visual e generatori), altri nodi dal catalogo di SPEC.md, MIDI In/Out, il porting verso il plugin.
+Dopo il v0 (M9):
+- i moduli sono cartelle che si registrano da sole, con lo scheletro `npm run nuovo`;
+- la modifica dal vivo di moduli, widget e view (i moduli audio ricaricano la pagina);
+- ogni nodo ha una grafica animata: view dedicate per 18 moduli, generica per gli altri;
+- oscilloscopi dal worklet e miniature dei visual.
+
+L'utente vuole un sistema "il più visual possibile" e ora si concentra sul fare tanti moduli (synth, effetti, generatori, visual): ogni modulo nuovo va fatto con una view che mostri cosa fa.
+
+Prossimi passi possibili: nuovi moduli, altri nodi dal catalogo di SPEC.md, MIDI In/Out, il porting verso il plugin.

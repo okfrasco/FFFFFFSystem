@@ -121,10 +121,10 @@ export class Engine {
     }
   }
 
-  tap(node: string, port: string, capacity = 256): Timeline {
-    const existing = this.taps.find((t) => t.node === node && t.port === port);
+  tap(node: string, port: string, capacity = 256, voices = 1): Timeline {
+    const existing = this.taps.find((t) => t.node === node && t.port === port && t.timeline.voices === voices);
     if (existing) return existing.timeline;
-    const timeline = new Timeline(capacity);
+    const timeline = new Timeline(capacity, voices);
     this.current.attachTap(node, port, timeline);
     this.taps.push({ node, port, timeline });
     return timeline;

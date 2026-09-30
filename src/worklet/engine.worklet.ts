@@ -10,7 +10,7 @@
  */
 
 import { workletRegistry } from '../modules/audioCatalog';
-import { analysisOutputs, collectAnalysis, type AnalysisPoint } from '../core/audioAnalysis';
+import { analysisOutputs, collectAnalysis, collectScopes, scopeOutputs, type AnalysisPoint } from '../core/audioAnalysis';
 import { Graph, GraphError } from '../core/graph';
 import type { Patch } from '../core/types';
 import { clearBridges, pushBridgePacket, type BridgePacket } from '../modules/_internal/bridge';
@@ -27,6 +27,7 @@ type Message =
 class EngineProcessor extends AudioWorkletProcessor {
   private graph: Graph | null = null;
   private analysisKeys: string[] = [];
+  private scopeKeys: string[] = [];
   private analysis: AnalysisPoint[] = [];
   private blocks = 0;
 
@@ -45,6 +46,7 @@ class EngineProcessor extends AudioWorkletProcessor {
             audio: { sampleRate, frames: FRAMES },
           });
           this.analysisKeys = analysisOutputs(this.graph);
+          this.scopeKeys = scopeOutputs(this.graph);
         } catch (err) {
           this.port.postMessage({ type: 'error', message: err instanceof GraphError ? err.errors.join(' · ') : String(err) });
         }
@@ -73,13 +75,19 @@ class EngineProcessor extends AudioWorkletProcessor {
       this.graph = null;
       return true;
     }
+    this.blocks++;
     // analisi verso il main, a gruppi di 4 blocchi (~10 ms)
     if (this.analysisKeys.length) {
       collectAnalysis(this.graph, this.analysisKeys, t0 + FRAMES / sampleRate, this.analysis);
-      if (++this.blocks % 4 === 0) {
+      if (this.blocks % 4 === 0) {
         this.port.postMessage({ type: 'analysis', points: this.analysis });
         this.analysis = [];
       }
+    }
+    // oscilloscopi per l'editor, ~60 volte al secondo
+    if (this.blocks % 6 === 0 && this.scopeKeys.length) {
+      const scopes = collectScopes(this.graph, this.scopeKeys);
+      this.port.postMessage({ type: 'scopes', scopes }, scopes.map((sc) => sc.samples.buffer));
     }
     for (const node of this.graph.order) {
       if (node.def.manifest.id !== 'output') continue;

@@ -31,10 +31,10 @@ function supportsFloat(gl: WebGL2RenderingContext): boolean {
   return ok;
 }
 
-export function createTarget(gl: WebGL2RenderingContext, width: number, height: number): Target {
+export function createTarget(gl: WebGL2RenderingContext, width: number, height: number, float = true): Target {
   const tex = gl.createTexture()!;
   gl.bindTexture(gl.TEXTURE_2D, tex);
-  if (supportsFloat(gl)) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, width, height, 0, gl.RGBA, gl.HALF_FLOAT, null);
+  if (float && supportsFloat(gl)) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, width, height, 0, gl.RGBA, gl.HALF_FLOAT, null);
   else gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);

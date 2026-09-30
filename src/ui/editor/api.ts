@@ -1,9 +1,12 @@
 /** Ciò che viste dei nodi e widget possono chiedere all'editor. */
 
 import type { Engine } from '../../core/engine';
+import type { LiveMonitor } from '../live';
 
 export interface EditorApi {
   readonly engine: Engine;
+  /** Dati dal vivo per le view dei nodi. */
+  readonly live: LiveMonitor;
   /** Tempo attuale sul clock audio (0 se fermo). */
   now(): number;
   /** Cambio di parametro in corso (normalizzato), senza annulla. */

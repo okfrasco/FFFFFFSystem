@@ -8,6 +8,7 @@
  */
 
 import type { EditorApi, Widget } from './api';
+import type { ViewFactory } from './viewKit';
 
 export type WidgetFactory = (api: EditorApi, nodeId: string) => Widget;
 
@@ -24,17 +25,24 @@ export function byModuleId<T>(files: Record<string, T>): Map<string, T> {
 
 interface UiTables {
   widgets: Map<string, WidgetFactory>;
+  views: Map<string, ViewFactory>;
   listeners: Set<() => void>;
 }
 
 const shared = (globalThis as { __ffffffModuleUi?: UiTables }).__ffffffModuleUi ??= {
   widgets: new Map(),
+  views: new Map(),
   listeners: new Set(),
 };
+shared.views = byModuleId(import.meta.glob<ViewFactory>('../../modules/*/*/view.ts', { eager: true, import: 'default' }));
 shared.widgets = byModuleId(import.meta.glob<WidgetFactory>('../../modules/*/*/widget.ts', { eager: true, import: 'default' }));
 
 export function widgetFor(api: EditorApi, nodeId: string, moduleId: string): Widget | null {
   return shared.widgets.get(moduleId)?.(api, nodeId) ?? null;
+}
+
+export function viewFor(moduleId: string): ViewFactory | undefined {
+  return shared.views.get(moduleId);
 }
 
 /** Chiamato quando widget o view cambiano (modifica dal vivo). */

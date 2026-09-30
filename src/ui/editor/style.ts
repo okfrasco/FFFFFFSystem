@@ -43,6 +43,7 @@ svg.cables g.amount text { fill: #ddd; font: 10px ui-monospace, Menlo, monospace
 .node .head .mod { color: var(--dim); flex: 1; }
 .node .head .x { color: var(--dim); cursor: pointer; padding: 0 2px; }
 .node .head .x:hover { color: #ff6b5d; }
+.node canvas.view { display: block; width: 100%; background: #0e0e11; border-bottom: 1px solid #1c1c22; }
 .node .ports { display: flex; justify-content: space-between; padding: 4px 0; gap: 10px; }
 .node .ports .col { display: flex; flex-direction: column; gap: 3px; }
 .node .ports .col.out { align-items: flex-end; }

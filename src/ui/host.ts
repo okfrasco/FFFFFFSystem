@@ -11,7 +11,7 @@
 import workletUrl from '../worklet/engine.worklet.ts?worker&url';
 import { splitAudio } from '../core/audioSplit';
 import type { Engine } from '../core/engine';
-import type { AnalysisPoint } from '../core/audioAnalysis';
+import type { AnalysisPoint, ScopeFrame } from '../core/audioAnalysis';
 import { Scheduler, WorkerWaker, audioContextClock } from '../core/scheduler';
 import { Timeline } from '../core/timeline';
 import type { ControlEvent, Patch } from '../core/types';
@@ -31,6 +31,8 @@ export class Host {
   private bridges: string[] = [];
   private pending: Packet[] = [];
   private readonly analysis = new Map<string, Timeline>();
+  /** Ultimo blocco di ogni uscita audio (per gli oscilloscopi dell'editor). */
+  readonly scopes = new Map<string, ScopeFrame>();
   /** Errori dal motore audio (per la barra di stato). */
   onError?: (message: string) => void;
 
@@ -112,9 +114,10 @@ export class Host {
         numberOfOutputs: 1,
         outputChannelCount: [2],
       });
-      this.node.port.onmessage = (e: MessageEvent<{ type: string; message?: string; points?: AnalysisPoint[] }>) => {
+      this.node.port.onmessage = (e: MessageEvent<{ type: string; message?: string; points?: AnalysisPoint[]; scopes?: ScopeFrame[] }>) => {
         if (e.data.type === 'error') this.onError?.(`audio: ${e.data.message}`);
         else if (e.data.type === 'analysis') this.receiveAnalysis(e.data.points ?? []);
+        else if (e.data.type === 'scopes') for (const s of e.data.scopes ?? []) this.scopes.set(s.key, s);
       };
       this.node.connect(this.audio.destination);
       this.sendPatch(this.engine.patch);

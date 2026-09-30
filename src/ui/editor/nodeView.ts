@@ -8,13 +8,16 @@ import type { PatchNode, PortSpec } from '../../core/types';
 import type { EditorApi, Widget } from './api';
 import { ParamBar } from './controls';
 import { PORT_COLORS } from './style';
-import { widgetFor } from './moduleUi';
+import { genericView } from './genericView';
+import { viewFor, widgetFor } from './moduleUi';
 
 export interface NodeView {
   el: HTMLElement;
   head: HTMLElement;
   close: HTMLElement;
   update(now: number): void;
+  /** Disegna la grafica animata del nodo (se c'è) all'istante mostrato. */
+  drawView(now: number): void;
 }
 
 export const portColor = (p: PortSpec): string =>
@@ -42,6 +45,15 @@ export function createNodeView(api: EditorApi, pn: PatchNode): NodeView {
     seedEl.addEventListener('click', () => api.newSeed(pn.id));
   }
   el.append(head);
+
+  // grafica animata: view.ts del modulo, o quella generica costruita dalle porte
+  const drawing = viewFor(m.id)?.(pn.id) ?? genericView(gnode.def);
+  const viewCanvas = drawing ? document.createElement('canvas') : null;
+  if (viewCanvas && drawing) {
+    viewCanvas.className = 'view';
+    viewCanvas.style.height = `${drawing.height ?? 48}px`;
+    el.append(viewCanvas);
+  }
 
   const ports = document.createElement('div');
   ports.className = 'ports';
@@ -120,6 +132,30 @@ export function createNodeView(api: EditorApi, pn: PatchNode): NodeView {
         else if (r.select && document.activeElement !== r.select) r.select.value = String(node.params.getBase(r.id));
       }
       widget?.update(now);
+    },
+    drawView(now) {
+      if (!viewCanvas || !drawing) return;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      const w = viewCanvas.clientWidth;
+      const h = viewCanvas.clientHeight;
+      if (!w || !h) return;
+      if (viewCanvas.width !== Math.round(w * dpr) || viewCanvas.height !== Math.round(h * dpr)) {
+        viewCanvas.width = Math.round(w * dpr);
+        viewCanvas.height = Math.round(h * dpr);
+      }
+      const g = viewCanvas.getContext('2d')!;
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      try {
+        drawing.draw(g, w, h, api.live.context(pn.id, now));
+      } catch (e) {
+        // una view che sbaglia non deve fermare l'editor: lo dice e basta
+        g.setTransform(dpr, 0, 0, dpr, 0, 0);
+        g.fillStyle = '#300';
+        g.fillRect(0, 0, w, h);
+        g.fillStyle = '#f88';
+        g.font = '9px monospace';
+        g.fillText(String((e as Error).message).slice(0, 40), 4, 12);
+      }
     },
   };
 }
