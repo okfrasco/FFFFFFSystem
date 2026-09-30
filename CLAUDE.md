@@ -19,13 +19,17 @@ Host modulare per sistemi generativi musicali e visivi, pensato per live perform
 
 ```
 src/
-  core/        tipi, grafo, scheduler, rng, scene e morph
-  modules/     un file per nodo, raggruppati per categoria (phase/, generators/, logic/, transform/, harmony/, visual/, io/)
-  shaders/     sorgenti GLSL dei nodi visual
+  core/        tipi, grafo, scheduler, rng, scene e morph, divisione della patch
+  modules/     un modulo = una cartella: <categoria>/<id>/ con index.ts (export default),
+               e se servono widget.ts, view.ts, shader.frag, index.test.ts, NOTE.md.
+               Le cartelle si registrano da sole (modules/index.ts). Categorie:
+               phase, generators, logic, transform, harmony, audio, effects, visual, io, ideas.
+               _internal/ = ponti e sonde, non compaiono nel menu.
   worklet/     processor dell'AudioWorklet (fa girare la parte audio del grafo)
   visual/      renderer WebGL2 dei nodi visual e utilità GL
   ui/          editor a nodi e host del browser
-tests/         un test per ogni modulo
+tests/         test del core, helper di simulazione, patch di esempio
+scripts/       nuovo.mjs: scheletro di un modulo
 ```
 
 ## Contratto del modulo
@@ -68,7 +72,7 @@ Se il contratto deve cambiare, proponi la modifica, aggiorna `SPEC.md` e tutti i
 - La fase è una rampa 0→1; i generatori leggono la fase, non hanno un rate interno.
 - Polifonia: ogni porta `poly` porta N voci, ogni voce conosce il proprio indice.
 - Timing: lo scheduler usa il clock dell'AudioContext con lookahead e gli eventi portano timestamp esatti; niente `setTimeout` per il tempo musicale.
-- Un modulo per file, con test Vitest che verifica output deterministici a seed fisso.
+- Un modulo per cartella, con `index.test.ts` che verifica output deterministici a seed fisso. Per iniziarne uno: `npm run nuovo -- <categoria> <id> [control|audio|frame]`.
 - Lavora a milestone: fermati alla fine di ognuna e riassumi cosa hai fatto e come provarlo.
 
 ## Comandi

@@ -1,23 +1,20 @@
 /**
  * Esporta la patch di esempio in WAV (solo con RENDER=1):
  *   RENDER=1 npx vitest run tests/render.test.ts
- * Scrive render/demo.wav (30 s; Memoria passa a "ripeti" a metà).
+ * Scrive render/demo.wav (30 s, oppure SECONDS=…).
  */
 
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { encodeWav, renderOffline } from '../src/core/offline';
-import { createRegistry } from '../src/core/registry';
 import type { Patch } from '../src/core/types';
-import { audioModules } from '../src/modules/audioModules';
-import { bridge } from '../src/modules/audio/bridge';
-import { moduleRegistry } from '../src/modules/registry';
+import { audioRegistry, moduleRegistry } from '../src/modules';
 import demo from '../patches/demo.json';
 
 describe.runIf(process.env.RENDER)('render', () => {
   it('demo.wav', () => {
     const seconds = Number(process.env.SECONDS ?? 30);
-    const r = renderOffline(demo as Patch, moduleRegistry, createRegistry([...audioModules, bridge]), { seconds, sampleRate: 48000 });
+    const r = renderOffline(demo as Patch, moduleRegistry, audioRegistry, { seconds, sampleRate: 48000 });
     mkdirSync('render', { recursive: true });
     writeFileSync('render/demo.wav', encodeWav(r.left, r.right, r.sampleRate));
     let peak = 0;

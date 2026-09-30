@@ -8,12 +8,11 @@
 import type { Engine } from '../core/engine';
 import { splitFrame } from '../core/frameSplit';
 import { Graph, GraphError } from '../core/graph';
-import { createRegistry, type Registry } from '../core/registry';
+import type { Registry } from '../core/registry';
 import type { Timeline } from '../core/timeline';
-import { visualModules } from '../modules/visualModules';
-import { probeControl, probePhase, setProbeResolver } from '../modules/visual/probe';
+import { frameRegistry } from '../modules';
+import { setProbeResolver } from '../modules/_internal/probe';
 
-const frameRegistry = createRegistry([...visualModules, probePhase, probeControl]);
 
 export class FrameGraph {
   graph: Graph | null = null;

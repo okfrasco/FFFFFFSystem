@@ -13,6 +13,7 @@ const CATEGORY_LABEL: Record<ModuleCategory, string> = {
   effects: 'Effetti',
   visual: 'Visual',
   io: 'I/O',
+  ideas: 'Idee',
 };
 const ORDER = Object.keys(CATEGORY_LABEL) as ModuleCategory[];
 

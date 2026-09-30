@@ -13,7 +13,7 @@ import type {
   PatchNode,
   PhaseBuffer,
 } from '../../src/core/types';
-import { moduleRegistry } from '../../src/modules/registry';
+import { moduleRegistry } from '../../src/modules';
 
 export const TICK = 0.005;
 export const BAR = 2; // secondi per battuta a 120 BPM in 4/4

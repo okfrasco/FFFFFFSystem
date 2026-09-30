@@ -9,7 +9,8 @@
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "nuovo": "node scripts/nuovo.mjs"
   },
   "devDependencies": {
     "typescript": "^7.0.2",

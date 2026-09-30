@@ -8,7 +8,7 @@ import type { PatchNode, PortSpec } from '../../core/types';
 import type { EditorApi, Widget } from './api';
 import { ParamBar } from './controls';
 import { PORT_COLORS } from './style';
-import { widgetFor } from './widgets';
+import { widgetFor } from './moduleUi';
 
 export interface NodeView {
   el: HTMLElement;

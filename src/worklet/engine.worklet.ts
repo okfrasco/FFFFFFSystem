@@ -9,16 +9,14 @@
  *   { type: 'reset' }                   svuota le code dei ponti
  */
 
+import { audioRegistry } from '../modules';
 import { analysisOutputs, collectAnalysis, type AnalysisPoint } from '../core/audioAnalysis';
 import { Graph, GraphError } from '../core/graph';
-import { createRegistry } from '../core/registry';
 import type { Patch } from '../core/types';
-import { audioModules } from '../modules/audioModules';
-import { bridge, clearBridges, pushBridgePacket, type BridgePacket } from '../modules/audio/bridge';
-import { mixToDevice } from '../modules/audio/output';
+import { clearBridges, pushBridgePacket, type BridgePacket } from '../modules/_internal/bridge';
+import { mixToDevice } from '../modules/io/output';
 
 const FRAMES = 128;
-const registry = createRegistry([...audioModules, bridge]);
 
 type Message =
   | { type: 'patch'; patch: Patch }
@@ -41,7 +39,7 @@ class EngineProcessor extends AudioWorkletProcessor {
     switch (m.type) {
       case 'patch':
         try {
-          this.graph = Graph.build(m.patch, registry, {
+          this.graph = Graph.build(m.patch, audioRegistry, {
             ...(this.graph ? { reuse: this.graph } : {}),
             rate: 'audio',
             audio: { sampleRate, frames: FRAMES },

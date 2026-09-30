@@ -154,7 +154,8 @@ export type ModuleCategory =
   | 'audio'
   | 'effects'
   | 'visual'
-  | 'io';
+  | 'io'
+  | 'ideas';
 
 /**
  * A che rate l'host chiama `process`: 'control' nel main thread a tick di

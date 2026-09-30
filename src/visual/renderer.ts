@@ -4,7 +4,7 @@
  * Schermo sul canvas.
  */
 
-import blitFrag from '../shaders/blit.frag?raw';
+import blitFrag from './blit.frag?raw';
 import type { Engine } from '../core/engine';
 import type { Registry } from '../core/registry';
 import type { Timeline } from '../core/timeline';

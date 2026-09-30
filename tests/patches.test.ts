@@ -2,13 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { splitAudio } from '../src/core/audioSplit';
 import { splitFrame } from '../src/core/frameSplit';
 import { Graph } from '../src/core/graph';
-import { createRegistry } from '../src/core/registry';
 import type { Patch } from '../src/core/types';
-import { audioModules } from '../src/modules/audioModules';
-import { bridge } from '../src/modules/audio/bridge';
-import { visualModules } from '../src/modules/visualModules';
-import { probeControl, probePhase } from '../src/modules/visual/probe';
-import { moduleRegistry } from '../src/modules/registry';
+import { audioRegistry, frameRegistry, moduleRegistry } from '../src/modules';
 import demo from '../patches/demo.json';
 
 describe('patch di esempio', () => {
@@ -18,11 +13,11 @@ describe('patch di esempio', () => {
     const split = splitAudio(p, moduleRegistry);
     expect(split.bridges).toContain('melody.note');
     expect(split.bridges).toContain('kick.trig');
-    const audioReg = createRegistry([...audioModules, bridge]);
+    const audioReg = audioRegistry;
     expect(() => Graph.build(split.patch, audioReg, { rate: 'audio', audio: { sampleRate: 48000, frames: 128 } })).not.toThrow();
     const frame = splitFrame(p, moduleRegistry);
     expect(frame.patch.nodes.some((n) => n.module === 'screen')).toBe(true);
-    const frameReg = createRegistry([...visualModules, probePhase, probeControl]);
+    const frameReg = frameRegistry;
     expect(() => Graph.build(frame.patch, frameReg, { rate: 'frame' })).not.toThrow();
   });
 });

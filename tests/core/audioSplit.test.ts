@@ -1,14 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { bridgeId, splitAudio } from '../../src/core/audioSplit';
-import { createRegistry } from '../../src/core/registry';
 import { encodeWav, renderOffline } from '../../src/core/offline';
 import type { Patch } from '../../src/core/types';
-import { audioModules } from '../../src/modules/audioModules';
-import { bridge, clearBridges, pushBridgePacket } from '../../src/modules/audio/bridge';
-import { moduleRegistry } from '../../src/modules/registry';
+import { clearBridges, pushBridgePacket } from '../../src/modules/_internal/bridge';
+import { audioRegistry, moduleRegistry } from '../../src/modules';
 import { SR, audioSim, onset } from '../helpers/audio';
 
-const audioRegistry = createRegistry([...audioModules, bridge]);
 
 const drums: Patch = {
   version: 1,

@@ -2,7 +2,7 @@ import example from '../patches/demo.json';
 import { Engine } from './core/engine';
 import { autoLayout } from './core/patchEdit';
 import type { Patch } from './core/types';
-import { moduleRegistry } from './modules/registry';
+import { moduleRegistry } from './modules';
 import { loadSavedPatch, mountEditor } from './ui/editor/editor';
 import { Host } from './ui/host';
 

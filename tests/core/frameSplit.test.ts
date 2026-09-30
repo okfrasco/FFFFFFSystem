@@ -1,12 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { probeId, splitFrame } from '../../src/core/frameSplit';
 import { Graph } from '../../src/core/graph';
-import { createRegistry } from '../../src/core/registry';
 import { Timeline } from '../../src/core/timeline';
 import type { ControlBuffer, Patch, PhaseBuffer } from '../../src/core/types';
-import { visualModules } from '../../src/modules/visualModules';
-import { probeControl, probePhase, setProbeResolver } from '../../src/modules/visual/probe';
-import { moduleRegistry } from '../../src/modules/registry';
+import { setProbeResolver } from '../../src/modules/_internal/probe';
+import { frameRegistry, moduleRegistry } from '../../src/modules';
 
 const patch: Patch = {
   version: 1,
@@ -42,7 +40,7 @@ describe('splitFrame', () => {
 
   it('il sottografo si costruisce e le sonde leggono la Timeline all\'istante del frame', () => {
     const s = splitFrame(patch, moduleRegistry);
-    const reg = createRegistry([...visualModules, probePhase, probeControl]);
+    const reg = frameRegistry;
     const g = Graph.build(s.patch, reg, { rate: 'frame' });
     const bar = new Timeline(8);
     bar.push(0, [0]);

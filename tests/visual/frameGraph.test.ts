@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { Engine } from '../../src/core/engine';
 import { addNode, connect } from '../../src/core/patchEdit';
 import type { Patch } from '../../src/core/types';
-import { moduleRegistry } from '../../src/modules/registry';
+import { moduleRegistry } from '../../src/modules';
 import { FrameGraph } from '../../src/visual/frameGraph';
 
 const patch: Patch = {

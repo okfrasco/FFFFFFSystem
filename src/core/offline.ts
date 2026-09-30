@@ -10,8 +10,8 @@ import { splitAudio } from './audioSplit';
 import { Graph } from './graph';
 import type { Registry } from './registry';
 import type { Patch } from './types';
-import { clearBridges, pushBridgePacket } from '../modules/audio/bridge';
-import { mixToDevice } from '../modules/audio/output';
+import { clearBridges, pushBridgePacket } from '../modules/_internal/bridge';
+import { mixToDevice } from '../modules/io/output';
 
 export interface RenderOptions {
   seconds: number;

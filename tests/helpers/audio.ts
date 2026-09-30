@@ -3,8 +3,7 @@
 import { Graph } from '../../src/core/graph';
 import { createRegistry } from '../../src/core/registry';
 import type { AudioBlock, ControlEvent, ModuleDefinition, PatchConnection, PatchNode } from '../../src/core/types';
-import { audioModules } from '../../src/modules/audioModules';
-import { bridge } from '../../src/modules/audio/bridge';
+import { audioRegistry } from '../../src/modules';
 
 export const SR = 48000;
 export const FRAMES = 128;
@@ -51,7 +50,7 @@ const signalSource: ModuleDefinition = {
   },
 };
 
-export const audioTestRegistry = createRegistry([...audioModules, bridge, eventSource, signalSource]);
+export const audioTestRegistry = createRegistry([...audioRegistry.values(), eventSource, signalSource]);
 
 export interface AudioSim {
   graph: Graph;
