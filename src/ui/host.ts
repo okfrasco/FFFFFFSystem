@@ -11,7 +11,6 @@
 import workletUrl from '../worklet/engine.worklet.ts?worker&url';
 import { splitAudio } from '../core/audioSplit';
 import type { Engine } from '../core/engine';
-import type { Registry } from '../core/registry';
 import type { AnalysisPoint } from '../core/audioAnalysis';
 import { Scheduler, WorkerWaker, audioContextClock } from '../core/scheduler';
 import { Timeline } from '../core/timeline';
@@ -35,10 +34,7 @@ export class Host {
   /** Errori dal motore audio (per la barra di stato). */
   onError?: (message: string) => void;
 
-  constructor(
-    readonly engine: Engine,
-    private readonly registry: Registry,
-  ) {
+  constructor(readonly engine: Engine) {
     engine.changes.add((c) => {
       if (c.kind === 'patch') this.sendPatch(c.patch);
       else if (this.isAudio(c.node)) this.node?.port.postMessage({ type: 'param', node: c.node, param: c.param, value: c.value });
@@ -57,11 +53,11 @@ export class Host {
 
   private isAudio(nodeId: string): boolean {
     const pn = this.engine.patch.nodes.find((n) => n.id === nodeId);
-    return pn ? this.registry.get(pn.module)?.manifest.rate === 'audio' : false;
+    return pn ? this.engine.registry.get(pn.module)?.manifest.rate === 'audio' : false;
   }
 
   private sendPatch(patch: Patch): void {
-    const split = splitAudio(patch, this.registry);
+    const split = splitAudio(patch, this.engine.registry);
     this.bridges = split.bridges;
     this.node?.port.postMessage({ type: 'patch', patch: split.patch });
   }

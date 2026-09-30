@@ -8,6 +8,7 @@
  */
 
 import { Graph } from './graph';
+import { sanitizePatch } from './patchEdit';
 import type { Morph } from './morph';
 import type { Registry } from './registry';
 import { Timeline } from './timeline';
@@ -32,12 +33,29 @@ export class Engine {
   /** Chiamati quando cambia la patch (struttura o config) o un parametro base. */
   readonly changes = new Set<(change: EngineChange) => void>();
 
-  constructor(
-    patch: Patch,
-    private readonly registry: Registry,
-  ) {
+  private currentRegistry: Registry;
+
+  constructor(patch: Patch, registry: Registry) {
+    this.currentRegistry = registry;
     this.current = Graph.build(patch, registry);
     this.currentPatch = patch;
+  }
+
+  /** Catalogo dei moduli in uso. */
+  get registry(): Registry {
+    return this.currentRegistry;
+  }
+
+  /**
+   * Nuovo catalogo (es. un modulo modificato mentre suona): la patch viene
+   * adattata e il grafo ricostruito; i nodi dei moduli cambiati ripartono con
+   * lo stato della versione precedente. Restituisce cosa è stato tolto.
+   */
+  setRegistry(registry: Registry): string[] {
+    const { patch, removed } = sanitizePatch(this.currentPatch, registry);
+    this.currentRegistry = registry;
+    this.setPatch(patch);
+    return removed;
   }
 
   get graph(): Graph {
@@ -50,7 +68,7 @@ export class Engine {
 
   /** Sostituisce la patch. Se non è valida lancia GraphError e non cambia niente. */
   setPatch(patch: Patch): void {
-    const next = Graph.build(patch, this.registry, { reuse: this.current });
+    const next = Graph.build(patch, this.currentRegistry, { reuse: this.current });
     for (const tap of this.taps) {
       if (next.has(tap.node)) {
         try {

@@ -10,7 +10,6 @@ import { splitFrame } from '../core/frameSplit';
 import { Graph, GraphError } from '../core/graph';
 import type { Registry } from '../core/registry';
 import type { Timeline } from '../core/timeline';
-import { frameRegistry } from '../modules';
 import { setProbeResolver } from '../modules/_internal/probe';
 
 
@@ -21,7 +20,8 @@ export class FrameGraph {
 
   constructor(
     private readonly engine: Engine,
-    private readonly mainRegistry: Registry,
+    /** Catalogo del renderer (moduli visual + sonde), letto a ogni ricostruzione. */
+    private readonly frameRegistry: () => Registry,
     private readonly gl?: WebGL2RenderingContext,
     /** Timeline con tempi reali per le uscite misurate nell'audio (es. Envelope follower). */
     private readonly externalTimeline: (key: string) => Timeline | undefined = () => undefined,
@@ -35,7 +35,7 @@ export class FrameGraph {
   }
 
   rebuild(): void {
-    const split = splitFrame(this.engine.patch, this.mainRegistry);
+    const split = splitFrame(this.engine.patch, this.engine.registry);
     this.timelines = new Map();
     for (const p of split.probes) {
       if (p.source === 'audio') continue; // Timeline dell'host (externalTimeline)
@@ -43,7 +43,7 @@ export class FrameGraph {
       this.timelines.set(p.key, this.engine.tap(node, port, 512));
     }
     try {
-      this.graph = Graph.build(split.patch, frameRegistry, {
+      this.graph = Graph.build(split.patch, this.frameRegistry(), {
         ...(this.graph ? { reuse: this.graph } : {}),
         rate: 'frame',
         ...(this.gl ? { gl: this.gl } : {}),

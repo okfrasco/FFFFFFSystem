@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { Engine } from '../../src/core/engine';
 import { addNode, connect } from '../../src/core/patchEdit';
 import type { Patch } from '../../src/core/types';
-import { moduleRegistry } from '../../src/modules';
+import { frameRegistry, moduleRegistry } from '../../src/modules';
 import { FrameGraph } from '../../src/visual/frameGraph';
 
 const patch: Patch = {
@@ -22,7 +22,7 @@ const patch: Patch = {
 describe('FrameGraph', () => {
   it('un cambio di parametro arriva subito al grafo dei visual, senza ricostruire', () => {
     const engine = new Engine(patch, moduleRegistry);
-    const fg = new FrameGraph(engine, moduleRegistry);
+    const fg = new FrameGraph(engine, () => frameRegistry);
     const g = fg.graph;
     engine.setParam('noise', 'scale', 7);
     expect(fg.graph).toBe(g);
@@ -31,7 +31,7 @@ describe('FrameGraph', () => {
 
   it('una modifica strutturale ricostruisce il grafo tenendo le istanze', () => {
     const engine = new Engine(patch, moduleRegistry);
-    const fg = new FrameGraph(engine, moduleRegistry);
+    const fg = new FrameGraph(engine, () => frameRegistry);
     const inst = fg.graph!.node('noise').instance;
     const added = addNode(engine.patch, moduleRegistry, 'feedback');
     engine.setPatch(connect(added.patch, moduleRegistry, { from: 'noise.out', to: `${added.id}.in` }));

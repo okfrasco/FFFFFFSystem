@@ -23,7 +23,7 @@ export class VisualRenderer {
 
   constructor(
     engine: Engine,
-    mainRegistry: Registry,
+    frameRegistry: () => Registry,
     readonly canvas: HTMLCanvasElement,
     /** Istante mostrato, sul clock audio (già compensato dalla latenza d'uscita). */
     private readonly clock: () => number,
@@ -32,7 +32,7 @@ export class VisualRenderer {
     this.gl = canvas.getContext('webgl2', { antialias: false, premultipliedAlpha: false, alpha: false });
     if (!this.gl) return;
     this.blit = new Pass(this.gl, blitFrag);
-    this.frames = new FrameGraph(engine, mainRegistry, this.gl, externalTimeline);
+    this.frames = new FrameGraph(engine, frameRegistry, this.gl, externalTimeline);
     this.frames.onError = (m) => this.errorHandler(m);
   }
 

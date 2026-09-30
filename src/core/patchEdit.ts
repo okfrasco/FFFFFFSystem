@@ -107,6 +107,36 @@ export function setAmount(patch: Patch, from: string, to: string, amount: number
 }
 
 /**
+ * Adatta una patch a un catalogo di moduli (es. dopo aver modificato un
+ * modulo): toglie i nodi di moduli che non esistono più, i parametri e le
+ * porte sparite, e i cavi che le usavano. `removed` dice cosa è stato tolto.
+ */
+export function sanitizePatch(patch: Patch, registry: Registry): { patch: Patch; removed: string[] } {
+  const removed: string[] = [];
+  const nodes = patch.nodes.filter((n) => {
+    const ok = registry.has(n.module);
+    if (!ok) removed.push(`nodo ${n.id} (modulo ${n.module})`);
+    return ok;
+  }).map((n) => {
+    if (!n.params) return n;
+    const specs = registry.get(n.module)!.manifest.params;
+    const params: Record<string, number> = {};
+    for (const [k, v] of Object.entries(n.params)) {
+      if (specs.some((p) => p.id === k)) params[k] = v;
+      else removed.push(`parametro ${n.id}.${k}`);
+    }
+    return { ...n, params };
+  });
+  const clean = { ...patch, nodes };
+  const connections = patch.connections.filter((c) => {
+    const ok = connectionError({ ...clean, connections: [] }, registry, c) === null;
+    if (!ok) removed.push(`cavo ${c.from} → ${c.to}`);
+    return ok;
+  });
+  return { patch: { ...clean, connections }, removed };
+}
+
+/**
  * Posizioni per i nodi che non ne hanno: colonne per profondità nel grafo
  * (le sorgenti a sinistra), righe nell'ordine della patch.
  */

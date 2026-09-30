@@ -11,13 +11,17 @@
  *   NOTE.md        l'idea: da dove viene, cosa provare
  *
  * La cartella ha lo stesso nome dell'id del modulo e sta nella cartella della
- * sua categoria (le idee non ancora rifinite in ideas/).
+ * sua categoria (le idee non ancora rifinite in ideas/). I moduli audio stanno
+ * in audio/, effects/ o io/: sono le sole cartelle che l'AudioWorklet carica.
  */
 
 import { createRegistry, type Registry } from '../core/registry';
 import type { ModuleDefinition } from '../core/types';
 import { bridge } from './_internal/bridge';
 import { probeControl, probePhase } from './_internal/probe';
+
+/** Le sole cartelle che il worklet audio carica (vedi audioCatalog.ts). */
+export const AUDIO_CATEGORIES = ['audio', 'effects', 'io'];
 
 const found = import.meta.glob<ModuleDefinition>('./*/*/index.ts', { eager: true, import: 'default' });
 
@@ -34,6 +38,8 @@ export function collectModules(files: Record<string, ModuleDefinition | undefine
     }
     if (def.manifest.id !== folder) errors.push(`${path}: la cartella deve chiamarsi come l'id (${def.manifest.id})`);
     if (def.manifest.category !== category) errors.push(`${path}: la categoria è ${def.manifest.category}, la cartella è ${category}`);
+    if (def.manifest.rate === 'audio' && !AUDIO_CATEGORIES.includes(category ?? ''))
+      errors.push(`${path}: un modulo audio va in ${AUDIO_CATEGORIES.join('/')} (l'AudioWorklet carica solo quelle cartelle)`);
     modules.push(def);
   }
   return { modules, errors };

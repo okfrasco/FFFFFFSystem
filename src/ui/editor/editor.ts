@@ -23,7 +23,6 @@ import {
   removeNode,
   setAmount,
 } from '../../core/patchEdit';
-import type { Registry } from '../../core/registry';
 import type { Timeline } from '../../core/timeline';
 import type { Patch, PatchConnection, PortSpec } from '../../core/types';
 import { cloneJson, frac } from '../../core/types';
@@ -35,12 +34,13 @@ import { createNodeView, portColor, type NodeView } from './nodeView';
 import { EDITOR_CSS } from './style';
 import { VisualRenderer } from '../../visual/renderer';
 import { mountScenes } from './scenes';
+import { catalog, onCatalogChange } from '../catalog';
+import { onUiChange } from './moduleUi';
 
 const STORAGE_KEY = 'ffffff.patch.v1';
 
 export interface EditorOptions {
   host: Host;
-  registry: Registry;
   example: Patch;
   /** La patch iniziale non aveva posizioni: impila i nodi dopo il primo disegno. */
   relayout?: boolean;
@@ -63,7 +63,7 @@ export function loadSavedPatch(): Patch | null {
 }
 
 export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
-  const { host, registry } = opts;
+  const { host } = opts;
   const engine: Engine = host.engine;
 
   const style = document.createElement('style');
@@ -111,7 +111,7 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
   const viewer = $<HTMLElement>('.viewer');
   const renderer = new VisualRenderer(
     engine,
-    registry,
+    () => catalog().frame,
     viewer.querySelector('canvas') as HTMLCanvasElement,
     () => host.displayTime(),
     (key) => host.analysisTimeline(key),
@@ -223,7 +223,7 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
 
   const replaceAll = (patch: Patch) => {
     const needsLayout = patch.nodes.some((n) => !n.ui);
-    const laid = autoLayout(patch, registry);
+    const laid = autoLayout(patch, engine.registry);
     try {
       engine.setPatch(laid);
     } catch (e) {
@@ -412,7 +412,7 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
         hover?.classList.remove('target-ok');
         hover = c;
         const other = c && (fromSource ? c.dataset.target : c.dataset.source);
-        if (c && other && !connectionError(engine.patch, registry, conn(other))) c.classList.add('target-ok');
+        if (c && other && !connectionError(engine.patch, engine.registry, conn(other))) c.classList.add('target-ok');
       }
     };
     const up = (m: PointerEvent) => {
@@ -425,7 +425,7 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
       const other = c && (fromSource ? c.dataset.target : c.dataset.source);
       if (!other) return;
       try {
-        const next = connect(engine.patch, registry, conn(other));
+        const next = connect(engine.patch, engine.registry, conn(other));
         if (apply(next, false)) status(`collegato ${conn(other).from} → ${conn(other).to}`);
       } catch (err) {
         status((err as Error).message, true);
@@ -510,9 +510,9 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
   });
 
   const showAddMenu = (at: Point) => {
-    openAddMenu(canvas, at, registry, (moduleId) => {
+    openAddMenu(canvas, at, engine.registry, (moduleId) => {
       const w = { x: (at.x - view.x) / view.zoom, y: (at.y - view.y) / view.zoom };
-      const { patch, id } = addNode(engine.patch, registry, moduleId, { x: Math.round(w.x), y: Math.round(w.y) });
+      const { patch, id } = addNode(engine.patch, engine.registry, moduleId, { x: Math.round(w.x), y: Math.round(w.y) });
       if (apply(patch)) {
         selectNode(id);
         status(`aggiunto ${id}`);
@@ -574,7 +574,7 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
   const duplicate = () => {
     const src = engine.patch.nodes.find((n) => n.id === selNode);
     if (!src) return;
-    const { patch, id } = addNode(engine.patch, registry, src.module, { x: (src.ui?.x ?? 0) + 30, y: (src.ui?.y ?? 0) + 30 });
+    const { patch, id } = addNode(engine.patch, engine.registry, src.module, { x: (src.ui?.x ?? 0) + 30, y: (src.ui?.y ?? 0) + 30 });
     const copy = patch.nodes.map((n) =>
       n.id === id ? { ...n, ...(src.params ? { params: { ...src.params } } : {}), ...(src.config ? { config: cloneJson(src.config) } : {}) } : n,
     );
@@ -602,7 +602,7 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
     else if (a === 'add') showAddMenu({ x: canvas.clientWidth / 2 - 120, y: 60 });
     else if (a === 'undo') undo();
     else if (a === 'redo') redo();
-    else if (a === 'new') replaceAll(addNode(emptyPatch(Date.now() % 100000), registry, 'transport', { x: 60, y: 60 }).patch);
+    else if (a === 'new') replaceAll(addNode(emptyPatch(Date.now() % 100000), engine.registry, 'transport', { x: 60, y: 60 }).patch);
     else if (a === 'open') fileInput.click();
     else if (a === 'save') {
       const blob = new Blob([JSON.stringify(engine.patch, null, 2)], { type: 'application/json' });
@@ -706,6 +706,14 @@ export function mountEditor(root: HTMLElement, opts: EditorOptions): void {
       requestAnimationFrame(() => render());
     }
   });
+
+  // modifica dal vivo: un modulo cambiato sostituisce le sue istanze mentre suona
+  onCatalogChange((c, changed) => {
+    const removed = engine.setRegistry(c.main);
+    render();
+    status(`moduli aggiornati: ${changed.join(', ')}${removed.length ? ` · tolti: ${removed.join(', ')}` : ''}`);
+  });
+  onUiChange(() => render());
 
   // la vista parte visibile se la patch ha uno Schermo
   toggleViewer(engine.patch.nodes.some((n) => n.module === 'screen'));

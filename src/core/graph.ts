@@ -297,6 +297,18 @@ export class Graph {
         }
         rng = from.ctx.rng;
         outputs = prev.outputs;
+      } else if (prev && prev.def !== def && prev.def.manifest.id === def.manifest.id && prev.seed === seed) {
+        // versione nuova dello stesso modulo (file modificato mentre suona):
+        // istanza nuova con lo stato della vecchia, se è compatibile
+        instance = def.create({ seed, config });
+        try {
+          instance.setState(cloneJson(prev.instance.getState()));
+        } catch {
+          // stato incompatibile con la nuova versione: il nodo riparte da zero
+        }
+        rng = prev.ctx.rng;
+        const samePorts = m.outputs.every((p) => prev.outputs.buffers.has(p.id)) && prev.outputs.buffers.size === m.outputs.length;
+        outputs = samePorts ? prev.outputs : new NodeOutputs(pn.id, new Map(m.outputs.map((p) => [p.id, p])));
       } else {
         instance = def.create({ seed, config });
         rng = new Rng(seed);

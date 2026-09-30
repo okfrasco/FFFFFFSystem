@@ -15,6 +15,8 @@ if (!CATEGORIES.includes(category)) fail(`categoria sconosciuta: ${category}`);
 if (!/^[a-z][a-zA-Z0-9]*$/.test(id)) fail(`id non valido: ${id} (camelCase, es. karplusStrong)`);
 const rate = rateArg ?? (category === 'audio' || category === 'effects' ? 'audio' : category === 'visual' ? 'frame' : 'control');
 if (!['control', 'audio', 'frame'].includes(rate)) fail(`rate sconosciuto: ${rate}`);
+if (rate === 'audio' && !['audio', 'effects', 'io'].includes(category))
+  fail(`un modulo audio va in audio/, effects/ o io/ (l'AudioWorklet carica solo quelle): es. npm run nuovo -- audio ${id}`);
 const dir = `src/modules/${category}/${id}`;
 if (existsSync(dir)) fail(`esiste già: ${dir}`);
 const name = id.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase());

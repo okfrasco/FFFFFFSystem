@@ -9,7 +9,7 @@
  *   { type: 'reset' }                   svuota le code dei ponti
  */
 
-import { audioRegistry } from '../modules';
+import { workletRegistry } from '../modules/audioCatalog';
 import { analysisOutputs, collectAnalysis, type AnalysisPoint } from '../core/audioAnalysis';
 import { Graph, GraphError } from '../core/graph';
 import type { Patch } from '../core/types';
@@ -39,7 +39,7 @@ class EngineProcessor extends AudioWorkletProcessor {
     switch (m.type) {
       case 'patch':
         try {
-          this.graph = Graph.build(m.patch, audioRegistry, {
+          this.graph = Graph.build(m.patch, workletRegistry, {
             ...(this.graph ? { reuse: this.graph } : {}),
             rate: 'audio',
             audio: { sampleRate, frames: FRAMES },
