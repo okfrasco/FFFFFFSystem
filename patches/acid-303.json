@@ -2,138 +2,55 @@
   "version": 1,
   "seed": 4004,
   "nodes": [
-    {
-      "id": "transport",
-      "module": "transport",
-      "params": { "bpm": 130 }
-    },
-    {
-      "id": "acid",
-      "module": "acid",
-      "params": {
-        "steps": 16,
-        "density": 0.6,
-        "slideProb": 0.25,
-        "accentProb": 0.3,
-        "octaveProb": 0.15,
-        "restProb": 0.1,
-        "root": 9,
-        "scale": 10
-      }
-    },
-    {
-      "id": "kick",
-      "module": "euclid",
-      "params": { "steps": 16, "pulses": 4 }
-    },
-    {
-      "id": "hat",
-      "module": "euclid",
-      "params": { "steps": 16, "pulses": 8, "rotate": 1 }
-    },
-    {
-      "id": "ohat",
-      "module": "gates",
-      "config": { "gates": [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0] }
-    },
-    {
-      "id": "clap",
-      "module": "gates",
-      "config": { "gates": [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0] }
-    },
-    {
-      "id": "bassOsc",
-      "module": "oscillator",
-      "params": { "wave": 1, "attack": 0.003, "decay": 0.1, "sustain": 0.6, "release": 0.05 }
-    },
-    {
-      "id": "ladder",
-      "module": "ladder",
-      "params": { "cutoff": 400, "resonance": 0.85, "drive": 1.5 }
-    },
-    {
-      "id": "accentEnv",
-      "module": "envelope",
-      "params": { "attack": 0.001, "decay": 0.15, "sustain": 0, "release": 0.01 }
-    },
-    {
-      "id": "kickD",
-      "module": "drum",
-      "params": { "type": 0, "pitch": 50, "decay": 0.3 }
-    },
-    {
-      "id": "hatD",
-      "module": "drum",
-      "params": { "type": 2, "pitch": 9000, "decay": 0.03 }
-    },
-    {
-      "id": "ohatD",
-      "module": "drum",
-      "params": { "type": 2, "pitch": 6000, "decay": 0.15 }
-    },
-    {
-      "id": "clapD",
-      "module": "drum",
-      "params": { "type": 1, "pitch": 250, "decay": 0.1 }
-    },
-    {
-      "id": "delay",
-      "module": "delay",
-      "params": { "time": 0.231, "feedback": 0.35, "mix": 0.2 }
-    },
-    {
-      "id": "reverb",
-      "module": "reverb",
-      "params": { "size": 0.4, "decay": 0.3, "mix": 0.15 }
-    },
-    {
-      "id": "mixer",
-      "module": "mixer",
-      "params": { "gain1": 0.9, "gain2": 0.8, "gain3": 0.5, "gain4": 0.5 }
-    },
-    {
-      "id": "out",
-      "module": "output"
-    }
+    { "id": "transport", "module": "transport", "params": { "bpm": 130 } },
+    { "id": "acid", "module": "acid", "params": { "density": 0.7, "slide": 0.25, "accent": 0.3, "octave": 0.15, "base": 36 } },
+    { "id": "kick", "module": "euclid", "params": { "steps": 16, "pulses": 4 } },
+    { "id": "hat", "module": "euclid", "params": { "steps": 16, "pulses": 8, "rotate": 1 } },
+    { "id": "ohat", "module": "gates", "config": { "gates": [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0] } },
+    { "id": "clap", "module": "gates", "config": { "gates": [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0] } },
+    { "id": "bassVoices", "module": "voices", "params": { "voices": 1, "glide": 0.05, "legato": 1 } },
+    { "id": "bassOsc", "module": "oscillator", "params": { "wave": 1, "level": 0.8 } },
+    { "id": "bassEnv", "module": "envelope", "params": { "attack": 0.003, "decay": 0.1, "sustain": 0.6, "release": 0.05 } },
+    { "id": "accentVoices", "module": "voices", "params": { "voices": 1, "length": 0.05 } },
+    { "id": "accentEnv", "module": "envelope", "params": { "attack": 0.001, "decay": 0.15, "sustain": 0, "release": 0.01 } },
+    { "id": "bassFilter", "module": "filter", "params": { "cutoff": 400, "resonance": 0.85 } },
+    { "id": "bassVca", "module": "vca" },
+    { "id": "kickD", "module": "drum", "params": { "type": 0, "tune": 0, "decay": 0.3 } },
+    { "id": "hatD", "module": "drum", "params": { "type": 2, "tune": 10, "decay": 0.03 } },
+    { "id": "ohatD", "module": "drum", "params": { "type": 2, "tune": 6, "decay": 0.15 } },
+    { "id": "clapD", "module": "drum", "params": { "type": 3, "tune": -2, "decay": 0.1 } },
+    { "id": "delay", "module": "delay", "params": { "time": 0.231, "feedback": 0.35, "mix": 0.2 } },
+    { "id": "reverb", "module": "reverb", "params": { "size": 0.4, "decay": 0.8, "mix": 0.15 } },
+    { "id": "mixer", "module": "mixer", "params": { "level1": 0.9, "level2": 0.8, "level3": 0.5, "level4": 0.5 } },
+    { "id": "out", "module": "output" }
   ],
   "connections": [
-    { "from": "transport", "fromPort": "phase", "to": "acid", "toPort": "phase" },
-    { "from": "transport", "fromPort": "phase", "to": "kick", "toPort": "phase" },
-    { "from": "transport", "fromPort": "phase", "to": "hat", "toPort": "phase" },
-    { "from": "transport", "fromPort": "phase", "to": "ohat", "toPort": "phase" },
-    { "from": "transport", "fromPort": "phase", "to": "clap", "toPort": "phase" },
-    { "from": "acid", "fromPort": "note", "to": "bassOsc", "toPort": "note" },
-    { "from": "acid", "fromPort": "accent", "to": "accentEnv", "toPort": "gate" },
-    { "from": "bassOsc", "fromPort": "out", "to": "ladder", "toPort": "in" },
-    { "from": "accentEnv", "fromPort": "out", "to": "ladder", "toPort": "cutoffMod" },
-    { "from": "kick", "fromPort": "trig", "to": "kickD", "toPort": "trig" },
-    { "from": "hat", "fromPort": "trig", "to": "hatD", "toPort": "trig" },
-    { "from": "ohat", "fromPort": "trig", "to": "ohatD", "toPort": "trig" },
-    { "from": "clap", "fromPort": "trig", "to": "clapD", "toPort": "trig" },
-    { "from": "ladder", "fromPort": "out", "to": "delay", "toPort": "in" },
-    { "from": "delay", "fromPort": "out", "to": "reverb", "toPort": "in" },
-    { "from": "reverb", "fromPort": "out", "to": "mixer", "toPort": "in1" },
-    { "from": "kickD", "fromPort": "out", "to": "mixer", "toPort": "in2" },
-    { "from": "hatD", "fromPort": "out", "to": "mixer", "toPort": "in3" },
-    { "from": "ohatD", "fromPort": "out", "to": "mixer", "toPort": "in3" },
-    { "from": "clapD", "fromPort": "out", "to": "mixer", "toPort": "in4" },
-    { "from": "mixer", "fromPort": "out", "to": "out", "toPort": "in" }
+    { "from": "transport.bar", "to": "acid.phase" },
+    { "from": "transport.bar", "to": "kick.phase" },
+    { "from": "transport.bar", "to": "hat.phase" },
+    { "from": "transport.bar", "to": "ohat.phase" },
+    { "from": "transport.bar", "to": "clap.phase" },
+    { "from": "acid.note", "to": "bassVoices.note" },
+    { "from": "bassVoices.pitch", "to": "bassOsc.pitch" },
+    { "from": "bassVoices.gate", "to": "bassEnv.gate" },
+    { "from": "acid.accent", "to": "accentVoices.note" },
+    { "from": "accentVoices.gate", "to": "accentEnv.gate" },
+    { "from": "bassOsc.out", "to": "bassFilter.in" },
+    { "from": "accentEnv.out", "to": "bassFilter.mod" },
+    { "from": "bassFilter.out", "to": "bassVca.in" },
+    { "from": "bassEnv.out", "to": "bassVca.cv" },
+    { "from": "kick.trig", "to": "kickD.trig" },
+    { "from": "hat.trig", "to": "hatD.trig" },
+    { "from": "ohat.trig", "to": "ohatD.trig" },
+    { "from": "clap.trig", "to": "clapD.trig" },
+    { "from": "bassVca.out", "to": "delay.in" },
+    { "from": "delay.out", "to": "reverb.in" },
+    { "from": "reverb.out", "to": "mixer.in1" },
+    { "from": "kickD.out", "to": "mixer.in2" },
+    { "from": "hatD.out", "to": "mixer.in3" },
+    { "from": "ohatD.out", "to": "mixer.in3" },
+    { "from": "clapD.out", "to": "mixer.in4" },
+    { "from": "mixer.out", "to": "out.in" }
   ],
-  "scenes": {
-    "S1": {
-      "params": {
-        "acid": { "density": 0.6, "slideProb": 0.25 },
-        "ladder": { "cutoff": 400, "resonance": 0.85 },
-        "transport": { "bpm": 130 }
-      }
-    },
-    "S2": {
-      "params": {
-        "acid": { "density": 0.8, "slideProb": 0.4 },
-        "ladder": { "cutoff": 600, "resonance": 0.9 },
-        "transport": { "bpm": 138 }
-      }
-    }
-  },
-  "currentScene": "S1"
+  "scenes": [{ "name": "S1", "nodes": {} }, { "name": "S2", "nodes": {} }]
 }

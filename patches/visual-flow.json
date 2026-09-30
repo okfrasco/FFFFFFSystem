@@ -37,24 +37,19 @@
     }
   ],
   "connections": [
-    { "from": "transport", "fromPort": "phase", "to": "flow1", "toPort": "phase" },
-    { "from": "transport", "fromPort": "phase", "to": "transform1", "toPort": "phase" },
-    { "from": "flow1", "fromPort": "out", "to": "transform1", "toPort": "in" },
-    { "from": "transform1", "fromPort": "out", "to": "screen1", "toPort": "in" }
+    { "from": "transport.bar", "to": "flow1.phase" },
+    { "from": "transport.bar", "to": "transform1.phase" },
+    { "from": "flow1.out", "to": "transform1.in" },
+    { "from": "transform1.out", "to": "screen1.in" }
   ],
-  "scenes": {
-    "S1": {
-      "params": {
-        "flow1": { "curl": 1.5, "hue": 0.5 },
-        "transform1": { "segments": 4 }
-      }
+  "scenes": [
+    {
+      "name": "S1",
+      "nodes": {}
     },
-    "S2": {
-      "params": {
-        "flow1": { "curl": 0.5, "hue": 0.8 },
-        "transform1": { "segments": 8 }
-      }
+    {
+      "name": "S2",
+      "nodes": {}
     }
-  },
-  "currentScene": "S1"
+  ]
 }

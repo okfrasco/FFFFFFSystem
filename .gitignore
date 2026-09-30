@@ -2,3 +2,18 @@ node_modules
 dist
 render
 browser-check.png
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.claude/
+.vscode/
+.idea/
+*.swp
+*~
+
+# Misc
+nul
+*.log

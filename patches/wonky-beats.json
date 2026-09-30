@@ -2,153 +2,59 @@
   "version": 1,
   "seed": 2002,
   "nodes": [
-    {
-      "id": "transport",
-      "module": "transport",
-      "params": { "bpm": 85 }
-    },
-    {
-      "id": "tuplet",
-      "module": "tuplet",
-      "params": { "ratio": 3, "over": 2 }
-    },
-    {
-      "id": "groove",
-      "module": "grooveTemplate",
-      "params": { "template": 2, "amount": 0.6 }
-    },
-    {
-      "id": "kick",
-      "module": "euclid",
-      "params": { "steps": 12, "pulses": 5, "rotate": 1 }
-    },
-    {
-      "id": "snare",
-      "module": "euclid",
-      "params": { "steps": 16, "pulses": 4, "rotate": 4 }
-    },
-    {
-      "id": "snareShift",
-      "module": "snareShift",
-      "params": { "shift": 0.03, "variance": 0.02 }
-    },
-    {
-      "id": "hat",
-      "module": "euclid",
-      "params": { "steps": 7, "pulses": 5 }
-    },
-    {
-      "id": "flam",
-      "module": "flamGhost",
-      "params": { "flamProb": 0.2, "ghostProb": 0.3, "flamTime": 0.02 }
-    },
-    {
-      "id": "perc",
-      "module": "rhythm",
-      "params": { "genre": 3, "density": 0.5, "swing": 0.3 }
-    },
-    {
-      "id": "bass",
-      "module": "euclid",
-      "params": { "steps": 16, "pulses": 6 }
-    },
-    {
-      "id": "bassMarkov",
-      "module": "markov",
-      "params": { "states": 5, "mutation": 0.2 }
-    },
-    {
-      "id": "bassQuant",
-      "module": "quantize",
-      "params": { "root": 2, "scale": 10, "base": 36, "length": 0.2 }
-    },
-    {
-      "id": "kickD",
-      "module": "drum",
-      "params": { "type": 0, "pitch": 50, "decay": 0.25 }
-    },
-    {
-      "id": "snareD",
-      "module": "drum",
-      "params": { "type": 1, "pitch": 180, "decay": 0.12 }
-    },
-    {
-      "id": "hatD",
-      "module": "drum",
-      "params": { "type": 2, "pitch": 7000, "decay": 0.04 }
-    },
-    {
-      "id": "percD",
-      "module": "drum",
-      "params": { "type": 3, "pitch": 400, "decay": 0.08 }
-    },
-    {
-      "id": "bassS",
-      "module": "oscillator",
-      "params": { "wave": 1, "attack": 0.005, "decay": 0.15, "sustain": 0.3, "release": 0.1 }
-    },
-    {
-      "id": "bassF",
-      "module": "filter",
-      "params": { "type": 0, "cutoff": 800, "resonance": 0.3 }
-    },
-    {
-      "id": "delay",
-      "module": "delay",
-      "params": { "time": 0.375, "feedback": 0.4, "mix": 0.25 }
-    },
-    {
-      "id": "mixer",
-      "module": "mixer",
-      "params": { "gain1": 0.8, "gain2": 0.6, "gain3": 0.5, "gain4": 0.7 }
-    },
-    {
-      "id": "out",
-      "module": "output"
-    }
+    { "id": "transport", "module": "transport", "params": { "bpm": 85 } },
+    { "id": "kick", "module": "euclid", "params": { "steps": 12, "pulses": 5, "rotate": 1, "swing": 0.15 } },
+    { "id": "snare", "module": "euclid", "params": { "steps": 16, "pulses": 4, "rotate": 4 } },
+    { "id": "snareShift", "module": "snareShift", "params": { "shift": 3, "prob": 0.5 } },
+    { "id": "hat", "module": "euclid", "params": { "steps": 7, "pulses": 5, "swing": 0.2 } },
+    { "id": "flam", "module": "flamGhost", "params": { "flamProb": 0.2, "ghostProb": 0.3, "flamTime": 0.02 } },
+    { "id": "perc", "module": "euclid", "params": { "steps": 16, "pulses": 6, "swing": 0.25 } },
+    { "id": "bass", "module": "euclid", "params": { "steps": 16, "pulses": 6 } },
+    { "id": "bassMarkov", "module": "markov", "params": { "size": 8, "steps": 16 } },
+    { "id": "bassQuant", "module": "quantize", "params": { "root": 2, "scale": 10, "base": 36, "length": 0.2 } },
+    { "id": "kickD", "module": "drum", "params": { "type": 0, "tune": 0, "decay": 0.25 } },
+    { "id": "snareD", "module": "drum", "params": { "type": 1, "tune": 0, "decay": 0.12 } },
+    { "id": "hatD", "module": "drum", "params": { "type": 2, "tune": 8, "decay": 0.04 } },
+    { "id": "percD", "module": "drum", "params": { "type": 3, "tune": 2, "decay": 0.08 } },
+    { "id": "bassVoices", "module": "voices", "params": { "voices": 1 } },
+    { "id": "bassS", "module": "oscillator", "params": { "wave": 1, "level": 0.7 } },
+    { "id": "bassEnv", "module": "envelope", "params": { "attack": 0.005, "decay": 0.15, "sustain": 0.3, "release": 0.1 } },
+    { "id": "bassF", "module": "filter", "params": { "mode": 0, "cutoff": 800, "resonance": 0.3 } },
+    { "id": "bassVca", "module": "vca" },
+    { "id": "delay", "module": "delay", "params": { "time": 0.375, "feedback": 0.4, "mix": 0.25 } },
+    { "id": "mixer", "module": "mixer", "params": { "level1": 0.8, "level2": 0.6, "level3": 0.5, "level4": 0.7 } },
+    { "id": "out", "module": "output" }
   ],
   "connections": [
-    { "from": "transport", "fromPort": "phase", "to": "tuplet", "toPort": "phase" },
-    { "from": "tuplet", "fromPort": "out", "to": "groove", "toPort": "phase" },
-    { "from": "groove", "fromPort": "out", "to": "kick", "toPort": "phase" },
-    { "from": "transport", "fromPort": "phase", "to": "snare", "toPort": "phase" },
-    { "from": "snare", "fromPort": "trig", "to": "snareShift", "toPort": "trig" },
-    { "from": "groove", "fromPort": "out", "to": "hat", "toPort": "phase" },
-    { "from": "hat", "fromPort": "trig", "to": "flam", "toPort": "trig" },
-    { "from": "transport", "fromPort": "phase", "to": "perc", "toPort": "phase" },
-    { "from": "transport", "fromPort": "phase", "to": "bass", "toPort": "phase" },
-    { "from": "bass", "fromPort": "trig", "to": "bassMarkov", "toPort": "trig" },
-    { "from": "bassMarkov", "fromPort": "value", "to": "bassQuant", "toPort": "in" },
-    { "from": "bass", "fromPort": "trig", "to": "bassQuant", "toPort": "trig" },
-    { "from": "kick", "fromPort": "trig", "to": "kickD", "toPort": "trig" },
-    { "from": "snareShift", "fromPort": "trig", "to": "snareD", "toPort": "trig" },
-    { "from": "flam", "fromPort": "trig", "to": "hatD", "toPort": "trig" },
-    { "from": "perc", "fromPort": "trig", "to": "percD", "toPort": "trig" },
-    { "from": "bassQuant", "fromPort": "note", "to": "bassS", "toPort": "note" },
-    { "from": "bassS", "fromPort": "out", "to": "bassF", "toPort": "in" },
-    { "from": "kickD", "fromPort": "out", "to": "mixer", "toPort": "in1" },
-    { "from": "snareD", "fromPort": "out", "to": "delay", "toPort": "in" },
-    { "from": "delay", "fromPort": "out", "to": "mixer", "toPort": "in2" },
-    { "from": "hatD", "fromPort": "out", "to": "mixer", "toPort": "in3" },
-    { "from": "percD", "fromPort": "out", "to": "mixer", "toPort": "in3" },
-    { "from": "bassF", "fromPort": "out", "to": "mixer", "toPort": "in4" },
-    { "from": "mixer", "fromPort": "out", "to": "out", "toPort": "in" }
+    { "from": "transport.bar", "to": "kick.phase" },
+    { "from": "transport.bar", "to": "snare.phase" },
+    { "from": "transport.bar", "to": "snareShift.phase" },
+    { "from": "snare.trig", "to": "snareShift.in" },
+    { "from": "transport.bar", "to": "hat.phase" },
+    { "from": "transport.bar", "to": "flam.phase" },
+    { "from": "hat.trig", "to": "flam.in" },
+    { "from": "transport.bar", "to": "perc.phase" },
+    { "from": "transport.bar", "to": "bass.phase" },
+    { "from": "transport.bar", "to": "bassMarkov.phase" },
+    { "from": "bass.trig", "to": "bassMarkov.trig" },
+    { "from": "bassMarkov.trig", "to": "bassQuant.trig" },
+    { "from": "kick.trig", "to": "kickD.trig" },
+    { "from": "snareShift.out", "to": "snareD.trig" },
+    { "from": "flam.out", "to": "hatD.trig" },
+    { "from": "perc.trig", "to": "percD.trig" },
+    { "from": "bassQuant.note", "to": "bassVoices.note" },
+    { "from": "bassVoices.pitch", "to": "bassS.pitch" },
+    { "from": "bassVoices.gate", "to": "bassEnv.gate" },
+    { "from": "bassS.out", "to": "bassF.in" },
+    { "from": "bassF.out", "to": "bassVca.in" },
+    { "from": "bassEnv.out", "to": "bassVca.cv" },
+    { "from": "kickD.out", "to": "mixer.in1" },
+    { "from": "snareD.out", "to": "delay.in" },
+    { "from": "delay.out", "to": "mixer.in2" },
+    { "from": "hatD.out", "to": "mixer.in3" },
+    { "from": "percD.out", "to": "mixer.in3" },
+    { "from": "bassVca.out", "to": "mixer.in4" },
+    { "from": "mixer.out", "to": "out.in" }
   ],
-  "scenes": {
-    "S1": {
-      "params": {
-        "tuplet": { "ratio": 3, "over": 2 },
-        "groove": { "template": 2, "amount": 0.6 },
-        "kick": { "pulses": 5 }
-      }
-    },
-    "S2": {
-      "params": {
-        "tuplet": { "ratio": 5, "over": 4 },
-        "groove": { "template": 4, "amount": 0.8 },
-        "kick": { "pulses": 7 }
-      }
-    }
-  },
-  "currentScene": "S1"
+  "scenes": [{ "name": "S1", "nodes": {} }, { "name": "S2", "nodes": {} }]
 }

@@ -47,19 +47,16 @@
     }
   ],
   "connections": [
-    { "from": "transport", "fromPort": "phase", "to": "noise1", "toPort": "phase" },
-    { "from": "transport", "fromPort": "phase", "to": "glitch1", "toPort": "phase" },
-    { "from": "noise1", "fromPort": "out", "to": "glitch1", "toPort": "in" },
-    { "from": "glitch1", "fromPort": "out", "to": "edge1", "toPort": "in" },
-    { "from": "edge1", "fromPort": "out", "to": "screen1", "toPort": "in" }
+    { "from": "transport.bar", "to": "noise1.phase" },
+    { "from": "transport.bar", "to": "glitch1.phase" },
+    { "from": "noise1.out", "to": "glitch1.in" },
+    { "from": "glitch1.out", "to": "edge1.in" },
+    { "from": "edge1.out", "to": "screen1.in" }
   ],
-  "scenes": {
-    "S1": {
-      "params": {
-        "glitch1": { "mode": 2, "amount": 0.4 },
-        "noise1": { "warp": 1.2 }
-      }
+  "scenes": [
+    {
+      "name": "S1",
+      "nodes": {}
     }
-  },
-  "currentScene": "S1"
+  ]
 }

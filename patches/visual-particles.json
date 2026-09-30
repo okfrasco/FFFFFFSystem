@@ -42,17 +42,15 @@
     }
   ],
   "connections": [
-    { "from": "transport", "fromPort": "phase", "to": "kick", "toPort": "phase" },
-    { "from": "transport", "fromPort": "phase", "to": "particles1", "toPort": "phase" },
-    { "from": "particles1", "fromPort": "out", "to": "blur1", "toPort": "in" },
-    { "from": "blur1", "fromPort": "out", "to": "screen1", "toPort": "in" }
+    { "from": "transport.bar", "to": "kick.phase" },
+    { "from": "transport.bar", "to": "particles1.phase" },
+    { "from": "particles1.out", "to": "blur1.in" },
+    { "from": "blur1.out", "to": "screen1.in" }
   ],
-  "scenes": {
-    "S1": {
-      "params": {
-        "particles1": { "emitMode": 2, "noise": 1, "hue": 0.1 }
-      }
+  "scenes": [
+    {
+      "name": "S1",
+      "nodes": {}
     }
-  },
-  "currentScene": "S1"
+  ]
 }

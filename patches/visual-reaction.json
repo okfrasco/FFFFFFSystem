@@ -21,9 +21,9 @@
       "id": "color1",
       "module": "color",
       "params": {
-        "hueShift": 0.1,
+        "hue": 0.1,
         "saturation": 1.2,
-        "brightness": 1.1
+        "brightness": 0.1
       }
     },
     {
@@ -32,21 +32,18 @@
     }
   ],
   "connections": [
-    { "from": "transport", "fromPort": "phase", "to": "rd", "toPort": "phase" },
-    { "from": "rd", "fromPort": "out", "to": "color1", "toPort": "in" },
-    { "from": "color1", "fromPort": "out", "to": "screen1", "toPort": "in" }
+    { "from": "transport.bar", "to": "rd.phase" },
+    { "from": "rd.out", "to": "color1.in" },
+    { "from": "color1.out", "to": "screen1.in" }
   ],
-  "scenes": {
-    "S1": {
-      "params": {
-        "rd": { "preset": 0, "hue": 0.55 }
-      }
+  "scenes": [
+    {
+      "name": "S1",
+      "nodes": {}
     },
-    "S2": {
-      "params": {
-        "rd": { "preset": 2, "hue": 0.8 }
-      }
+    {
+      "name": "S2",
+      "nodes": {}
     }
-  },
-  "currentScene": "S1"
+  ]
 }
