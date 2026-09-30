@@ -26,6 +26,7 @@ function fakeContext(engine: Engine, nodeId: string): ViewContext {
   const io = {
     events: () => events,
     value: () => 1.25,
+    voices: () => [0.1, 0.4, 0.8],
     history: () => [0, 0.5, 1, 0.5],
     scope: () => scope,
     thumbnail: () => null,
@@ -38,7 +39,6 @@ function fakeContext(engine: Engine, nodeId: string): ViewContext {
     normalized: (id) => node.params.normalized(id),
     state: <T,>() => node.instance.getState() as T,
     config: <T,>() => (engine.patch.nodes.find((n) => n.id === nodeId)?.config ?? node.def.defaultConfig) as T,
-    voices: () => [0.1, 0.4, 0.8],
     ...io,
     input: io,
   };

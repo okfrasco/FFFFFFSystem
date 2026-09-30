@@ -74,3 +74,22 @@ describe('Quantize nel grafo', () => {
     expect(sim.events('q.note')).toEqual([{ kind: 'note', t: 0.1, voice: 0, pitch: 60, vel: 0.7, dur: 0.33 }]);
   });
 });
+
+describe('Quantize sul campo', () => {
+  it('prende la scala dal Campo armonico (pentatonica minore) in modo grado', () => {
+    const sim = simulate(
+      [
+        { id: 'f', module: 'harmonicField', params: { root: 0, scale: 10 } },
+        { id: 's', module: 'script', config: { events: [0.1, 0.2, 0.3].map((t, i) => ({ kind: 'trig', t, voice: 0, vel: 1, value: [1, 2, 5][i] })) } },
+        { id: 'q', module: 'quantize', params: { mode: 1, base: 48 } },
+      ],
+      [
+        { from: 'f.scale', to: 'q.scale' },
+        { from: 's.out', to: 'q.trig' },
+      ],
+      ['q.note'],
+    );
+    sim.runTo(0.25);
+    expect(sim.events('q.note').map((e) => (e.kind === 'note' ? e.pitch : 0))).toEqual([51, 53, 60]);
+  });
+});

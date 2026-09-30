@@ -210,6 +210,14 @@ Qui stanno i due nodi che distinguono il sistema da un sequencer: Memoria, che r
 
 L'armonia è un campo condiviso: un nodo decide lo stato armonico corrente e tutti i nodi pitched ci si quantizzano sopra, così i tuoi sistemi armonici entrano come moduli.
 
+Il campo viaggia sui cavi con tre porte, senza tipi nuovi (convenzione in `src/modules/harmony/theory.ts`):
+
+- `chord`: poly value, le note MIDI dell'accordo dal basso in su (voce 0 = basso);
+- `scale`: poly value a 12 voci, 1 se la classe di altezza (Do = 0) è nella scala;
+- `change`: un trigger a ogni cambio.
+
+Chi produce il campo: Campo armonico, Sus Slash, Accordi, Tonnetz, Cerchio delle quinte, Tensione. Chi lo legge: Quantize (scala o note dell'accordo), Voice leading, Arp, Tensione.
+
 | Nodo | Cosa fa |
 | --- | --- |
 | Campo armonico | Stato armonico globale (scala, accordo, basso) letto da tutti |

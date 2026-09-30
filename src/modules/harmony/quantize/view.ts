@@ -14,7 +14,13 @@ const view: ViewFactory = () => ({
   draw(g, w, h, v) {
     clear(g, w, h);
     const root = Math.round(v.param('root'));
-    const steps = SCALES[Math.round(v.param('scale'))]?.steps ?? SCALES[0]!.steps;
+    let steps: readonly number[] = SCALES[Math.round(v.param('scale'))]?.steps ?? SCALES[0]!.steps;
+    // con il campo collegato, la scala che arriva dal cavo
+    const field = v.input.voices('scale');
+    const source = Math.round(v.param('source'));
+    if (field.length === 12 && field.some((x) => x > 0.5) && (source === 0 || source === 2)) {
+      steps = field.flatMap((x, p) => (x > 0.5 ? [(p - root + 12) % 12] : []));
+    }
     const base = Math.round(v.param('base'));
     const start = base - (base % 12);
     const recent = v.events('note', 0.35);

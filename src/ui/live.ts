@@ -48,6 +48,7 @@ export interface ViewContext {
   input: {
     events(port: string, seconds: number): LoggedEvent[];
     value(port: string): number;
+    voices(port: string): number[];
     history(port: string, seconds: number, n: number): number[];
     scope(port: string): ScopeFrame | null;
     thumbnail(port: string): ImageData | null;
@@ -178,6 +179,10 @@ export class LiveMonitor {
         value: (port) => {
           const k = src(port);
           return k ? this.value(k, now) : 0;
+        },
+        voices: (port) => {
+          const k = src(port);
+          return k ? this.voices(k, now) : [];
         },
         history: (port, seconds, n) => {
           const k = src(port);

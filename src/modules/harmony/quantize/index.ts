@@ -7,9 +7,16 @@
  * Il valore viene dal trigger stesso se lo porta (Markov, Steps, L-system),
  * altrimenti dall'ingresso `pitch`. Le note in ingresso vengono solo portate
  * sulla scala.
+ *
+ * Campo armonico: con `scale` collegato (da Campo armonico, Sus Slash,
+ * Cerchio delle quinte…) la scala viene da lì; con `chord` si possono usare
+ * le sole note dell'accordo. In modo grado si conta dalla Tonica.
  */
 
 import type { ModuleDefinition, NoteEvent } from '../../../core/types';
+import { pc, readChord, readScale } from '../theory';
+
+export const SOURCES = ['automatico', 'parametri', 'scala del campo', "note dell'accordo"] as const;
 
 export const SCALES: readonly { name: string; steps: readonly number[] }[] = [
   { name: 'maggiore', steps: [0, 2, 4, 5, 7, 9, 11] },
@@ -70,11 +77,14 @@ export const quantize: ModuleDefinition = {
     inputs: [
       { id: 'trig', type: 'control', signal: 'event', poly: true },
       { id: 'pitch', type: 'control', signal: 'value', poly: true },
+      { id: 'scale', type: 'control', signal: 'value', poly: true },
+      { id: 'chord', type: 'control', signal: 'value', poly: true },
     ],
     outputs: [{ id: 'note', type: 'control', signal: 'event', poly: true }],
     params: [
       { id: 'root', label: 'Tonica', min: 0, max: 11, default: 0, kind: 'discrete', options: NOTE_NAMES },
       { id: 'scale', label: 'Scala', min: 0, max: SCALES.length - 1, default: 0, kind: 'discrete', options: SCALES.map((x) => x.name) },
+      { id: 'source', label: 'Scala da', min: 0, max: SOURCES.length - 1, default: 0, kind: 'discrete', options: [...SOURCES] },
       { id: 'mode', label: 'Modo', min: 0, max: 1, default: 1, kind: 'discrete', options: ['0–1 → range', 'grado'] },
       { id: 'base', label: 'Base', min: 24, max: 96, default: 48, kind: 'discrete' },
       { id: 'range', label: 'Range', min: 0, max: 48, default: 24, kind: 'continuous', unit: 'st' },
@@ -92,12 +102,19 @@ export const quantize: ModuleDefinition = {
         const pitchIn = inputs.control('pitch');
         const voices = Math.max(trig.values.length, pitchIn?.values.length ?? 1);
         const out = outputs.control('note', voices);
+        const fieldScale = readScale(inputs.control('scale'));
+        const chordPcs = [...new Set(readChord(inputs.control('chord')).map(pc))];
         for (const e of trig.events) {
           if (e.kind === 'gate') continue;
           const v = e.voice;
           const key = s.counter++;
           const root = ctx.discrete('root', key, v);
-          const steps = SCALES[ctx.discrete('scale', key, v)]?.steps ?? SCALES[0]!.steps;
+          let steps = SCALES[ctx.discrete('scale', key, v)]?.steps ?? SCALES[0]!.steps;
+          const source = ctx.discrete('source', key, v);
+          const fromField = source === 2 || (source === 0 && fieldScale) ? fieldScale : null;
+          const fromChord = source === 3 || (source === 0 && !fieldScale && chordPcs.length) ? chordPcs : null;
+          const pcs = fromField ?? (fromChord?.length ? fromChord : null);
+          if (pcs) steps = [...new Set(pcs.map((p) => pc(p - root)))].sort((a, b) => a - b);
           const base = ctx.discrete('base', key, v);
           let pitch: number;
           if (e.kind === 'note') pitch = nearestInScale(e.pitch, root, steps);
