@@ -162,3 +162,39 @@ export function thumbnail(g: CanvasRenderingContext2D, img: ImageData | null, x:
 }
 
 export const frac = (x: number) => x - Math.floor(x);
+
+export interface Lane {
+  label: string;
+  /** Eventi da disegnare come segni (colpi). */
+  events?: LoggedEvent[];
+  /** Storia di un livello o valore (0–1), da disegnare come traccia a gradini. */
+  history?: number[];
+  color: string;
+}
+
+/**
+ * Corsie una sotto l'altra sullo stesso tempo (gli ultimi `seconds`, adesso a
+ * destra): per vedere ingressi e uscite di un nodo logico insieme.
+ */
+export function lanes(g: CanvasRenderingContext2D, w: number, h: number, now: number, seconds: number, rows: Lane[]): void {
+  const lh = h / Math.max(1, rows.length);
+  rows.forEach((row, i) => {
+    const y = i * lh;
+    g.fillStyle = C.grid;
+    g.fillRect(0, y + lh - 1, w, 1);
+    label(g, row.label, 2, y + 1, C.dim);
+    if (row.history && row.history.length > 1) {
+      g.fillStyle = row.color;
+      g.globalAlpha = 0.5;
+      const n = row.history.length;
+      for (let k = 0; k < n; k++) {
+        const val = Math.max(0, Math.min(1, row.history[k]!));
+        if (val <= 0) continue;
+        const x0 = 14 + (k / n) * (w - 16);
+        g.fillRect(x0, y + lh - 2 - val * (lh - 4), (w - 16) / n + 0.5, val * (lh - 4));
+      }
+      g.globalAlpha = 1;
+    }
+    if (row.events) roll(g, row.events, now, seconds, 14, y + 2, w - 16, lh - 4, row.color);
+  });
+}

@@ -108,3 +108,15 @@ export function mergeAudio(into: AudioBlock, sources: readonly AudioBlock[]): Au
   }
   return into;
 }
+
+/** Eventi di una voce (un ingresso mono vale per tutte le voci). */
+export function eventsOf(buf: ControlBuffer | undefined, v: number): ControlEvent[] {
+  if (!buf) return [];
+  const n = buf.values.length;
+  return n <= 1 ? buf.events : buf.events.filter((e) => e.voice % n === v % n);
+}
+
+/** L'evento accende (trigger, nota, apertura di gate)? */
+export function isOn(e: ControlEvent): boolean {
+  return e.kind !== 'gate' || e.on;
+}
