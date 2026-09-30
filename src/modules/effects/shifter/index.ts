@@ -109,7 +109,7 @@ export const shifter: ModuleDefinition = {
               s.osc -= Math.floor(s.osc);
               const c = Math.cos(2 * Math.PI * s.osc);
               const sn = Math.sin(2 * Math.PI * s.osc);
-              y = re * c - im * sn;
+              y = re * c + im * sn; // banda laterale superiore: spostamento positivo = in su
             } else {
               // due letture a mezzo periodo di distanza, con finestra triangolare
               s.pBuf[s.pW] = xin;

@@ -25,6 +25,8 @@ interface BufState {
   pos: number;
   rate: number;
   fade: number;
+  /** Livello dell'ingresso hold (tenuto tra un blocco e l'altro). */
+  hold: boolean;
 }
 
 export const buffer: ModuleDefinition = {
@@ -51,7 +53,7 @@ export const buffer: ModuleDefinition = {
     seeded: false,
   },
   create() {
-    const s: BufState = { bufs: [], w: 0, active: false, toggled: false, anchor: 0, pos: 0, rate: 1, fade: 0 };
+    const s: BufState = { bufs: [], w: 0, active: false, toggled: false, anchor: 0, pos: 0, rate: 1, fade: 0, hold: false };
     return {
       process(ctx, inputs, outputs) {
         const input = inputs.audio('in');
@@ -72,22 +74,22 @@ export const buffer: ModuleDefinition = {
         const fadeStep = 1 / (0.005 * sr);
         const hold = inputs.control('hold');
         const trigs = framedEvents(ctx, inputs.control('trig')?.events ?? []);
-        const holdHigh = (hold?.values[0] ?? 0) > 0.5;
         const holdEvents = framedEvents(ctx, hold?.events ?? []);
         let he = 0;
-        let hLevel = holdEvents.length ? !holdHigh : holdHigh;
+        // un hold fatto di valori (senza eventi) si legge dal livello
+        if (hold && holdEvents.length === 0) s.hold = hold.values[0]! > 0.5;
         let te = 0;
         const xs = Array.from({ length: n }, (_, v) => channel(input, v));
         for (let i = 0; i < ctx.frames; i++) {
           while (he < holdEvents.length && holdEvents[he]!.f === i) {
             const e = holdEvents[he++]!.e;
-            hLevel = e.kind === 'gate' ? e.on : true;
+            if (e.kind === 'gate') s.hold = e.on;
           }
           while (te < trigs.length && trigs[te]!.f === i) {
             const e = trigs[te++]!.e;
             if (e.kind !== 'gate' || e.on) s.toggled = !s.toggled;
           }
-          const want = ctx.discrete('active', 0) === 1 || hLevel || s.toggled;
+          const want = ctx.discrete('active', 0) === 1 || s.hold || s.toggled;
           if (want && !s.active) {
             s.active = true;
             s.anchor = s.w;
@@ -102,12 +104,14 @@ export const buffer: ModuleDefinition = {
             let wet = 0;
             if (s.fade > 0) {
               let r: number;
-              if (mode === 2) r = s.anchor - (s.pos > 0 ? 0 : 0) + s.pos - s.w * 0;
-              else {
+              if (mode === 2) {
+                // tape stop: la testina di lettura parte dal punto d'attivazione e rallenta,
+                // mentre la scrittura continua a velocità piena (resta sempre dietro)
+                r = s.anchor + s.pos - 1;
+              } else {
                 const k = s.pos % len;
                 r = mode === 0 ? s.anchor - len + k : s.anchor - 1 - k;
               }
-              if (mode === 2) r = s.anchor + s.pos - (s.w >= s.anchor ? s.w - s.anchor : s.w + size - s.anchor);
               r = ((r % size) + size) % size;
               const r0 = Math.floor(r);
               const fr = r - r0;
