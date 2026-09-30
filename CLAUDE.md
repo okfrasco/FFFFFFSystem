@@ -107,7 +107,12 @@ Dopo il v0 (M9):
 Dopo M9:
 - Clock (fase → trigger e gate);
 - blocco groove: Ø Bend, Ø Swing, Ø Drift;
-- più schermi: una finestra per ogni nodo Schermo, staccabile in una finestra del browser.
+- più schermi: una finestra per ogni nodo Schermo, staccabile in una finestra del browser;
+- modulatori: LFO, Random walk, Turing Machine;
+- suono: Shaper (fold, satura, Chebyshev), Karplus-Strong;
+- visual: Transform (kaleido, tile, specchi).
+
+Con questi il primo giro di moduli concordato è completo.
 
 L'utente vuole un sistema "il più visual possibile" e ora si concentra sul fare tanti moduli (synth, effetti, generatori, visual): ogni modulo nuovo va fatto con una view che mostri cosa fa.
 
