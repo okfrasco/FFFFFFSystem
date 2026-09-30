@@ -114,6 +114,10 @@ Dopo M9:
 
 Con questi il primo giro di moduli concordato è completo.
 
+Secondo giro: si prosegue con il catalogo di SPEC.md, una sezione alla volta (priorità dell'utente).
+- Fatto: "Trasformazioni di controllo" (Math, Scale/Offset, Lag, Sample & Hold, Mod Mixer, Blend, Fold/Wrap, Quantize a scalini, Echo, Densità, Humanize) e S&H Random.
+- Manca: Curve disegnabile.
+
 L'utente vuole un sistema "il più visual possibile" e ora si concentra sul fare tanti moduli (synth, effetti, generatori, visual): ogni modulo nuovo va fatto con una view che mostri cosa fa.
 
 Prossimi passi possibili: nuovi moduli, altri nodi dal catalogo di SPEC.md, MIDI In/Out, il porting verso il plugin.

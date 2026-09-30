@@ -32,6 +32,7 @@ function fakeContext(engine: Engine, nodeId: string): ViewContext {
   };
   return {
     nodeId,
+    seed: node.seed,
     now: 1,
     param: (id) => node.params.value(id),
     normalized: (id) => node.params.normalized(id),

@@ -24,6 +24,8 @@ const LOG_SIZE = 128;
 /** Ciò che una view può leggere del suo nodo. */
 export interface ViewContext {
   readonly nodeId: string;
+  /** Seed del nodo (per le view che ricalcolano valori casuali, es. S&H Random). */
+  readonly seed: number;
   /** Istante mostrato (clock audio meno la latenza d'uscita). */
   readonly now: number;
   /** Parametro effettivo (con modulazioni e morph) e normalizzato. */
@@ -147,6 +149,7 @@ export class LiveMonitor {
     const self = this;
     return {
       nodeId,
+      seed: node().seed,
       now,
       param: (id) => node().params.value(id),
       normalized: (id) => node().params.normalized(id),
