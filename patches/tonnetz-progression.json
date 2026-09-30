@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "seed": 6006,
+  "nodes": [
+    {
+      "id": "transport",
+      "module": "transport",
+      "params": { "bpm": 100 }
+    },
+    {
+      "id": "half",
+      "module": "phaseScale",
+      "params": { "num": 1, "den": 2 }
+    },
+    {
+      "id": "quarter",
+      "module": "phaseScale",
+      "params": { "num": 1, "den": 4 }
+    },
+    {
+      "id": "tonnetz",
+      "module": "tonnetz",
+      "params": { "root": 0 }
+    },
+    {
+      "id": "tension",
+      "module": "tension",
+      "params": { "amount": 0.3 }
+    },
+    {
+      "id": "voiceLead",
+      "module": "voiceLead",
+      "params": { "smooth": 0.8 }
+    },
+    {
+      "id": "arp",
+      "module": "arp",
+      "params": {
+        "steps": 8,
+        "pattern": 1,
+        "octaves": 2,
+        "length": 0.15
+      }
+    },
+    {
+      "id": "melody",
+      "module": "euclid",
+      "params": { "steps": 16, "pulses": 5, "swing": 0.15 }
+    },
+    {
+      "id": "memory",
+      "module": "memory",
+      "params": { "length": 4, "mutation": 0.15 }
+    },
+    {
+      "id": "quant",
+      "module": "quantize",
+      "params": { "mode": 2, "base": 72, "length": 0.12 }
+    },
+    {
+      "id": "bass",
+      "module": "euclid",
+      "params": { "steps": 8, "pulses": 3 }
+    },
+    {
+      "id": "bassQuant",
+      "module": "quantize",
+      "params": { "mode": 0, "base": 36, "length": 0.3 }
+    },
+    {
+      "id": "kick",
+      "module": "euclid",
+      "params": { "steps": 16, "pulses": 4 }
+    },
+    {
+      "id": "hihat",
+      "module": "euclid",
+      "params": { "steps": 16, "pulses": 10, "swing": 0.2 }
+    },
+    {
+      "id": "pad",
+      "module": "wavetable",
+      "params": {
+        "table": 1,
+        "attack": 0.8,
+        "decay": 0.3,
+        "sustain": 0.6,
+        "release": 1.2
+      }
+    },
+    {
+      "id": "lead",
+      "module": "fm",
+      "params": {
+        "ratio2": 2,
+        "index2": 0.6,
+        "attack": 0.01,
+        "decay": 0.2,
+        "sustain": 0.4,
+        "release": 0.3
+      }
+    },
+    {
+      "id": "bassOsc",
+      "module": "oscillator",
+      "params": { "wave": 2, "attack": 0.01, "decay": 0.2, "sustain": 0.5, "release": 0.15 }
+    },
+    {
+      "id": "bassFilter",
+      "module": "filter",
+      "params": { "type": 0, "cutoff": 600, "resonance": 0.25 }
+    },
+    {
+      "id": "kickD",
+      "module": "drum",
+      "params": { "type": 0, "pitch": 48, "decay": 0.25 }
+    },
+    {
+      "id": "hatD",
+      "module": "drum",
+      "params": { "type": 2, "pitch": 8000, "decay": 0.04 }
+    },
+    {
+      "id": "reverb",
+      "module": "reverb",
+      "params": { "size": 0.6, "decay": 0.5, "mix": 0.35 }
+    },
+    {
+      "id": "delay",
+      "module": "delay",
+      "params": { "time": 0.3, "feedback": 0.4, "mix": 0.25 }
+    },
+    {
+      "id": "mixer",
+      "module": "mixer",
+      "params": { "gain1": 0.5, "gain2": 0.6, "gain3": 0.7, "gain4": 0.5 }
+    },
+    {
+      "id": "out",
+      "module": "output"
+    }
+  ],
+  "connections": [
+    { "from": "transport", "fromPort": "phase", "to": "half", "toPort": "in" },
+    { "from": "half", "fromPort": "out", "to": "quarter", "toPort": "in" },
+    { "from": "quarter", "fromPort": "out", "to": "tonnetz", "toPort": "phase" },
+    { "from": "tonnetz", "fromPort": "chord", "to": "tension", "toPort": "chord" },
+    { "from": "tension", "fromPort": "chord", "to": "voiceLead", "toPort": "chord" },
+    { "from": "voiceLead", "fromPort": "chord", "to": "arp", "toPort": "chord" },
+    { "from": "tonnetz", "fromPort": "scale", "to": "quant", "toPort": "scale" },
+    { "from": "tonnetz", "fromPort": "scale", "to": "bassQuant", "toPort": "scale" },
+    { "from": "transport", "fromPort": "phase", "to": "arp", "toPort": "phase" },
+    { "from": "transport", "fromPort": "phase", "to": "melody", "toPort": "phase" },
+    { "from": "melody", "fromPort": "trig", "to": "memory", "toPort": "trig" },
+    { "from": "memory", "fromPort": "value", "to": "quant", "toPort": "in" },
+    { "from": "melody", "fromPort": "trig", "to": "quant", "toPort": "trig" },
+    { "from": "half", "fromPort": "out", "to": "bass", "toPort": "phase" },
+    { "from": "bass", "fromPort": "trig", "to": "bassQuant", "toPort": "trig" },
+    { "from": "transport", "fromPort": "phase", "to": "kick", "toPort": "phase" },
+    { "from": "transport", "fromPort": "phase", "to": "hihat", "toPort": "phase" },
+    { "from": "arp", "fromPort": "note", "to": "pad", "toPort": "note" },
+    { "from": "quant", "fromPort": "note", "to": "lead", "toPort": "note" },
+    { "from": "bassQuant", "fromPort": "note", "to": "bassOsc", "toPort": "note" },
+    { "from": "bassOsc", "fromPort": "out", "to": "bassFilter", "toPort": "in" },
+    { "from": "kick", "fromPort": "trig", "to": "kickD", "toPort": "trig" },
+    { "from": "hihat", "fromPort": "trig", "to": "hatD", "toPort": "trig" },
+    { "from": "pad", "fromPort": "out", "to": "reverb", "toPort": "in" },
+    { "from": "lead", "fromPort": "out", "to": "delay", "toPort": "in" },
+    { "from": "reverb", "fromPort": "out", "to": "mixer", "toPort": "in1" },
+    { "from": "delay", "fromPort": "out", "to": "mixer", "toPort": "in2" },
+    { "from": "bassFilter", "fromPort": "out", "to": "mixer", "toPort": "in3" },
+    { "from": "kickD", "fromPort": "out", "to": "mixer", "toPort": "in4" },
+    { "from": "hatD", "fromPort": "out", "to": "mixer", "toPort": "in4" },
+    { "from": "mixer", "fromPort": "out", "to": "out", "toPort": "in" }
+  ],
+  "scenes": {
+    "S1": {
+      "params": {
+        "tonnetz": { "root": 0 },
+        "tension": { "amount": 0.3 },
+        "transport": { "bpm": 100 }
+      }
+    },
+    "S2": {
+      "params": {
+        "tonnetz": { "root": 7 },
+        "tension": { "amount": 0.5 },
+        "transport": { "bpm": 105 }
+      }
+    }
+  },
+  "currentScene": "S1"
+}

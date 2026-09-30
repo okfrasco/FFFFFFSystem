@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "seed": 1001,
+  "nodes": [
+    {
+      "id": "transport",
+      "module": "transport",
+      "params": { "bpm": 92 }
+    },
+    {
+      "id": "half",
+      "module": "phaseScale",
+      "params": { "num": 1, "den": 2 }
+    },
+    {
+      "id": "sus",
+      "module": "susSlash",
+      "params": {
+        "root": 5,
+        "variant": 0,
+        "voice": 0,
+        "invert": 1
+      }
+    },
+    {
+      "id": "arp",
+      "module": "arp",
+      "params": {
+        "steps": 8,
+        "pattern": 2,
+        "octaves": 2,
+        "length": 0.2,
+        "swing": 0.15
+      }
+    },
+    {
+      "id": "lead",
+      "module": "euclid",
+      "params": {
+        "steps": 16,
+        "pulses": 7,
+        "swing": 0.2
+      }
+    },
+    {
+      "id": "markov",
+      "module": "markov",
+      "params": {
+        "mutation": 0.1
+      }
+    },
+    {
+      "id": "melody",
+      "module": "quantize",
+      "params": {
+        "mode": 2,
+        "base": 60,
+        "length": 0.15
+      }
+    },
+    {
+      "id": "kick",
+      "module": "euclid",
+      "params": { "steps": 16, "pulses": 4 }
+    },
+    {
+      "id": "snare",
+      "module": "gates",
+      "config": { "gates": [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0] }
+    },
+    {
+      "id": "hat",
+      "module": "euclid",
+      "params": { "steps": 16, "pulses": 12, "swing": 0.25 }
+    },
+    {
+      "id": "flipHat",
+      "module": "coinFlip",
+      "params": { "prob": 0.8 }
+    },
+    {
+      "id": "synth",
+      "module": "fm",
+      "params": {
+        "ratio2": 2,
+        "index2": 0.8,
+        "attack": 0.01,
+        "decay": 0.3,
+        "sustain": 0.4,
+        "release": 0.5
+      }
+    },
+    {
+      "id": "pad",
+      "module": "wavetable",
+      "params": {
+        "table": 2,
+        "attack": 0.5,
+        "decay": 0.3,
+        "sustain": 0.7,
+        "release": 1
+      }
+    },
+    {
+      "id": "drums",
+      "module": "drum",
+      "params": { "type": 0, "pitch": 45, "decay": 0.3 }
+    },
+    {
+      "id": "snareD",
+      "module": "drum",
+      "params": { "type": 1, "pitch": 200, "decay": 0.15 }
+    },
+    {
+      "id": "hatD",
+      "module": "drum",
+      "params": { "type": 2, "pitch": 8000, "decay": 0.05 }
+    },
+    {
+      "id": "reverb",
+      "module": "reverb",
+      "params": { "size": 0.6, "decay": 0.5, "mix": 0.3 }
+    },
+    {
+      "id": "mixer",
+      "module": "mixer",
+      "params": { "gain1": 0.7, "gain2": 0.5, "gain3": 0.6, "gain4": 0.4 }
+    },
+    {
+      "id": "out",
+      "module": "output"
+    }
+  ],
+  "connections": [
+    { "from": "transport", "fromPort": "phase", "to": "half", "toPort": "in" },
+    { "from": "half", "fromPort": "out", "to": "sus", "toPort": "phase" },
+    { "from": "transport", "fromPort": "phase", "to": "arp", "toPort": "phase" },
+    { "from": "sus", "fromPort": "chord", "to": "arp", "toPort": "chord" },
+    { "from": "sus", "fromPort": "scale", "to": "melody", "toPort": "scale" },
+    { "from": "transport", "fromPort": "phase", "to": "lead", "toPort": "phase" },
+    { "from": "lead", "fromPort": "trig", "to": "markov", "toPort": "trig" },
+    { "from": "markov", "fromPort": "value", "to": "melody", "toPort": "in" },
+    { "from": "lead", "fromPort": "trig", "to": "melody", "toPort": "trig" },
+    { "from": "transport", "fromPort": "phase", "to": "kick", "toPort": "phase" },
+    { "from": "transport", "fromPort": "phase", "to": "snare", "toPort": "phase" },
+    { "from": "transport", "fromPort": "phase", "to": "hat", "toPort": "phase" },
+    { "from": "hat", "fromPort": "trig", "to": "flipHat", "toPort": "trig" },
+    { "from": "melody", "fromPort": "note", "to": "synth", "toPort": "note" },
+    { "from": "arp", "fromPort": "note", "to": "pad", "toPort": "note" },
+    { "from": "kick", "fromPort": "trig", "to": "drums", "toPort": "trig" },
+    { "from": "snare", "fromPort": "trig", "to": "snareD", "toPort": "trig" },
+    { "from": "flipHat", "fromPort": "trig", "to": "hatD", "toPort": "trig" },
+    { "from": "synth", "fromPort": "out", "to": "reverb", "toPort": "in" },
+    { "from": "reverb", "fromPort": "out", "to": "mixer", "toPort": "in1" },
+    { "from": "pad", "fromPort": "out", "to": "mixer", "toPort": "in2" },
+    { "from": "drums", "fromPort": "out", "to": "mixer", "toPort": "in3" },
+    { "from": "snareD", "fromPort": "out", "to": "mixer", "toPort": "in3" },
+    { "from": "hatD", "fromPort": "out", "to": "mixer", "toPort": "in4" },
+    { "from": "mixer", "fromPort": "out", "to": "out", "toPort": "in" }
+  ],
+  "scenes": {
+    "S1": {
+      "params": {
+        "sus": { "root": 5, "variant": 0 },
+        "arp": { "pattern": 2, "octaves": 2 },
+        "transport": { "bpm": 92 }
+      }
+    },
+    "S2": {
+      "params": {
+        "sus": { "root": 0, "variant": 2 },
+        "arp": { "pattern": 3, "octaves": 3 },
+        "transport": { "bpm": 96 }
+      }
+    }
+  },
+  "currentScene": "S1"
+}

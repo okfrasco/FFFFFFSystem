@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "seed": 5005,
+  "nodes": [
+    {
+      "id": "transport",
+      "module": "transport",
+      "params": { "bpm": 60 }
+    },
+    {
+      "id": "slow",
+      "module": "phaseScale",
+      "params": { "num": 1, "den": 4 }
+    },
+    {
+      "id": "verySlow",
+      "module": "phaseScale",
+      "params": { "num": 1, "den": 16 }
+    },
+    {
+      "id": "lsystem",
+      "module": "lsystem",
+      "params": { "rule": 3, "iterations": 5 }
+    },
+    {
+      "id": "spark",
+      "module": "spark",
+      "params": { "density": 0.15, "cluster": 0.3 }
+    },
+    {
+      "id": "randomWalk",
+      "module": "randomWalk",
+      "params": { "step": 0.1, "smooth": 0.8, "range": 1 }
+    },
+    {
+      "id": "fifths",
+      "module": "fifths",
+      "params": { "root": 7, "mode": 0 }
+    },
+    {
+      "id": "tonnetz",
+      "module": "tonnetz",
+      "params": { "root": 7 }
+    },
+    {
+      "id": "quant1",
+      "module": "quantize",
+      "params": { "mode": 2, "base": 48, "length": 2 }
+    },
+    {
+      "id": "quant2",
+      "module": "quantize",
+      "params": { "mode": 2, "base": 60, "length": 3 }
+    },
+    {
+      "id": "strum",
+      "module": "strum",
+      "params": { "time": 0.1, "direction": 1 }
+    },
+    {
+      "id": "pad1",
+      "module": "additive",
+      "params": {
+        "partials": 8,
+        "spread": 0.02,
+        "attack": 2,
+        "decay": 1,
+        "sustain": 0.6,
+        "release": 3
+      }
+    },
+    {
+      "id": "pad2",
+      "module": "wavetable",
+      "params": {
+        "table": 3,
+        "attack": 1.5,
+        "decay": 0.5,
+        "sustain": 0.7,
+        "release": 2.5
+      }
+    },
+    {
+      "id": "karplus",
+      "module": "karplus",
+      "params": {
+        "damping": 0.3,
+        "attack": 0.01,
+        "release": 2
+      }
+    },
+    {
+      "id": "filter1",
+      "module": "filter",
+      "params": { "type": 0, "cutoff": 2000, "resonance": 0.2 }
+    },
+    {
+      "id": "filter2",
+      "module": "filter",
+      "params": { "type": 0, "cutoff": 1500, "resonance": 0.1 }
+    },
+    {
+      "id": "lfo",
+      "module": "lfo",
+      "params": { "rate": 0.1, "shape": 0, "depth": 0.3 }
+    },
+    {
+      "id": "reverb1",
+      "module": "reverb",
+      "params": { "size": 0.9, "decay": 0.85, "mix": 0.6 }
+    },
+    {
+      "id": "reverb2",
+      "module": "reverb",
+      "params": { "size": 0.95, "decay": 0.9, "mix": 0.7 }
+    },
+    {
+      "id": "delay",
+      "module": "delay",
+      "params": { "time": 1.5, "feedback": 0.5, "mix": 0.3 }
+    },
+    {
+      "id": "mixer",
+      "module": "mixer",
+      "params": { "gain1": 0.5, "gain2": 0.4, "gain3": 0.3, "gain4": 0.3 }
+    },
+    {
+      "id": "out",
+      "module": "output"
+    }
+  ],
+  "connections": [
+    { "from": "transport", "fromPort": "phase", "to": "slow", "toPort": "in" },
+    { "from": "slow", "fromPort": "out", "to": "verySlow", "toPort": "in" },
+    { "from": "slow", "fromPort": "out", "to": "lsystem", "toPort": "phase" },
+    { "from": "slow", "fromPort": "out", "to": "spark", "toPort": "phase" },
+    { "from": "transport", "fromPort": "phase", "to": "lfo", "toPort": "phase" },
+    { "from": "verySlow", "fromPort": "out", "to": "fifths", "toPort": "phase" },
+    { "from": "verySlow", "fromPort": "out", "to": "tonnetz", "toPort": "phase" },
+    { "from": "lsystem", "fromPort": "trig", "to": "randomWalk", "toPort": "trig" },
+    { "from": "randomWalk", "fromPort": "value", "to": "quant1", "toPort": "in" },
+    { "from": "fifths", "fromPort": "scale", "to": "quant1", "toPort": "scale" },
+    { "from": "lsystem", "fromPort": "trig", "to": "quant1", "toPort": "trig" },
+    { "from": "spark", "fromPort": "trig", "to": "quant2", "toPort": "trig" },
+    { "from": "tonnetz", "fromPort": "chord", "to": "strum", "toPort": "chord" },
+    { "from": "fifths", "fromPort": "change", "to": "strum", "toPort": "trig" },
+    { "from": "quant1", "fromPort": "note", "to": "pad1", "toPort": "note" },
+    { "from": "strum", "fromPort": "note", "to": "pad2", "toPort": "note" },
+    { "from": "quant2", "fromPort": "note", "to": "karplus", "toPort": "note" },
+    { "from": "pad1", "fromPort": "out", "to": "filter1", "toPort": "in" },
+    { "from": "lfo", "fromPort": "out", "to": "filter1", "toPort": "cutoffMod" },
+    { "from": "pad2", "fromPort": "out", "to": "filter2", "toPort": "in" },
+    { "from": "filter1", "fromPort": "out", "to": "reverb1", "toPort": "in" },
+    { "from": "filter2", "fromPort": "out", "to": "reverb2", "toPort": "in" },
+    { "from": "karplus", "fromPort": "out", "to": "delay", "toPort": "in" },
+    { "from": "reverb1", "fromPort": "out", "to": "mixer", "toPort": "in1" },
+    { "from": "reverb2", "fromPort": "out", "to": "mixer", "toPort": "in2" },
+    { "from": "delay", "fromPort": "out", "to": "mixer", "toPort": "in3" },
+    { "from": "mixer", "fromPort": "out", "to": "out", "toPort": "in" }
+  ],
+  "scenes": {
+    "S1": {
+      "params": {
+        "fifths": { "root": 7, "mode": 0 },
+        "spark": { "density": 0.15 },
+        "reverb1": { "decay": 0.85 }
+      }
+    },
+    "S2": {
+      "params": {
+        "fifths": { "root": 0, "mode": 1 },
+        "spark": { "density": 0.25 },
+        "reverb1": { "decay": 0.92 }
+      }
+    }
+  },
+  "currentScene": "S1"
+}

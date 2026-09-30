@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "seed": 3003,
+  "nodes": [
+    {
+      "id": "transport",
+      "module": "transport",
+      "params": { "bpm": 138 }
+    },
+    {
+      "id": "drift",
+      "module": "phaseDrift",
+      "params": { "drift": 0.03, "smooth": 0.5 }
+    },
+    {
+      "id": "polyGrid",
+      "module": "polyGrid",
+      "params": { "grid1": 16, "grid2": 12, "grid3": 7 }
+    },
+    {
+      "id": "turing1",
+      "module": "turing",
+      "params": { "length": 16, "lock": 0.85, "steps": 16 }
+    },
+    {
+      "id": "turing2",
+      "module": "turing",
+      "params": { "length": 12, "lock": 0.9, "steps": 12 }
+    },
+    {
+      "id": "logistic",
+      "module": "logistic",
+      "params": { "r": 3.7, "steps": 8 }
+    },
+    {
+      "id": "lsystem",
+      "module": "lsystem",
+      "params": { "rule": 2, "iterations": 4 }
+    },
+    {
+      "id": "ratchet",
+      "module": "ratchet",
+      "params": { "prob": 0.3, "max": 4 }
+    },
+    {
+      "id": "quant1",
+      "module": "quantize",
+      "params": { "root": 9, "scale": 8, "base": 48, "length": 0.08 }
+    },
+    {
+      "id": "quant2",
+      "module": "quantize",
+      "params": { "root": 9, "scale": 8, "base": 60, "length": 0.05 }
+    },
+    {
+      "id": "fm1",
+      "module": "fm",
+      "params": {
+        "ratio2": 3,
+        "ratio3": 7,
+        "index2": 1.5,
+        "index3": 0.8,
+        "attack": 0.001,
+        "decay": 0.1,
+        "sustain": 0.1,
+        "release": 0.05
+      }
+    },
+    {
+      "id": "fm2",
+      "module": "fm",
+      "params": {
+        "ratio2": 1.414,
+        "index2": 2,
+        "attack": 0.001,
+        "decay": 0.05,
+        "sustain": 0,
+        "release": 0.02
+      }
+    },
+    {
+      "id": "kickD",
+      "module": "drum",
+      "params": { "type": 0, "pitch": 55, "decay": 0.2 }
+    },
+    {
+      "id": "noiseD",
+      "module": "audioNoise",
+      "params": { "type": 1 }
+    },
+    {
+      "id": "noiseEnv",
+      "module": "envelope",
+      "params": { "attack": 0.001, "decay": 0.03, "sustain": 0, "release": 0.01 }
+    },
+    {
+      "id": "noiseVCA",
+      "module": "vca"
+    },
+    {
+      "id": "ladder",
+      "module": "ladder",
+      "params": { "cutoff": 2000, "resonance": 0.7 }
+    },
+    {
+      "id": "comb",
+      "module": "comb",
+      "params": { "delay": 0.003, "feedback": 0.6, "mix": 0.5 }
+    },
+    {
+      "id": "delay",
+      "module": "delay",
+      "params": { "time": 0.166, "feedback": 0.5, "mix": 0.3 }
+    },
+    {
+      "id": "reverb",
+      "module": "reverb",
+      "params": { "size": 0.3, "decay": 0.3, "mix": 0.2 }
+    },
+    {
+      "id": "mixer",
+      "module": "mixer",
+      "params": { "gain1": 0.6, "gain2": 0.5, "gain3": 0.7, "gain4": 0.4 }
+    },
+    {
+      "id": "out",
+      "module": "output"
+    }
+  ],
+  "connections": [
+    { "from": "transport", "fromPort": "phase", "to": "drift", "toPort": "in" },
+    { "from": "drift", "fromPort": "out", "to": "polyGrid", "toPort": "phase" },
+    { "from": "polyGrid", "fromPort": "out1", "to": "turing1", "toPort": "phase" },
+    { "from": "polyGrid", "fromPort": "out2", "to": "turing2", "toPort": "phase" },
+    { "from": "transport", "fromPort": "phase", "to": "logistic", "toPort": "phase" },
+    { "from": "transport", "fromPort": "phase", "to": "lsystem", "toPort": "phase" },
+    { "from": "turing1", "fromPort": "trig", "to": "ratchet", "toPort": "trig" },
+    { "from": "turing1", "fromPort": "value", "to": "quant1", "toPort": "in" },
+    { "from": "ratchet", "fromPort": "trig", "to": "quant1", "toPort": "trig" },
+    { "from": "turing2", "fromPort": "value", "to": "quant2", "toPort": "in" },
+    { "from": "turing2", "fromPort": "trig", "to": "quant2", "toPort": "trig" },
+    { "from": "quant1", "fromPort": "note", "to": "fm1", "toPort": "note" },
+    { "from": "quant2", "fromPort": "note", "to": "fm2", "toPort": "note" },
+    { "from": "logistic", "fromPort": "trig", "to": "kickD", "toPort": "trig" },
+    { "from": "lsystem", "fromPort": "trig", "to": "noiseEnv", "toPort": "gate" },
+    { "from": "noiseD", "fromPort": "out", "to": "noiseVCA", "toPort": "in" },
+    { "from": "noiseEnv", "fromPort": "out", "to": "noiseVCA", "toPort": "cv" },
+    { "from": "fm1", "fromPort": "out", "to": "ladder", "toPort": "in" },
+    { "from": "ladder", "fromPort": "out", "to": "comb", "toPort": "in" },
+    { "from": "comb", "fromPort": "out", "to": "delay", "toPort": "in" },
+    { "from": "delay", "fromPort": "out", "to": "reverb", "toPort": "in" },
+    { "from": "reverb", "fromPort": "out", "to": "mixer", "toPort": "in1" },
+    { "from": "fm2", "fromPort": "out", "to": "mixer", "toPort": "in2" },
+    { "from": "kickD", "fromPort": "out", "to": "mixer", "toPort": "in3" },
+    { "from": "noiseVCA", "fromPort": "out", "to": "mixer", "toPort": "in4" },
+    { "from": "mixer", "fromPort": "out", "to": "out", "toPort": "in" }
+  ],
+  "scenes": {
+    "S1": {
+      "params": {
+        "turing1": { "lock": 0.85 },
+        "turing2": { "lock": 0.9 },
+        "fm1": { "index2": 1.5 },
+        "ladder": { "cutoff": 2000 }
+      }
+    },
+    "S2": {
+      "params": {
+        "turing1": { "lock": 0.7 },
+        "turing2": { "lock": 0.75 },
+        "fm1": { "index2": 3 },
+        "ladder": { "cutoff": 800 }
+      }
+    }
+  },
+  "currentScene": "S1"
+}
